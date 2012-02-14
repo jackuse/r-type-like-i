@@ -40,7 +40,7 @@ public class Explosion extends Objet {
    * Get the value of cadre
    * @return the value of cadre
    */
-  private float[] getCadre ( ) {
+  public float[] getCadre ( ) {
     return cadre;
   }
 

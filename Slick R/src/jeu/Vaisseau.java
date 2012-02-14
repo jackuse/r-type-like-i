@@ -10,9 +10,9 @@ public class Vaisseau extends Objet {
   // Fields
   //
 
-  protected boolean move;
-  protected int pdv;
-  protected float speed;
+  protected boolean move = false;
+  protected int pdv = 1;
+  protected float speed = 1;
   
   //
   // Constructors

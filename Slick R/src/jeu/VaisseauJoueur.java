@@ -6,27 +6,30 @@ package jeu;
  */
 public class VaisseauJoueur extends Vaisseau {
 
-  //
-  // Fields
-  //
+	//
+	// Fields
+	//
 
-  
-  //
-  // Constructors
-  //
-  public VaisseauJoueur () { };
-  
-  //
-  // Methods
-  //
+	protected boolean move = false;
+	protected int pdv = 10;
+	protected float speed = 4;
+
+	//
+	// Constructors
+	//
+	public VaisseauJoueur () { };
+
+	//
+	// Methods
+	//
 
 
-  //
-  // Accessor methods
-  //
+	//
+	// Accessor methods
+	//
 
-  //
-  // Other methods
-  //
+	//
+	// Other methods
+	//
 
 }

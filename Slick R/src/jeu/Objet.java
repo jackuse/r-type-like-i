@@ -37,7 +37,7 @@ public class Objet {
    * Set the value of x
    * @param newVar the new value of x
    */
-  protected void setX ( float newVar ) {
+  public void setX ( float newVar ) {
     x = newVar;
   }
 
@@ -45,7 +45,7 @@ public class Objet {
    * Get the value of x
    * @return the value of x
    */
-  protected float getX( ) {
+  public float getX( ) {
     return x;
   }
 
@@ -53,7 +53,7 @@ public class Objet {
    * Set the value of y
    * @param newVar the new value of y
    */
-  protected void setY ( float newVar ) {
+  public void setY ( float newVar ) {
     y = newVar;
   }
 
@@ -61,7 +61,7 @@ public class Objet {
    * Get the value of y
    * @return the value of y
    */
-  protected float getY ( ) {
+  public float getY ( ) {
     return y;
   }
 
@@ -69,7 +69,7 @@ public class Objet {
    * Set the value of w
    * @param newVar the new value of w
    */
-  protected void setW ( float newVar ) {
+  public void setW ( float newVar ) {
     w = newVar;
   }
 
@@ -77,7 +77,7 @@ public class Objet {
    * Get the value of w
    * @return the value of w
    */
-  protected float getW ( ) {
+  public float getW ( ) {
     return w;
   }
 
@@ -85,7 +85,7 @@ public class Objet {
    * Set the value of h
    * @param newVar the new value of h
    */
-  protected void setH ( float newVar ) {
+  public void setH ( float newVar ) {
     h = newVar;
   }
 
@@ -93,7 +93,7 @@ public class Objet {
    * Get the value of h
    * @return the value of h
    */
-  protected float getH ( ) {
+  public float getH ( ) {
     return h;
   }
 
@@ -101,7 +101,7 @@ public class Objet {
    * Set the value of id
    * @param newVar the new value of id
    */
-  protected void setId ( int newVar ) {
+  public void setId ( int newVar ) {
     id = newVar;
   }
 
@@ -109,7 +109,7 @@ public class Objet {
    * Get the value of id
    * @return the value of id
    */
-  protected int getId ( ) {
+  public int getId ( ) {
     return id;
   }
 

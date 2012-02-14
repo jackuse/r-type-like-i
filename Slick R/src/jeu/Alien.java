@@ -5,27 +5,29 @@ package jeu;
  */
 public class Alien extends Vaisseau {
 
-  //
-  // Fields
-  //
+	//
+	// Fields
+	//
+	protected boolean move = true;
+	protected int pdv = 2;
+	protected float speed = 1;
 
-  
-  //
-  // Constructors
-  //
-  public Alien () { };
-  
-  //
-  // Methods
-  //
+	//
+	// Constructors
+	//
+	public Alien () { };
+
+	//
+	// Methods
+	//
 
 
-  //
-  // Accessor methods
-  //
+	//
+	// Accessor methods
+	//
 
-  //
-  // Other methods
-  //
+	//
+	// Other methods
+	//
 
 }

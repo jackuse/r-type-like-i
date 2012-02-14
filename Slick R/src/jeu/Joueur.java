@@ -17,7 +17,10 @@ public class Joueur {
   //
   // Constructors
   //
-  public Joueur () { };
+  public Joueur () { 
+	  score = 0;
+	  
+  };
   
   //
   // Methods
@@ -32,7 +35,7 @@ public class Joueur {
    * Set the value of score
    * @param newVar the new value of score
    */
-  private void setScore ( int newVar ) {
+  public void setScore ( int newVar ) {
     score = newVar;
   }
 
@@ -40,7 +43,7 @@ public class Joueur {
    * Get the value of score
    * @return the value of score
    */
-  private int getScore ( ) {
+  public int getScore ( ) {
     return score;
   }
 

@@ -5,27 +5,29 @@ package jeu;
  */
 public class Boss extends Vaisseau {
 
-  //
-  // Fields
-  //
+	//
+	// Fields
+	//
+	protected boolean move = true;
+	protected int pdv = 50;
+	protected float speed = 3;
+	
+	//
+	// Constructors
+	//
+	public Boss () { };
 
-  
-  //
-  // Constructors
-  //
-  public Boss () { };
-  
-  //
-  // Methods
-  //
+	//
+	// Methods
+	//
 
 
-  //
-  // Accessor methods
-  //
+	//
+	// Accessor methods
+	//
 
-  //
-  // Other methods
-  //
+	//
+	// Other methods
+	//
 
 }
