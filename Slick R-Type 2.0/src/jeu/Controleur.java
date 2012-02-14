@@ -24,9 +24,9 @@ public class Controleur extends BasicGame {
 	//
 
 	public Random rand;
-	private float bgSpeed;
-	private float posXBg1;
-	private float posXBg2;
+	private float bgSpeed = 1;
+	private float posXBg1 = 0;
+	private float posXBg2 = 800;
 	private boolean speedUp;
 	private Vue vue;
 	private ArrayList<Objet> objet;
@@ -233,6 +233,19 @@ public class Controleur extends BasicGame {
 		}
 
 		///////////////////////////////////////FIN DES COMMANDES ///////////////////////////////////////
+		
+		
+		// Défilement du background
+		posXBg1-=bgSpeed;
+		posXBg2-=bgSpeed;
+				if(posXBg1<-800){
+					posXBg1=799;
+					posXBg2=-1;
+				}
+				if(posXBg2<-800){
+					posXBg2=799;
+					posXBg1=-1;
+				}
 	}
 
 

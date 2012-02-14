@@ -21,6 +21,8 @@ public class VaisseauJoueur extends Vaisseau {
 		speed = 10;
 		pdv = 10;
 		move = false;
+		w=130;
+		h=120;
 		
 	};
 
