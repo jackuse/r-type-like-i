@@ -40,7 +40,11 @@ public class Controleur extends BasicGame {
 		super("R-Type Like It !");
 		
 		vue = new Vue();
-		affichage = 0;
+		affichage = 2;
+		joueur= new Joueur[1];
+		joueur[0]= new Joueur();
+		
+		param = new int[10];
 	};
 
 	//
@@ -173,13 +177,13 @@ public class Controleur extends BasicGame {
 			
 			break;
 		case 1:
+			
+			break;
+		case 2:
 			vue.renderBg(g, posXBg1, posXBg2,param);
 			//vue.renderTire(g, objet);
 			//vue.renderVaisseau(g,objet);
 			//vue.renderExplosion(g, explo);
-			
-			break;
-		case 2:
 			
 			break;
 		case 3:
