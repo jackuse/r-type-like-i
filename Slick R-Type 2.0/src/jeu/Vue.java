@@ -5,6 +5,7 @@ import java.util.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 
@@ -18,7 +19,7 @@ public class Vue {
 	// Fields
 	//
 
-	private Image[] background = null;
+	private Image[] background = new Image[2];
 	private Image joueur;
 	private Image[] alien;
 	private Image laser;
@@ -28,7 +29,11 @@ public class Vue {
 	//
 	// Constructors
 	//
-	public Vue () { };
+	public Vue () throws SlickException { 
+		background[0] = new Image("data/land.jpg");
+		
+		
+	};
 
 	//
 	// Methods

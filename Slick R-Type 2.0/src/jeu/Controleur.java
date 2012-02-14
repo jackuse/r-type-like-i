@@ -35,11 +35,11 @@ public class Controleur extends BasicGame {
 	//
 	// Constructors
 	//
-	public Controleur () { 
+	public Controleur (){ 
 
 		super("R-Type Like It !");
 		
-		vue = new Vue();
+		
 		affichage = 2;
 		joueur= new Joueur[1];
 		joueur[0]= new Joueur();
@@ -145,8 +145,12 @@ public class Controleur extends BasicGame {
 	/**
 	 * @param        gc
 	 */
-	public void init( GameContainer gc )
+	public void init( GameContainer gc ) throws SlickException 
 	{
+		vue = new Vue();
+		gc.setTargetFrameRate(60);
+		gc.setMaximumLogicUpdateInterval(20);
+		gc.setMinimumLogicUpdateInterval(20);
 	}
 
 
