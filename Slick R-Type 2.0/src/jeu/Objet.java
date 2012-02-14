@@ -23,6 +23,10 @@ public class Objet {
   // Constructors
   //
   public Objet () { };
+  public Objet (float x, float y) { 
+	  this.x = x;
+	  this.y =y;
+  };
   
   //
   // Methods

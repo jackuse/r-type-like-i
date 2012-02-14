@@ -13,6 +13,7 @@ public class Joueur {
   //
 
   private int score;
+  private VaisseauJoueur v = new VaisseauJoueur();
   
   //
   // Constructors
@@ -45,6 +46,14 @@ public class Joueur {
    */
   public int getScore ( ) {
     return score;
+  }
+  
+  /**
+   * Get the value of score
+   * @return the value of score
+   */
+  public VaisseauJoueur getV ( ) {
+	  return v;
   }
 
   //

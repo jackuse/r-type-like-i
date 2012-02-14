@@ -22,6 +22,10 @@ public class Tire extends Objet {
   //
   public Tire () { };
   
+  public Tire (float x, float y) { 
+	  super(x,y);
+  };
+  
   //
   // Methods
   //

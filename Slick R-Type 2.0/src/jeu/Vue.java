@@ -31,6 +31,8 @@ public class Vue {
 	//
 	public Vue () throws SlickException { 
 		background[0] = new Image("data/land.jpg");
+		joueur = new Image("data/plane.png");
+		joueur.setRotation(90.0f);
 		
 		
 	};
@@ -276,6 +278,11 @@ public class Vue {
 			}
 
 		}
+		return 0;
+	}
+
+	public int renderJoueur(Graphics g, VaisseauJoueur v) {
+		joueur.draw(v.getX(), v.getY());
 		return 0;
 	}
 
