@@ -26,6 +26,7 @@ public class Objet {
   public Objet (float x, float y) { 
 	  this.x = x;
 	  this.y =y;
+	  id = 0;
   };
   
   //
@@ -136,10 +137,16 @@ public class Objet {
    * @return       boolean
    * @param        objet
    */
-  public boolean collision( Objet objet )
+  public boolean collision( Objet ob )
   {
-	  
-	  return true;
+		if((x >= ob.getX() + ob.getW())         // trop à droite
+				|| (x + w <= ob.getX())   		// trop à gauche
+				|| (y >= ob.getY() + ob.getH()) // trop en bas
+				|| (y + h <= ob.getY())) 		// trop en haut 
+			return false; 
+		else{
+			return true; 
+		}
   }
 
 

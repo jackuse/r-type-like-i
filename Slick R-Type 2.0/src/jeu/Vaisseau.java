@@ -19,6 +19,11 @@ public class Vaisseau extends Objet {
   //
   public Vaisseau () { };
   
+  public Vaisseau (float x, float y) { 
+	  super(x,y);
+	  id = 1;
+  };
+  
   //
   // Methods
   //

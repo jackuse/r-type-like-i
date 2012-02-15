@@ -21,7 +21,7 @@ public class Vue {
 
 	private Image[] background = new Image[2];
 	private Image joueur;
-	private Image[] alien;
+	private Image[] alien = new Image[2];;
 	private Image laser;
 	private Image missile;
 	private Image explosion;
@@ -36,6 +36,10 @@ public class Vue {
 		joueur = new Image("data/plane.png");
 		joueur.setRotation(90.0f);
 		explosion = new Image("data/explosion.png");
+		missile = new Image("data/rocket.png");
+		missile.setRotation(90.0f);
+		alien[0] = new Image("data/alien2.png");
+		alien[0].setRotation(270.0f);
 		
 		
 	};
@@ -291,6 +295,19 @@ public class Vue {
 		g.drawString("Missile :"+param[2], 300,575);
 		g.drawString("Score :"+param[3], 600,575);
 		//Ajouter un timer
+		return 0;
+		
+	}
+
+	public int render1Vaisseau(Graphics g, Objet ob,int type) {
+		alien[type].draw(ob.getX()+ob.getW()/2,ob.getY()+ob.getH()/2);
+		return 0;
+		
+	}
+
+	public int render1Tire(Graphics g, Objet ob, int type) {
+		if(((Tire)ob).estVisible())
+			missile.draw(ob.getX()+10,ob.getY()+38);
 		return 0;
 		
 	}

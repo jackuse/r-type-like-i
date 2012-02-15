@@ -17,6 +17,11 @@ public class Alien extends Vaisseau {
 	//
 	public Alien () { };
 
+	public Alien (float x, float y) { 
+		super(x,y);
+		id = 10;
+	};
+
 	//
 	// Methods
 	//

@@ -12,7 +12,7 @@ public class Tire extends Objet {
   // Fields
   //
 
-  protected boolean visible;
+  protected boolean visible = true;
   protected float speed;
   protected int degat;
   protected int delaiTire;
@@ -23,7 +23,8 @@ public class Tire extends Objet {
   public Tire () { };
   
   public Tire (float x, float y) { 
-	  super(x,y);
+	  super(x-15,y-15);
+	  id = 20;
   };
   
   //
@@ -116,6 +117,7 @@ public class Tire extends Objet {
    */
   public void go(  )
   {
+	  x+=13;
   }
 
 

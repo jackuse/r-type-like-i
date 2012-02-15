@@ -15,6 +15,8 @@ import org.newdawn.slick.AppGameContainer;
 
 
 
+
+
 /**
  * Class Controleur
  */
@@ -30,7 +32,7 @@ public class Controleur extends BasicGame {
 	private float posXBg2 = 800;
 	private boolean speedUp;
 	private Vue vue;
-	private ArrayList<Objet> objet;
+	private ArrayList<Objet> movable; // Je crois qu'il faut faire 2 collection a cause des collisions
 	private int affichage; // 0:Menu  1:Option  2:Jeu  3:Pause  4:HightScore
 	private int param[];
 	private Joueur joueur[];
@@ -43,7 +45,7 @@ public class Controleur extends BasicGame {
 	public Controleur (){ 
 
 		super("R-Type Like It !");
-		objet = new ArrayList<Objet>();
+		movable = new ArrayList<Objet>();
 
 		affichage = 2;
 		joueur= new Joueur[1];
@@ -165,8 +167,7 @@ public class Controleur extends BasicGame {
 		{
 			delaiTire-=delta;
 			if(delaiTire < 0){
-				objet.add(new Tire(joueur[0].getV().getX(),joueur[0].getV().getY()));
-				//				tires.add(new Tire(shipX,shipY));
+				movable.add(new Tire(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
 				delaiTire = 100;
 			}
 		}
@@ -196,15 +197,55 @@ public class Controleur extends BasicGame {
 			if(!e.estVisible())
 				itexp.remove();
 		}
+
+		// Traitement des missiles et des aliens
+		Iterator<Objet> itMov = movable.iterator();
+		while(itMov.hasNext()){
+			Objet ob= ((Objet) itMov.next());
+			if(ob.getId()==20){ // C'est un missile
+				Tire t = (Tire)ob;
+				t.go();
+				if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
+					t.setVisible(false); 
+				/*boolean col = t.collision(obj);  
+				if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
+					explo.add(new Explosion(obj.getX(), obj.getY()));
+					movable.remove(obj);
+					joueur[0].setScore(joueur[0].getScore()+1);
+					itMov.remove();
+					//obj =null;
+				}
+				else */if(!t.estVisible())
+					itMov.remove();
+			}
+			if(ob.getId()==10){ // C'est un alien
+
+			}
+		}
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
 
 		///////////////////////////////////////// ZONE DE TEST //////////////////////////////////////////
-		//* Test explosions
+		/* Test explosions
 		if(explo.size()<10000 ){
 			for(int i=0;i<100;i++)
 				explo.add(new Explosion(255+rand.nextFloat()*(700-255),-45+rand.nextFloat()*((int)(0.85*600))));
 		}
 		//*/
+
+		/* Test missiles
+		if(movable.size()<10){
+			for(int i=0;i<1;i++)
+				movable.add(new Tire(10,rand.nextFloat()*(500-0)));
+			//System.out.println("Un alien arrive");
+		}
+		//*/
+
+		//* Test alien
+		if(movable.size()<200 ){
+			for(int i=0;i<10;i++)
+				movable.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
+			//System.out.println("Un alien arrive");
+		}//*/
 	}
 
 
@@ -219,6 +260,7 @@ public class Controleur extends BasicGame {
 		//param[1]=objet.
 		param[3]=joueur[0].getScore();
 		param[0]=explo.size();
+		param[2]=movable.size();
 
 
 		// Suivant le type d'affichae on affiche le bon		
@@ -232,30 +274,25 @@ public class Controleur extends BasicGame {
 		case 2:
 			vue.renderBg(g, posXBg1, posXBg2);
 
-			vue.renderJoueur(g,joueur[0].getV());
-			vue.renderExplosion(g, explo);
-			//System.out.println("Je suis ici "+ objet.size());
-			/*
-			for (Iterator<Objet> o = objet.iterator(); o.hasNext(); ) {
-				System.out.println("Je suis la aussi ");
+
+			for (Iterator<Objet> o = movable.iterator(); o.hasNext(); ) {
 				Objet ob = (Objet) o.next();
-				if (ob instanceof VaisseauJoueur) {
-					VaisseauJoueur v = (VaisseauJoueur) o;
-					vue.renderJoueur(g, v);
+				if(ob.getId()==10){
+					vue.render1Vaisseau(g, ob,0);
+				}
+				else if(ob.getId()==20){
+					vue.render1Tire(g, ob,0);
+				}
+				else{
+					System.out.println("Objet inconnue");
 				}
 
-				if(o instanceof Tire)
-					vue.renderTire(g, o);
-				if(o instanceof Vaisseau)
-					vue.renderTire(g, o);
-				if(o instanceof Explosion)
-					vue.renderTire(g, o);
 
-			}//*/
+			}
 
-			//vue.renderTire(g, objet);
-			//vue.renderVaisseau(g,objet);
-			//vue.renderExplosion(g, explo);
+			vue.renderJoueur(g,joueur[0].getV());
+			vue.renderExplosion(g, explo);
+			vue.renderBoard(g,param);
 
 			break;
 		case 3:
@@ -265,8 +302,7 @@ public class Controleur extends BasicGame {
 		default:
 			break;
 		}
-		
-		vue.renderBoard(g,param);
+
 
 	}
 
