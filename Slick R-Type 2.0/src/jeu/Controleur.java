@@ -11,7 +11,18 @@ import org.newdawn.slick.AppGameContainer;
 
 
 
-
+/* Idées optimisation
+ * On fait un array list pour explosion, vaisseaux et tire
+ * 
+ * Pour les collisons:  complexité objet² faut trouver mieux
+ * on fait un parcourt de tout les objets dans un array list
+ * on fait un tableaux de correspondance des collision (c'est la qu'il faut bien optimisé)
+ * On effectue les action associé
+ * 
+ * Sinon il faut subdivisé l'ecran en zone de collision pour passer a un complexité objet
+ * 
+ * Pour les explosions je sais pas si elle sont threader sinon on peut le faire
+ */
 
 
 
@@ -38,6 +49,7 @@ public class Controleur extends BasicGame {
 	private Joueur joueur[];
 	private int delaiTire = 0; // A supprimer
 	private ArrayList<Explosion> explo; // Je suis pas sure mais je pense qu'il n'y a pas mieux
+
 
 	//
 	// Constructors
