@@ -24,7 +24,9 @@ public class Vue {
 	private Image[] alien;
 	private Image laser;
 	private Image missile;
+	private Image explosion;
 	private String dossierSkin = "data/skin1";
+	
 
 	//
 	// Constructors
@@ -33,6 +35,7 @@ public class Vue {
 		background[0] = new Image("data/land.jpg");
 		joueur = new Image("data/plane.png");
 		joueur.setRotation(90.0f);
+		explosion = new Image("data/explosion.png");
 		
 		
 	};
@@ -209,26 +212,10 @@ public class Vue {
 	 * @return       boolean
 	 * @param        g
 	 */
-	public boolean renderBg( Graphics g, float x1, float x2, int param[])
+	public boolean renderBg( Graphics g, float x1, float x2)
 	{
 		background[0].draw(x1, 0);
 		background[0].draw(x2, 0);
-
-		//Tableaux de bord
-		//		g.setColor(org.newdawn.slick.Color.black);
-		Rectangle board1 = new Rectangle (0, 571, 801, 30);
-		g.setColor(new Color (0.2f, 0.2f, 0.2f));
-		g.fill(board1);
-		//g.drawRect(0, 0, 400, 30);
-		//		g.drawImage(board, 100,100);
-		g.setColor(org.newdawn.slick.Color.white);
-		//		uFont.drawString(50,10, "nb Explosion ="+nbEx);
-		//		uFont.drawString(100,10,"Explosion :"+nbEx,	org.newdawn.slick.Color.black);
-		g.drawString("Explosion :"+param[0], 10,575);
-		g.drawString("Alien :"+param[1], 150,575);
-		g.drawString("Missile :"+param[2], 300,575);
-		g.drawString("Score :"+param[3], 600,575);
-		//Ajouter un timer
 		return false;
 	}
 
@@ -273,8 +260,9 @@ public class Vue {
 			while(it2.hasNext()){
 				Explosion e =((Explosion) it2.next());
 				cadre = e.getCadre();
-				//if(cadre != null)
-				//e.getImage().getSubImage((int)cadre[0],(int)cadre[1],(int)cadre[2],(int)cadre[3]).draw(e.getX()+cadre[2]/3,e.getY()+cadre[3]/3,1.5f);
+
+				if(cadre != null)
+				explosion.getSubImage((int)cadre[0],(int)cadre[1],(int)cadre[2],(int)cadre[3]).draw(e.getX()+cadre[2]/3,e.getY()+cadre[3]/3,1.5f);
 			}
 
 		}
@@ -284,6 +272,27 @@ public class Vue {
 	public int renderJoueur(Graphics g, VaisseauJoueur v) {
 		joueur.draw(v.getX(), v.getY());
 		return 0;
+	}
+
+	public int renderBoard(Graphics g, int[] param) {
+
+		//Tableaux de bord
+		//		g.setColor(org.newdawn.slick.Color.black);
+		Rectangle board1 = new Rectangle (0, 571, 801, 30);
+		g.setColor(new Color (0.2f, 0.2f, 0.2f));
+		g.fill(board1);
+		//g.drawRect(0, 0, 400, 30);
+		//		g.drawImage(board, 100,100);
+		g.setColor(org.newdawn.slick.Color.white);
+		//		uFont.drawString(50,10, "nb Explosion ="+nbEx);
+		//		uFont.drawString(100,10,"Explosion :"+nbEx,	org.newdawn.slick.Color.black);
+		g.drawString("Explosion :"+param[0], 10,575);
+		g.drawString("Alien :"+param[1], 150,575);
+		g.drawString("Missile :"+param[2], 300,575);
+		g.drawString("Score :"+param[3], 600,575);
+		//Ajouter un timer
+		return 0;
+		
 	}
 
 

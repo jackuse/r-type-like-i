@@ -5,10 +5,11 @@ import java.util.*;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.AppGameContainer;
+
+
 
 
 
@@ -23,7 +24,7 @@ public class Controleur extends BasicGame {
 	// Fields
 	//
 
-	public Random rand;
+	public Random rand = new Random();
 	private float bgSpeed = 1;
 	private float posXBg1 = 0;
 	private float posXBg2 = 800;
@@ -34,6 +35,7 @@ public class Controleur extends BasicGame {
 	private int param[];
 	private Joueur joueur[];
 	private int delaiTire = 0; // A supprimer
+	private ArrayList<Explosion> explo; // Je suis pas sure mais je pense qu'il n'y a pas mieux
 
 	//
 	// Constructors
@@ -48,7 +50,8 @@ public class Controleur extends BasicGame {
 		joueur[0]= new Joueur();
 
 		param = new int[10];
-		
+		explo = new ArrayList<Explosion>();
+
 	};
 
 	//
@@ -74,70 +77,6 @@ public class Controleur extends BasicGame {
 	 */
 	public Random getRand ( ) {
 		return rand;
-	}
-
-	/**
-	 * Set the value of bgSpeed
-	 * @param newVar the new value of bgSpeed
-	 */
-	private void setBgSpeed ( float newVar ) {
-		bgSpeed = newVar;
-	}
-
-	/**
-	 * Get the value of bgSpeed
-	 * @return the value of bgSpeed
-	 */
-	private float getBgSpeed ( ) {
-		return bgSpeed;
-	}
-
-	/**
-	 * Set the value of posXBg1
-	 * @param newVar the new value of posXBg1
-	 */
-	private void setPosXBg1 ( float newVar ) {
-		posXBg1 = newVar;
-	}
-
-	/**
-	 * Get the value of posXBg1
-	 * @return the value of posXBg1
-	 */
-	private float getPosXBg1 ( ) {
-		return posXBg1;
-	}
-
-	/**
-	 * Set the value of posXBg2
-	 * @param newVar the new value of posXBg2
-	 */
-	private void setPosXBg2 ( float newVar ) {
-		posXBg2 = newVar;
-	}
-
-	/**
-	 * Get the value of posXBg2
-	 * @return the value of posXBg2
-	 */
-	private float getPosXBg2 ( ) {
-		return posXBg2;
-	}
-
-	/**
-	 * Set the value of speedUp
-	 * @param newVar the new value of speedUp
-	 */
-	private void setSpeedUp ( boolean newVar ) {
-		speedUp = newVar;
-	}
-
-	/**
-	 * Get the value of speedUp
-	 * @return the value of speedUp
-	 */
-	private boolean getSpeedUp ( ) {
-		return speedUp;
 	}
 
 	//
@@ -227,25 +166,45 @@ public class Controleur extends BasicGame {
 			delaiTire-=delta;
 			if(delaiTire < 0){
 				objet.add(new Tire(joueur[0].getV().getX(),joueur[0].getV().getY()));
-//				tires.add(new Tire(shipX,shipY));
+				//				tires.add(new Tire(shipX,shipY));
 				delaiTire = 100;
 			}
 		}
 
 		///////////////////////////////////////FIN DES COMMANDES ///////////////////////////////////////
-		
-		
+
+
 		// Défilement du background
 		posXBg1-=bgSpeed;
 		posXBg2-=bgSpeed;
-				if(posXBg1<-800){
-					posXBg1=799;
-					posXBg2=-1;
-				}
-				if(posXBg2<-800){
-					posXBg2=799;
-					posXBg1=-1;
-				}
+		if(posXBg1<-800){
+			posXBg1=799;
+			posXBg2=-1;
+		}
+		if(posXBg2<-800){
+			posXBg2=799;
+			posXBg1=-1;
+		}
+
+		////////////////////////////////////////LES TRAITEMENTS ////////////////////////////////////////
+		// Traitement d'explosion
+		Iterator<Explosion> itexp = explo.iterator();
+		while(itexp.hasNext()){ 
+			Explosion e =  itexp.next();
+			// on fait avancer les explosions
+			e.next();
+			if(!e.estVisible())
+				itexp.remove();
+		}
+		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
+
+		///////////////////////////////////////// ZONE DE TEST //////////////////////////////////////////
+		//* Test explosions
+		if(explo.size()<10000 ){
+			for(int i=0;i<100;i++)
+				explo.add(new Explosion(255+rand.nextFloat()*(700-255),-45+rand.nextFloat()*((int)(0.85*600))));
+		}
+		//*/
 	}
 
 
@@ -258,7 +217,8 @@ public class Controleur extends BasicGame {
 
 		//On compte les animations pour l'affichage
 		//param[1]=objet.
-		param[0]=joueur[0].getScore();
+		param[3]=joueur[0].getScore();
+		param[0]=explo.size();
 
 
 		// Suivant le type d'affichae on affiche le bon		
@@ -270,10 +230,10 @@ public class Controleur extends BasicGame {
 
 			break;
 		case 2:
-			vue.renderBg(g, posXBg1, posXBg2,param);
-			
-			vue.renderJoueur(g,joueur[0].getV());
+			vue.renderBg(g, posXBg1, posXBg2);
 
+			vue.renderJoueur(g,joueur[0].getV());
+			vue.renderExplosion(g, explo);
 			//System.out.println("Je suis ici "+ objet.size());
 			/*
 			for (Iterator<Objet> o = objet.iterator(); o.hasNext(); ) {
@@ -283,14 +243,14 @@ public class Controleur extends BasicGame {
 					VaisseauJoueur v = (VaisseauJoueur) o;
 					vue.renderJoueur(g, v);
 				}
-				
+
 				if(o instanceof Tire)
 					vue.renderTire(g, o);
 				if(o instanceof Vaisseau)
 					vue.renderTire(g, o);
 				if(o instanceof Explosion)
 					vue.renderTire(g, o);
-				
+
 			}//*/
 
 			//vue.renderTire(g, objet);
@@ -305,7 +265,8 @@ public class Controleur extends BasicGame {
 		default:
 			break;
 		}
-
+		
+		vue.renderBoard(g,param);
 
 	}
 

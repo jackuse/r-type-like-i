@@ -5,101 +5,73 @@ package jeu;
  */
 public class Explosion extends Objet {
 
-  //
-  // Fields
-  //
+	//
+	// Fields
+	//
 
-  private float[] cadre;
-  private int j;
-  private int k;
-  private boolean visible;
-  
-  //
-  // Constructors
-  //
-  public Explosion () { };
-  
-  //
-  // Methods
-  //
+	private float[] cadre;
+	private int j;
+	private int k;
+	private boolean visible = true;
+
+	//
+	// Constructors
+	//
+	public Explosion () { super();};
+	
+	public Explosion (float x, float y) { 
+		super(x,y);
+		cadre = new float[]{0,0,61,61}; // x,y,w,h
+	};
+
+	//
+	// Methods
+	//
 
 
-  //
-  // Accessor methods
-  //
+	//
+	// Accessor methods
+	//
 
-  /**
-   * Set the value of cadre
-   * @param newVar the new value of cadre
-   */
-  private void setCadre ( float[] newVar ) {
-    cadre = newVar;
-  }
+	/**
+	 * Get the value of cadre
+	 * @return the value of cadre
+	 */
+	public float[] getCadre ( ) {
+		if(cadre[1]<65*4)
+			return cadre;
+		else{
+			return null;
+		}
+	}
 
-  /**
-   * Get the value of cadre
-   * @return the value of cadre
-   */
-  public float[] getCadre ( ) {
-    return cadre;
-  }
 
-  /**
-   * Set the value of j
-   * @param newVar the new value of j
-   */
-  private void setJ ( int newVar ) {
-    j = newVar;
-  }
+	/**
+	 * Get the value of visible
+	 * @return the value of visible
+	 */
+	public boolean estVisible( ) {
+		return visible;
+	}
 
-  /**
-   * Get the value of j
-   * @return the value of j
-   */
-  private int getJ ( ) {
-    return j;
-  }
+	//
+	// Other methods
+	//
 
-  /**
-   * Set the value of k
-   * @param newVar the new value of k
-   */
-  private void setK ( int newVar ) {
-    k = newVar;
-  }
-
-  /**
-   * Get the value of k
-   * @return the value of k
-   */
-  private int getK ( ) {
-    return k;
-  }
-
-  /**
-   * Set the value of visible
-   * @param newVar the new value of visible
-   */
-  private void setVisible ( boolean newVar ) {
-    visible = newVar;
-  }
-
-  /**
-   * Get the value of visible
-   * @return the value of visible
-   */
-  private boolean getVisible ( ) {
-    return visible;
-  }
-
-  //
-  // Other methods
-  //
-
-  /**
-   */
-  public void next(  )
-  {
-  }
+	/**
+	 */
+	public void next(  )
+	{
+		if(j==3){
+			j=0;
+			k++;
+		}		
+		cadre[0]=65*j;
+		j++;
+		cadre[1]=65*k;
+		
+		if(k==4)
+			visible = false;
+	}
 
 }

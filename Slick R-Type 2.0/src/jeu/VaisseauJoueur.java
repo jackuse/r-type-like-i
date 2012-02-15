@@ -23,6 +23,7 @@ public class VaisseauJoueur extends Vaisseau {
 		move = false;
 		w=130;
 		h=120;
+		y= 240;
 		
 	};
 
