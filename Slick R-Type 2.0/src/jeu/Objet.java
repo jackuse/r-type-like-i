@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  * Class Objet
- * Doit on mettre l'attribu visible
+ * 
  */
 public class Objet {
 
@@ -47,8 +47,8 @@ public class Objet {
   }
 
   /**
-   * Get the value of x
-   * @return the value of x
+   * Retourne la valeur de  x
+   * @return la valeur de x
    */
   public float getX( ) {
     return x;
@@ -63,8 +63,8 @@ public class Objet {
   }
 
   /**
-   * Get the value of y
-   * @return the value of y
+   * Retourne la valeur de y
+   * @return la valeur de y
    */
   public float getY ( ) {
     return y;
@@ -79,8 +79,8 @@ public class Objet {
   }
 
   /**
-   * Get the value of w
-   * @return the value of w
+   * Retourne la valeur de w
+   * @return la valeur de w
    */
   public float getW ( ) {
     return w;
@@ -95,8 +95,8 @@ public class Objet {
   }
 
   /**
-   * Get the value of h
-   * @return the value of h
+   * Retourne la valeur de h
+   * @return la valeur de h
    */
   public float getH ( ) {
     return h;
@@ -111,8 +111,8 @@ public class Objet {
   }
 
   /**
-   * Get the value of id
-   * @return the value of id
+   * Retourne la valeur de id
+   * @return la valeur de id
    */
   public int getId ( ) {
     return id;
@@ -125,15 +125,8 @@ public class Objet {
 
 
   /**
-   * @param        x
-   * @param        y
-   */
-  public void Objet( float x, float y )
-  {
-  }
-
-
-  /**
+   * Detection des collisions entre 2 objets.
+   * Revoi true si collision sinon false.
    * @return       boolean
    * @param        objet
    */

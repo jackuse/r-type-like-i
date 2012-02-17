@@ -25,6 +25,7 @@ public class Tire extends Objet {
   public Tire (float x, float y) { 
 	  super(x-15,y-15);
 	  id = 20;
+	  speed=13;
   };
   
   //
@@ -114,10 +115,11 @@ public class Tire extends Objet {
 
 
   /**
+   * Fait avancer le tire de sa vitesse speed.
    */
   public void go(  )
   {
-	  x+=13;
+	  x+=speed;
   }
 
 

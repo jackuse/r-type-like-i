@@ -31,6 +31,10 @@ public class Vue {
 	//
 	// Constructors
 	//
+	
+	/**
+	 * Chargement des images
+	 */
 	public Vue () throws SlickException { 
 		background[0] = new Image("data/land.jpg");
 		joueur = new Image("data/plane.png");
@@ -154,15 +158,16 @@ public class Vue {
 	//
 
 	/**
+	 * DEPRECIATED
 	 * Retourne l'image demander suivant le code suivant
-	 * 0 : backgroud
+	 * 0 : background
 	 * 1 : joueur
 	 * 2 : alien
 	 * 3 : missile
 	 * 4 : laser
 	 * 
 	 * 
-	 * //Posssible de le faire avec des strings
+	 * //Possible de le faire avec des strings
 	 * @return       Image
 	 * @param        noImage
 	 */

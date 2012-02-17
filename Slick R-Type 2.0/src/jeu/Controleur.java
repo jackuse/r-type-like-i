@@ -30,6 +30,8 @@ import org.newdawn.slick.AppGameContainer;
 
 /**
  * Class Controleur
+ * 
+ * Gére tout les traitements et la communication entre la vue et le modéle de donnée.
  */
 public class Controleur extends BasicGame {
 
@@ -78,16 +80,8 @@ public class Controleur extends BasicGame {
 	//
 
 	/**
-	 * Set the value of rand
-	 * @param newVar the new value of rand
-	 */
-	public void setRand ( Random newVar ) {
-		rand = newVar;
-	}
-
-	/**
-	 * Get the value of rand
-	 * @return the value of rand
+	 * Récupére une valeur aléatoire
+	 * @return une valeur aléatoire
 	 */
 	public Random getRand ( ) {
 		return rand;
@@ -100,6 +94,8 @@ public class Controleur extends BasicGame {
 
 
 	/**
+	 * Fonction obligatoire de slick Basigame.
+	 * C'est ici que doivent être charger les images et pas ailleur.
 	 * @param        gc
 	 */
 	public void init( GameContainer gc ) throws SlickException 
@@ -112,6 +108,8 @@ public class Controleur extends BasicGame {
 
 
 	/**
+	 * Fonction obligatoire de slick Basigame.
+	 * C'est ici qu'on effectue les traitements sur les données.
 	 * @param        gc
 	 * @param        delta
 	 */
@@ -262,6 +260,8 @@ public class Controleur extends BasicGame {
 
 
 	/**
+	 * Fonction obligatoire de slick Basigame.
+	 * C'est ici qu'on fait l'affichage.
 	 * @param        container
 	 * @param        g
 	 */
@@ -320,6 +320,7 @@ public class Controleur extends BasicGame {
 
 
 	/**
+	 * Fonction principale qui permet de lancer l'application.
 	 * @param        args
 	 * @throws SlickException 
 	 */
