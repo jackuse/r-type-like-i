@@ -175,10 +175,23 @@ public class Controleur extends BasicGame {
 		// Commande du tire
 		if(input.isKeyDown(Input.KEY_SPACE))
 		{
-			delaiTire-=delta;
-			if(delaiTire < 0){
-				movable.add(new Tire(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
-				delaiTire = 100;
+			switch (joueur[0].getV().getArme()) {
+			case 21:
+				delaiTire-=delta;//a modifier
+				if(delaiTire < 0){
+					movable.add(new Laser(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+					delaiTire = 100;
+				}
+				break;
+			case 22:
+				delaiTire-=delta;
+				if(delaiTire < 0){
+					movable.add(new Missile(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+					delaiTire = 100;
+					break;
+				}
+
+
 			}
 		}
 
@@ -212,8 +225,8 @@ public class Controleur extends BasicGame {
 		Iterator<Objet> itMov = movable.iterator();
 		while(itMov.hasNext()){
 			Objet ob= ((Objet) itMov.next());
-			if(ob.getId()==20){ // C'est un missile
-				Tire t = (Tire)ob;
+			if(ob.getId()-20<10 && ob.getId()-20>0){ // C'est un Tire
+				Tir t = (Tir)ob;
 				t.go();
 				if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
 					t.setVisible(false); 
@@ -292,7 +305,7 @@ public class Controleur extends BasicGame {
 				if(ob.getId()==10){
 					vue.render1Vaisseau(g, ob,0);
 				}
-				else if(ob.getId()==20){
+				else if(ob.getId()-20<10 && ob.getId()-20>0){
 					vue.render1Tire(g, ob,0);
 				}
 				else{

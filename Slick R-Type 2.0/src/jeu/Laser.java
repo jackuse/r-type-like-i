@@ -3,7 +3,7 @@ package jeu;
 /**
  * Class Laser
  */
-public class Laser extends Tire {
+public class Laser extends Tir {
 
   //
   // Fields
@@ -13,7 +13,13 @@ public class Laser extends Tire {
   //
   // Constructors
   //
-  public Laser () { };
+  public Laser () { }
+
+public Laser(float x, float y) {
+	  super(x-15,y-15);
+	  id = 21;
+	  speed=13;
+};
   
   //
   // Methods

@@ -4,9 +4,9 @@ import java.util.*;
 
 
 /**
- * Class Tire
+ * Class Tir
  */
-public class Tire extends Objet {
+public class Tir extends Objet {
 
   //
   // Fields
@@ -15,15 +15,15 @@ public class Tire extends Objet {
   protected boolean visible = true;
   protected float speed;
   protected int degat;
-  protected int delaiTire;
+  protected int delaiTir;
   
   //
   // Constructors
   //
-  public Tire () { };
+  public Tir () { };
   
-  public Tire (float x, float y) { 
-	  super(x-15,y-15);
+  public Tir (float x, float y) { 
+	  super(x,y);
 	  id = 20;
 	  speed=13;
   };
@@ -86,19 +86,19 @@ public class Tire extends Objet {
   }
 
   /**
-   * Set the value of delaiTire
-   * @param newVar the new value of delaiTire
+   * Set the value of delaiTir
+   * @param newVar the new value of delaiTir
    */
-  protected void setDelaiTire ( int newVar ) {
-    delaiTire = newVar;
+  protected void setDelaiTir ( int newVar ) {
+    delaiTir = newVar;
   }
 
   /**
-   * Get the value of delaiTire
-   * @return the value of delaiTire
+   * Get the value of delaiTir
+   * @return the value of delaiTir
    */
-  protected int getDelaiTire ( ) {
-    return delaiTire;
+  protected int getDelaiTir ( ) {
+    return delaiTir;
   }
 
   //

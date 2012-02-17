@@ -243,12 +243,12 @@ public class Vue {
 	 * @return       int
 	 * @param        g
 	 */
-	public int renderTire( Graphics g, ArrayList<Tire> tires )
+	public int renderTire( Graphics g, ArrayList<Tir> tirs )
 	{
-		if(!tires.isEmpty()){
-			Iterator<Tire> it = tires.iterator();
+		if(!tirs.isEmpty()){
+			Iterator<Tir> it = tirs.iterator();
 			while(it.hasNext()){
-				Tire t =((Tire) it.next());
+				Tir t =((Tir) it.next());
 				//if(t.estVisible())
 				//t.getImage().draw(t.getX()+10,t.getY()+38);
 			}
@@ -311,7 +311,7 @@ public class Vue {
 	}
 
 	public int render1Tire(Graphics g, Objet ob, int type) {
-		if(((Tire)ob).estVisible())
+		if(((Tir)ob).estVisible())
 			missile.draw(ob.getX()+10,ob.getY()+38);
 		return 0;
 		

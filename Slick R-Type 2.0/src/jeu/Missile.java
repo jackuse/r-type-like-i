@@ -3,7 +3,7 @@ package jeu;
 /**
  * Class Missile
  */
-public class Missile extends Tire {
+public class Missile extends Tir {
 
   //
   // Fields
@@ -13,7 +13,13 @@ public class Missile extends Tire {
   //
   // Constructors
   //
-  public Missile () { };
+  public Missile () { }
+
+public Missile(float x, float y) {
+	  super(x-15,y-15);
+	  id = 22;
+	  speed=13;
+};
   
   //
   // Methods
