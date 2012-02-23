@@ -46,11 +46,15 @@ public class Controleur extends BasicGame {
 	private boolean speedUp;
 	private Vue vue;
 	private ArrayList<Objet> movable; // Je crois qu'il faut faire 2 collection a cause des collisions
-	private int affichage; // 0:Menu  1:Option  2:Jeu  3:Pause  4:HightScore
+	private int etat = 0; // 0:Menu  1:Option  2:Jeu  3:Pause  4:HightScore
 	private int param[];
 	private Joueur joueur[];
 	private int delaiTire = 0; // A supprimer
 	private ArrayList<Explosion> explo; // Je suis pas sure mais je pense qu'il n'y a pas mieux
+
+	int menuX = 50;
+	int menuY = 450;
+	float scaleStep = 0.0001f;
 
 
 	//
@@ -61,7 +65,6 @@ public class Controleur extends BasicGame {
 		super("R-Type Like It !");
 		movable = new ArrayList<Objet>();
 
-		affichage = 2;
 		joueur= new Joueur[1];
 		joueur[0]= new Joueur();
 
@@ -115,7 +118,23 @@ public class Controleur extends BasicGame {
 	 */
 	public void update( GameContainer gc, int delta )
 	{
+		switch (etat) {
+		case 0:
+			menu(gc,delta );
+			break;
+		case 2:
+			jeu(gc,delta );
+			break;
 
+
+		default:
+			break;
+		}
+
+	}
+
+
+	private void jeu(GameContainer gc, int delta) {
 		////////////////////////////////////////LES COMMANDES /////////////////////////////////////////
 		Input input = gc.getInput(); // On récupére les input
 
@@ -231,15 +250,15 @@ public class Controleur extends BasicGame {
 				if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
 					t.setVisible(false); 
 				/*boolean col = t.collision(obj);  
-				if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
-					explo.add(new Explosion(obj.getX(), obj.getY()));
-					movable.remove(obj);
-					joueur[0].setScore(joueur[0].getScore()+1);
-					itMov.remove();
-					//obj =null;
-				}
-				else */if(!t.estVisible())
-					itMov.remove();
+if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
+explo.add(new Explosion(obj.getX(), obj.getY()));
+movable.remove(obj);
+joueur[0].setScore(joueur[0].getScore()+1);
+itMov.remove();
+//obj =null;
+}
+else */if(!t.estVisible())
+	itMov.remove();
 			}
 			if(ob.getId()==10){ // C'est un alien
 
@@ -249,19 +268,19 @@ public class Controleur extends BasicGame {
 
 		///////////////////////////////////////// ZONE DE TEST //////////////////////////////////////////
 		/* Test explosions
-		if(explo.size()<10000 ){
-			for(int i=0;i<100;i++)
-				explo.add(new Explosion(255+rand.nextFloat()*(700-255),-45+rand.nextFloat()*((int)(0.85*600))));
-		}
-		//*/
+if(explo.size()<10000 ){
+for(int i=0;i<100;i++)
+explo.add(new Explosion(255+rand.nextFloat()*(700-255),-45+rand.nextFloat()*((int)(0.85*600))));
+}
+//*/
 
 		/* Test missiles
-		if(movable.size()<10){
-			for(int i=0;i<1;i++)
-				movable.add(new Tire(10,rand.nextFloat()*(500-0)));
-			//System.out.println("Un alien arrive");
-		}
-		//*/
+if(movable.size()<10){
+for(int i=0;i<1;i++)
+movable.add(new Tire(10,rand.nextFloat()*(500-0)));
+//System.out.println("Un alien arrive");
+}
+//*/
 
 		//* Test alien
 		if(movable.size()<200 ){
@@ -269,8 +288,51 @@ public class Controleur extends BasicGame {
 				movable.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
 			//System.out.println("Un alien arrive");
 		}//*/
+
 	}
 
+	private void menu(GameContainer gc, int delta) {
+		Input input = gc.getInput();
+
+		int mouseX = input.getMouseX();
+		int mouseY = input.getMouseY();
+
+		boolean insideStartGame = false;
+		boolean insideExit = false;
+
+		if( ( mouseX >= menuX && mouseX <= menuX + vue.getStartGameOption().getWidth()) &&
+				( mouseY >= menuY && mouseY <= menuY + vue.getStartGameOption().getHeight()) ){
+			insideStartGame = true;
+		}else if( ( mouseX >= menuX+200 && mouseX <= menuX+200 + vue.getExitOption().getWidth()) &&
+				( mouseY >= menuY && mouseY <= menuY + vue.getExitOption().getHeight()) ){
+			insideExit = true;
+		}
+
+		if(insideStartGame){
+			if(vue.getStartGameScale() < 1.05f)
+				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
+
+			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+				etat = 2;
+			}
+		}else{
+			if(vue.getStartGameScale() > 1.0f)
+				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delta);
+
+			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
+				gc.exit();
+		}
+
+		if(insideExit)
+		{
+			if(vue.getExitScale() < 1.05f)
+				vue.setExitScale(vue.getExitScale() + scaleStep * delta);
+		}else{
+			if(vue.getExitScale() > 1.0f)
+				vue.setExitScale(vue.getExitScale() - scaleStep * delta);
+		}
+
+	}
 
 	/**
 	 * Fonction obligatoire de slick Basigame.
@@ -289,9 +351,9 @@ public class Controleur extends BasicGame {
 
 
 		// Suivant le type d'affichae on affiche le bon		
-		switch (affichage) {
+		switch (etat) {
 		case 0:
-
+			vue.renderMenu(g, menuX, menuY);
 			break;
 		case 1:
 
@@ -318,6 +380,7 @@ public class Controleur extends BasicGame {
 			vue.renderJoueur(g,joueur[0].getV());
 			vue.renderExplosion(g, explo);
 			vue.renderBoard(g,param);
+			vue.renderTest(g);
 
 			break;
 		case 3:

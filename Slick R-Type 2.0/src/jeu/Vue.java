@@ -6,6 +6,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 
 
@@ -26,6 +27,12 @@ public class Vue {
 	private Image missile;
 	private Image explosion;
 	private String dossierSkin = "data/skin1";
+	private SpriteSheet skin;
+	private int[][] skinDef;
+	
+	private Image exitOption = null;
+	private Image startGameOption = null;
+
 	
 
 	//
@@ -44,6 +51,13 @@ public class Vue {
 		missile.setRotation(90.0f);
 		alien[0] = new Image("data/alien2.png");
 		alien[0].setRotation(270.0f);
+		
+		Image menuOptions = new Image("data/menuoption.png");
+		 
+		startGameOption = menuOptions.getSubImage(0, 0, 377, 71);
+		 
+		exitOption = menuOptions.getSubImage(0, 71, 377, 71);
+		
 		
 		
 	};
@@ -152,6 +166,41 @@ public class Vue {
 	private String getDossierSkin ( ) {
 		return dossierSkin;
 	}
+	
+	public Image getExitOption() {
+		return exitOption;
+	}
+
+	public void setExitOption(Image exitOption) {
+		this.exitOption = exitOption;
+	}
+
+	public Image getStartGameOption() {
+		return startGameOption;
+	}
+
+	public void setStartGameOption(Image startGameOption) {
+		this.startGameOption = startGameOption;
+	}
+
+	public float getStartGameScale() {
+		return startGameScale;
+	}
+
+	public void setStartGameScale(float startGameScale) {
+		this.startGameScale = startGameScale;
+	}
+
+	public float getExitScale() {
+		return exitScale;
+	}
+
+	public void setExitScale(float exitScale) {
+		this.exitScale = exitScale;
+	}
+
+	private float startGameScale = 1;
+	float exitScale = 1;
 
 	//
 	// Other methods
@@ -313,6 +362,28 @@ public class Vue {
 	public int render1Tire(Graphics g, Objet ob, int type) {
 		if(((Tir)ob).estVisible())
 			missile.draw(ob.getX()+10,ob.getY()+38);
+		return 0;
+		
+	}
+	
+	public void initSkin() throws SlickException{
+		skin = new SpriteSheet("/data/F-4Phantom.png", 30, 40,new Color(248,0,248));
+	}
+	
+	public int renderTest(Graphics g) {
+		//skin.draw();
+		return 0;
+		
+	}
+	
+	public int renderMenu(Graphics g,int menuX, int menuY) {
+		Rectangle fond = new Rectangle (0, 0, 800, 600);
+		g.setColor(new Color (0.2f, 0.2f, 0.2f));
+		g.fill(fond);
+		
+		startGameOption.draw(menuX, menuY, startGameScale);
+		 
+		exitOption.draw(menuX+200, menuY, exitScale);
 		return 0;
 		
 	}
