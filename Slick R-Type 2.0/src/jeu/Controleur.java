@@ -87,6 +87,7 @@ public class Controleur extends BasicGame {
 		explo = new ArrayList<Explosion>();
 
 		debug = true;
+		
 	};
 
 	//
@@ -123,6 +124,7 @@ public class Controleur extends BasicGame {
 		gc.setTargetFrameRate(60);
 		gc.setMaximumLogicUpdateInterval(20);
 		gc.setMinimumLogicUpdateInterval(20);
+		vue.setArriveMenu(true);
 	}
 
 
@@ -141,6 +143,7 @@ public class Controleur extends BasicGame {
 		case 1: // Option
 			break;
 		case 2: // Selection
+			vue.setArriveMenu(false);
 			etat = 10;// TEMPORAIRE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			break;
 		case 10: // JEU
@@ -317,6 +320,7 @@ public class Controleur extends BasicGame {
 
 	
 	
+	
 	private void menu(GameContainer gc, int delta) {
 		Input input = gc.getInput();
 
@@ -344,6 +348,7 @@ public class Controleur extends BasicGame {
 				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+				vue.setArriveMenu(false);
 				etat = 2;
 			}
 		}else{
@@ -359,7 +364,8 @@ public class Controleur extends BasicGame {
 				vue.setOptionScale(vue.getOptionScale()+scaleStep * delta);
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				etat = 2;
+				vue.setArriveMenu(false);
+				etat = 1;
 			}
 		}else{
 			if(vue.getOptionScale() > 0.7f)
@@ -373,6 +379,8 @@ public class Controleur extends BasicGame {
 		{
 			if(vue.getExitScale() < 0.8f)
 				vue.setExitScale(vue.getExitScale() + scaleStep * delta);
+			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
+				gc.exit();
 		}else{
 			if(vue.getExitScale() > 0.7f)
 				vue.setExitScale(vue.getExitScale() - scaleStep * delta);

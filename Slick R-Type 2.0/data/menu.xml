@@ -2,4 +2,5 @@
 <resources>
 	<resource type="image" id="BOUTONS">data\menu-.png</resource>
 	<resource type="image" id="BACKGROUD_MENU">data\land.jpg</resource>
+	<resource type="music" id="MENU_SOUND">data\musiqueStarWars.ogg</resource>
 </resources>

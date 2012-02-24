@@ -11,10 +11,12 @@ import javax.xml.parsers.ParserConfigurationException;
  
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.loading.LoadingList;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -33,12 +35,14 @@ public class ResourceManager {
 	private Map<String, Image> imageMap;
 	private Map<String, ResourceAnimationData> animationMap;
 	private Map<String, String> textMap;
+	private Map<String, Music> musicMap;
  
 	private ResourceManager(){
 		soundMap 	 = new HashMap<String, Sound>();
 		imageMap 	 = new HashMap<String, Image>();
 		animationMap = new HashMap<String, ResourceAnimationData>();
 		textMap 	 = new HashMap<String, String>();
+		musicMap 	 = new HashMap<String, Music>();
 	}
  
 	public final static ResourceManager getInstance(){
@@ -97,12 +101,39 @@ public class ResourceManager {
  
         		}else if(type.equals("animation")){
         			addElementAsAnimation(resourceElement);
+        		}else if(type.equals("music")){
+        			addElementAsMusic(resourceElement);
         		}
         	}
         }
  
 	}
  
+	private void addElementAsMusic(Element resourceElement) throws SlickException {
+		loadMusic(resourceElement.getAttribute("id"), resourceElement.getTextContent());
+		
+	}
+
+	private Music loadMusic(String id, String path) throws SlickException {
+		if(path == null || path.length() == 0)
+			throw new SlickException("Sound resource [" + id + "] has invalid path");
+ 
+		Music music = null;
+ 
+		try {
+			music = new Music(path);
+		} catch (SlickException e) {
+			throw new SlickException("Could not load sound", e);
+		}
+		this.musicMap.put(id, music);
+		return music;
+		
+	}
+	
+	public final Music getMusic(String ID){
+		return musicMap.get(ID);
+	}
+
 	private void addElementAsAnimation(Element resourceElement) throws SlickException{
 		loadAnimation(resourceElement.getAttribute("id"), resourceElement.getTextContent(), 
 				Integer.valueOf(resourceElement.getAttribute("tw")),

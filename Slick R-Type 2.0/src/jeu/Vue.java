@@ -10,7 +10,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.loading.DeferredResource;
@@ -49,6 +51,8 @@ public class Vue {
 	private DeferredResource nextResource; 
 	
 	float alpha = 0;
+	private Music intro = null;
+	private boolean arriveMenu = true;
 	
 
 	//
@@ -96,6 +100,9 @@ public class Vue {
 		alien[0] = rm.getImage("ALIEN");
 		alien[0].setRotation(270.0f);
 		
+		intro = rm.getMusic("MENU_SOUND");
+		intro.setVolume(1);
+		
 //		Image menuOptions = new Image("data/menuoption.png");
 		 
 //		startGameOption = menuOptions.getSubImage(0, 0, 377, 71);
@@ -109,9 +116,10 @@ public class Vue {
 	public void load(int etat) throws SlickException{
 		switch (etat) {
 		case 0:
-			
+
 			break;
 		case 1:
+			
 			
 			break;
 		case 2:
@@ -522,6 +530,19 @@ public class Vue {
 		
 		
 		
+	}
+
+	public boolean isArriveMenu() {
+		return arriveMenu;
+	}
+
+	public void setArriveMenu(boolean arriveMenu) {
+		System.out.println("un truc");
+		this.arriveMenu = arriveMenu;
+		if(!arriveMenu)
+			intro.stop();
+		else
+			intro.loop();
 	}
 
 
