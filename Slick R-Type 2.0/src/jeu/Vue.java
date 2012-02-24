@@ -53,6 +53,7 @@ public class Vue {
 	float alpha = 0;
 	private Music intro = null;
 	private boolean arriveMenu = true;
+	private Sound hit = null;
 	
 
 	//
@@ -100,6 +101,7 @@ public class Vue {
 		alien[0] = rm.getImage("ALIEN");
 		alien[0].setRotation(270.0f);
 		
+		hit = rm.getSound("HITSOUND_1");
 		intro = rm.getMusic("MENU_SOUND");
 		intro.setVolume(1);
 		
@@ -545,5 +547,7 @@ public class Vue {
 			intro.loop();
 	}
 
-
+	public void hitSound(){
+		hit.play();
+	}
 }
