@@ -1,5 +1,9 @@
 package jeu;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 import org.newdawn.slick.Color;
@@ -8,6 +12,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.loading.DeferredResource;
+import org.newdawn.slick.loading.LoadingList;
 
 
 
@@ -32,7 +38,14 @@ public class Vue {
 	
 	private Image exitOption = null;
 	private Image startGameOption = null;
-
+	private Image optionOption = null;
+	private Image highscoreOption = null;
+	private float startGameScale = 0.7f;
+	private float exitScale = 0.7f;
+	private float optionScale = 0.7f;
+	
+	private ResourceManager rm = ResourceManager.getInstance();
+	private DeferredResource nextResource; 
 	
 
 	//
@@ -41,8 +54,11 @@ public class Vue {
 	
 	/**
 	 * Chargement des images
+	 * @throws FileNotFoundException 
 	 */
 	public Vue () throws SlickException { 
+		
+		/*
 		background[0] = new Image("data/land.jpg");
 		joueur = new Image("data/plane.png");
 		joueur.setRotation(90.0f);
@@ -51,16 +67,80 @@ public class Vue {
 		missile.setRotation(90.0f);
 		alien[0] = new Image("data/alien2.png");
 		alien[0].setRotation(270.0f);
+		*/
 		
-		Image menuOptions = new Image("data/menuoption.png");
+		try {
+			rm.loadResources(new FileInputStream("data/menu.xml"));
+			rm.loadResources(new FileInputStream("data/jeu.xml"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Image menu = rm.getImage("BOUTONS");
+		System.out.println(menu.getHeight());
+		
+		startGameOption = menu.getSubImage(0, 28, 445, 70);
+		optionOption = menu.getSubImage(180, 105, 300, 70);
+		exitOption = menu.getSubImage(278, 184, 200, 70);
+		
+		background[0] = rm.getImage("BACKGROUD_JEU");
+		joueur = rm.getImage("JOUEUR");
+		joueur.setRotation(90.0f);
+		explosion = rm.getImage("EXPLOSION");
+		missile = rm.getImage("ROCKET");
+		missile.setRotation(90.0f);
+		alien[0] = rm.getImage("ALIEN");
+		alien[0].setRotation(270.0f);
+		
+//		Image menuOptions = new Image("data/menuoption.png");
 		 
-		startGameOption = menuOptions.getSubImage(0, 0, 377, 71);
-		 
-		exitOption = menuOptions.getSubImage(0, 71, 377, 71);
+//		startGameOption = menuOptions.getSubImage(0, 0, 377, 71);
+//		 
+//		exitOption = menuOptions.getSubImage(0, 71, 377, 71);
 		
 		
 		
 	};
+	
+	public void load(int etat) throws SlickException{
+		switch (etat) {
+		case 0:
+			
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			 while (nextResource != null) { 
+		            try { 
+		                nextResource.load(); 
+		                // slow down loading for example purposes 
+//		                try { Thread.sleep(50); } catch (Exception e) {} 
+		            } catch (IOException e) { 
+		                throw new SlickException("Failed to load: "+nextResource.getDescription(), e); 
+		            } 
+		             
+		            nextResource = null; 
+		            
+		            if (LoadingList.get().getRemainingResources() > 0) { 
+			            nextResource = LoadingList.get().getNext(); 
+			        } else { 
+			            /*if (!started) { 
+			                started = true; 
+			                music.loop(); 
+			                sound.play(); 
+			            } */
+			        }
+		        } 
+		         
+		        
+			break;
+
+		default:
+			break;
+		}
+	}
 
 	//
 	// Methods
@@ -187,6 +267,14 @@ public class Vue {
 		return startGameScale;
 	}
 
+	public Image getOptionOption() {
+		return optionOption;
+	}
+
+	public void setOptionOption(Image optionOption) {
+		this.optionOption = optionOption;
+	}
+
 	public void setStartGameScale(float startGameScale) {
 		this.startGameScale = startGameScale;
 	}
@@ -199,8 +287,7 @@ public class Vue {
 		this.exitScale = exitScale;
 	}
 
-	private float startGameScale = 1;
-	float exitScale = 1;
+
 
 	//
 	// Other methods
@@ -382,9 +469,28 @@ public class Vue {
 		g.fill(fond);
 		
 		startGameOption.draw(menuX, menuY, startGameScale);
+		optionOption.draw(menuX+350, menuY, optionScale);
 		 
-		exitOption.draw(menuX+200, menuY, exitScale);
+		exitOption.draw(menuX+600, menuY, exitScale);
 		return 0;
+		
+	}
+
+	public float getOptionScale() {
+		return optionScale;
+	}
+
+	public void setOptionScale(float optionScale) {
+		this.optionScale = optionScale;
+	}
+
+	public void renderOption(Graphics g) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void renderSelection(Graphics g) {
+		// TODO Auto-generated method stub
 		
 	}
 

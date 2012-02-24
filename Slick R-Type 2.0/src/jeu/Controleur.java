@@ -45,16 +45,18 @@ public class Controleur extends BasicGame {
 	private float posXBg2 = 800;
 	private boolean speedUp;
 	private Vue vue;
-	private ArrayList<Objet> movable; // Je crois qu'il faut faire 2 collection a cause des collisions
-	private int etat = 0; // 0:Menu  1:Option  2:Jeu  3:Pause  4:HightScore
+	//private ArrayList<Objet> movable; // Je crois qu'il faut faire 2 collection a cause des collisions
+	private int etat = 0; // 0:Menu  1:Option  2:Selection  3:HightScore  10:Jeu  11:Pause
 	private int param[];
 	private Joueur joueur[];
 	private int delaiTire = 0; // A supprimer
 	private ArrayList<Explosion> explo; // Je suis pas sure mais je pense qu'il n'y a pas mieux
+	private ArrayList<Alien> aliens;
+	private ArrayList<Tir> tirs;
 
-	int menuX = 50;
-	int menuY = 450;
-	float scaleStep = 0.0001f;
+	int menuX = 30;
+	int menuY = 500;
+	float scaleStep = 0.0002f;
 
 
 	//
@@ -63,7 +65,9 @@ public class Controleur extends BasicGame {
 	public Controleur (){ 
 
 		super("R-Type Like It !");
-		movable = new ArrayList<Objet>();
+		//movable = new ArrayList<Objet>();
+		aliens = new ArrayList<Alien>();
+		tirs = new ArrayList<Tir>();
 
 		joueur= new Joueur[1];
 		joueur[0]= new Joueur();
@@ -119,10 +123,15 @@ public class Controleur extends BasicGame {
 	public void update( GameContainer gc, int delta )
 	{
 		switch (etat) {
-		case 0:
+		case 0: // Menu
 			menu(gc,delta );
 			break;
-		case 2:
+		case 1: // Option
+			break;
+		case 2: // Selection
+			etat = 10;// TEMPORAIRE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			break;
+		case 10: // JEU
 			jeu(gc,delta );
 			break;
 
@@ -198,14 +207,14 @@ public class Controleur extends BasicGame {
 			case 21:
 				delaiTire-=delta;//a modifier
 				if(delaiTire < 0){
-					movable.add(new Laser(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+					tirs.add(new Laser(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
 					delaiTire = 100;
 				}
 				break;
 			case 22:
 				delaiTire-=delta;
 				if(delaiTire < 0){
-					movable.add(new Missile(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+					tirs.add(new Missile(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
 					delaiTire = 100;
 					break;
 				}
@@ -240,7 +249,7 @@ public class Controleur extends BasicGame {
 				itexp.remove();
 		}
 
-		// Traitement des missiles et des aliens
+		/* Traitement des missiles et des aliens
 		Iterator<Objet> itMov = movable.iterator();
 		while(itMov.hasNext()){
 			Objet ob= ((Objet) itMov.next());
@@ -248,21 +257,40 @@ public class Controleur extends BasicGame {
 				Tir t = (Tir)ob;
 				t.go();
 				if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
-					t.setVisible(false); 
-				/*boolean col = t.collision(obj);  
-if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
-explo.add(new Explosion(obj.getX(), obj.getY()));
-movable.remove(obj);
-joueur[0].setScore(joueur[0].getScore()+1);
-itMov.remove();
-//obj =null;
-}
-else */if(!t.estVisible())
-	itMov.remove();
+					t.setVisible(false); /*
+				boolean col = t.collision(obj);  
+				if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
+					explo.add(new Explosion(obj.getX(), obj.getY()));
+					movable.remove(obj);
+					joueur[0].setScore(joueur[0].getScore()+1);
+					itMov.remove();
+					//obj =null;
+				}
+				else //*if(!t.estVisible())
+					itMov.remove();
 			}
 			if(ob.getId()==10){ // C'est un alien
 
 			}
+		}//*/
+		
+		// Traitement des missiles
+		Iterator<Tir> itTir = tirs.iterator();
+		while(itTir.hasNext()){
+			Tir t= ((Tir) itTir.next());
+			t.go();
+			if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
+				t.setVisible(false); 
+			Alien ac = ACollision(t); // SI colision on détruit le missile et l'alien
+			if(ac != null){
+				explo.add(new Explosion(ac.getX(), ac.getY()));
+				aliens.remove(ac);
+				joueur[0].setScore(joueur[0].getScore()+1);
+				itTir.remove();
+				ac =null;
+			}
+			else if(!t.estVisible())
+				itTir.remove();
 		}
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
 
@@ -283,12 +311,25 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 //*/
 
 		//* Test alien
-		if(movable.size()<200 ){
+		if(aliens.size()<200 ){
 			for(int i=0;i<10;i++)
-				movable.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
+				aliens.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
 			//System.out.println("Un alien arrive");
 		}//*/
 
+	}
+	
+	private Alien ACollision(Tir t){
+		if(!aliens.isEmpty()){
+			Iterator<Alien> it = aliens.iterator();
+			while(it.hasNext()){
+				Alien a =((Alien) it.next());
+				if(t.collision(a)){
+					return a;
+				}
+			}
+		}
+		return null;
 	}
 
 	private void menu(GameContainer gc, int delta) {
@@ -299,36 +340,56 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 
 		boolean insideStartGame = false;
 		boolean insideExit = false;
+		boolean insideOption = false;
 
-		if( ( mouseX >= menuX && mouseX <= menuX + vue.getStartGameOption().getWidth()) &&
-				( mouseY >= menuY && mouseY <= menuY + vue.getStartGameOption().getHeight()) ){
+		if( ( mouseX >= menuX && mouseX <= menuX + vue.getStartGameOption().getWidth()*0.7) &&
+				( mouseY >= menuY && mouseY <= menuY + vue.getStartGameOption().getHeight()*0.7) ){
 			insideStartGame = true;
-		}else if( ( mouseX >= menuX+200 && mouseX <= menuX+200 + vue.getExitOption().getWidth()) &&
-				( mouseY >= menuY && mouseY <= menuY + vue.getExitOption().getHeight()) ){
+		}else if( ( mouseX >= menuX+600 && mouseX <= menuX+600 + vue.getExitOption().getWidth()*0.7) &&
+				( mouseY >= menuY && mouseY <= menuY + vue.getExitOption().getHeight()*0.7) ){
 			insideExit = true;
+		}
+		else if( ( mouseX >= menuX+350 && mouseX <= menuX+350 + vue.getOptionOption().getWidth()*0.7) &&
+				( mouseY >= menuY && mouseY <= menuY + vue.getOptionOption().getHeight()*0.7) ){
+			insideOption = true;
 		}
 
 		if(insideStartGame){
-			if(vue.getStartGameScale() < 1.05f)
+			if(vue.getStartGameScale() < 0.8f)
 				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				etat = 2;
 			}
 		}else{
-			if(vue.getStartGameScale() > 1.0f)
+			if(vue.getStartGameScale() > 0.7f)
 				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delta);
 
-			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
-				gc.exit();
+			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
+				//gc.exit();
+		}
+
+		if(insideOption){
+			if(vue.getOptionScale() < 0.8f)
+				vue.setOptionScale(vue.getOptionScale()+scaleStep * delta);
+
+			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+				etat = 2;
+			}
+		}else{
+			if(vue.getOptionScale() > 0.7f)
+				vue.setOptionScale(vue.getOptionScale()-scaleStep * delta);
+
+			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
+			//gc.exit();
 		}
 
 		if(insideExit)
 		{
-			if(vue.getExitScale() < 1.05f)
+			if(vue.getExitScale() < 0.8f)
 				vue.setExitScale(vue.getExitScale() + scaleStep * delta);
 		}else{
-			if(vue.getExitScale() > 1.0f)
+			if(vue.getExitScale() > 0.7f)
 				vue.setExitScale(vue.getExitScale() - scaleStep * delta);
 		}
 
@@ -347,21 +408,25 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 		//param[1]=objet.
 		param[3]=joueur[0].getScore();
 		param[0]=explo.size();
-		param[2]=movable.size();
+		param[2]=aliens.size();
+		param[1]=tirs.size();
 
 
 		// Suivant le type d'affichae on affiche le bon		
 		switch (etat) {
-		case 0:
+		case 0: // Menu
 			vue.renderMenu(g, menuX, menuY);
 			break;
-		case 1:
-
+		case 1: // Option
+			vue.renderOption(g);
 			break;
-		case 2:
+		case 2: // Selection
+			vue.renderSelection(g);
+			break;
+		case 10: // JEU
 			vue.renderBg(g, posXBg1, posXBg2);
-
-
+			
+			/*
 			for (Iterator<Objet> o = movable.iterator(); o.hasNext(); ) {
 				Objet ob = (Objet) o.next();
 				if(ob.getId()==10){
@@ -375,7 +440,33 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 				}
 
 
+			}*/
+			
+			for (Iterator<Tir> itTir = tirs.iterator(); itTir.hasNext(); ) {
+				Objet ob = (Objet) itTir.next();
+				if(ob.getId()-20<10 && ob.getId()-20>0){
+					vue.render1Tire(g, ob,0);
+				}
+				else{
+					System.out.println("Objet inconnue");
+				}
+
+
 			}
+			
+			for (Iterator<jeu.Alien> itA = aliens.iterator(); itA.hasNext(); ) {
+				Objet ob = (Objet) itA.next();
+				if(ob.getId()==10){
+					vue.render1Vaisseau(g, ob,0);
+				}
+				else{
+					System.out.println("Objet inconnue");
+				}
+
+
+			}
+			
+			
 
 			vue.renderJoueur(g,joueur[0].getV());
 			vue.renderExplosion(g, explo);

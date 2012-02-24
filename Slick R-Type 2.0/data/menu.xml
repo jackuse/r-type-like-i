@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<resource type="image" id="BOUTONS">data\menu-.png</resource>
+	<resource type="image" id="BACKGROUD_MENU">data\land.jpg</resource>
+</resources>

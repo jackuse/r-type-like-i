@@ -26,7 +26,9 @@ public class ResourceManager {
 	private static String SPRITE_SHEET_REF = "__SPRITE_SHEET_"; // Préfixe des feuilles de sprite a combiner avec un id
  
 	private static ResourceManager _instance = new ResourceManager();
- 
+	
+	// Map est une structure de donnée semblable a un dictionnaire.
+	// Dans le cas présent on a des catalogues de ressoures qu'on peut appeller avec leurs nom(ID)
 	private Map<String, Sound> soundMap;
 	private Map<String, Image> imageMap;
 	private Map<String, ResourceAnimationData> animationMap;
@@ -47,7 +49,7 @@ public class ResourceManager {
 		loadResources(is, false);
 	}
  
-	public void loadResources(InputStream is, boolean deferred) throws SlickException {
+	public void loadResources(InputStream is, boolean deferred) throws SlickException { // Charge un fichier de ressources
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = null;
 		try {
@@ -67,7 +69,7 @@ public class ResourceManager {
 		// normalize text representation
         doc.getDocumentElement ().normalize ();
  
-        NodeList listResources = doc.getElementsByTagName("resource");
+        NodeList listResources = doc.getElementsByTagName("resource"); // On récupére la liste des ressources
  
         int totalResources = listResources.getLength();
  
@@ -80,7 +82,7 @@ public class ResourceManager {
  
         	Node resourceNode = listResources.item(resourceIdx);
  
-        	if(resourceNode.getNodeType() == Node.ELEMENT_NODE){
+        	if(resourceNode.getNodeType() == Node.ELEMENT_NODE){ // Suivant le type de l'objet on appel la bonne methode pour le charger
         		Element resourceElement = (Element)resourceNode;
  
         		String type = resourceElement.getAttribute("type");
@@ -141,7 +143,7 @@ public class ResourceManager {
 		return value;
 	}
  
-	public String getText(String ID) {
+	public String getText(String ID) { // Permet de récupérer un texte en donnent le nom de l'objet en paramétre
 		return textMap.get(ID);
 	}
  
