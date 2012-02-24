@@ -1,5 +1,6 @@
 package jeu;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.newdawn.slick.BasicGame;
@@ -8,6 +9,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.loading.LoadingList;
 
 
 
@@ -49,10 +51,8 @@ public class Controleur extends BasicGame {
 	private ArrayList<Objet> enemy;
 	private ArrayList<Objet> playerProjectile;
 	private ArrayList<Objet> nastyProjectile;
-	private ArrayList<Objet> movable; // Je crois qu'il faut faire 2 collection a cause des collisions
-	
 	//private ArrayList<Objet> movable; // Je crois qu'il faut faire 2 collection a cause des collisions
-	private int etat = 0; // 0:Menu  1:Option  2:Selection  3:HightScore  10:Jeu  11:Pause
+	private int etat = -1; // 0:Menu  1:Option  2:Selection  3:HightScore  10:Jeu  11:Pause
 
 	private int param[];
 	private Joueur joueur[];
@@ -65,7 +65,10 @@ public class Controleur extends BasicGame {
 	int menuY = 500;
 	float scaleStep = 0.0002f;
 
-    boolean debug;
+	int etatTmp = -1;
+	boolean changementDEtat = false;
+
+	boolean debug;
 
 	//
 	// Constructors
@@ -74,7 +77,6 @@ public class Controleur extends BasicGame {
 
 		super("R-Type Like It !");
 
-		//movable = new ArrayList<Objet>();
 		playerProjectile = new ArrayList<Objet>();
 		nastyProjectile = new ArrayList<Objet>();
 		enemy = new ArrayList<Objet>();
@@ -87,7 +89,7 @@ public class Controleur extends BasicGame {
 		explo = new ArrayList<Explosion>();
 
 		debug = true;
-		
+
 	};
 
 	//
@@ -124,7 +126,7 @@ public class Controleur extends BasicGame {
 		gc.setTargetFrameRate(60);
 		gc.setMaximumLogicUpdateInterval(20);
 		gc.setMinimumLogicUpdateInterval(20);
-		vue.setArriveMenu(true);
+		vue.initMenu();
 	}
 
 
@@ -136,6 +138,41 @@ public class Controleur extends BasicGame {
 	 */
 	public void update( GameContainer gc, int delta )
 	{
+		//System.out.println("etat "+etat+" et etat temp "+etatTmp+" cde "+changementDEtat);
+		if (etatTmp == 0){
+			etat = 0;
+			etatTmp = -1;
+		}
+
+
+
+		if(etat == -1){ // Normalement il y a un chargements par etat donc faudra faire du menage ici
+
+			if (vue.nextResource != null) { 
+				System.out.println(vue.nextResource.getDescription());
+				try { 
+					vue.nextResource.load(); 
+					// slow down loading for example purposes 
+					//try { Thread.sleep(500); } catch (Exception e) {} 
+				} catch (IOException e) { 
+					try {
+						throw new SlickException("Failed to load: "+vue.nextResource.getDescription(), e);
+					} catch (SlickException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
+				} 
+
+				vue.nextResource = null; 
+			} 
+
+			if (LoadingList.get().getRemainingResources() > 0) { 
+				vue.nextResource = LoadingList.get().getNext(); 
+			} else { 
+				etatTmp = 0;
+				vue.setArriveMenu(true);	
+			} 
+		}
 		switch (etat) {
 		case 0: // Menu
 			menu(gc,delta );
@@ -144,13 +181,26 @@ public class Controleur extends BasicGame {
 			break;
 		case 2: // Selection
 			vue.setArriveMenu(false);
+			vue.setMusicJeu(1);
+			etatTmp = 10;
 			etat = 10;// TEMPORAIRE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			break;
 		case 10: // JEU
 			jeu(gc,delta );
+			if(changementDEtat){
+				if (etatTmp == 10){
+					vue.setMusicJeu(3);
+					changementDEtat = false;
+				}
+				else if (etatTmp == 11){
+					vue.setMusicJeu(2);
+					changementDEtat = false;
+				}
+			}
 			break;
 		case 11: // PAUSE
 			jeu(gc,delta );
+
 			break;
 
 
@@ -244,10 +294,19 @@ public class Controleur extends BasicGame {
 
 			}
 		}
-		
+
 		// La pause
-		if (gc.getInput().isKeyPressed(Input.KEY_P))
-		    gc.setPaused(!gc.isPaused());
+		if (gc.getInput().isKeyPressed(Input.KEY_P)){
+			gc.setPaused(!gc.isPaused());
+			if(etatTmp == 11){
+				etatTmp = 10;
+				changementDEtat = true;
+			}
+			else if(etatTmp == 10){
+				etatTmp = 11;
+				changementDEtat = true;
+			}
+		}
 
 		///////////////////////////////////////FIN DES COMMANDES ///////////////////////////////////////
 
@@ -276,36 +335,35 @@ public class Controleur extends BasicGame {
 		}
 
 		//Traitement des missiles et des aliens
-        Iterator<Objet> itMovProj = playerProjectile.iterator();
-        while (itMovProj.hasNext()){
-               // Iterator<Objet> itMovEnemy = enemy.iterator();
-                Objet ob=((Objet) itMovProj.next());
-                Tir t = (Tir) ob;
-                t.go();
-                if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
-                        t.setVisible(false);
-                if(!t.estVisible())
-                        itMovProj.remove();
-               
+		Iterator<Objet> itMovProj = playerProjectile.iterator();
+		while (itMovProj.hasNext()){
+			// Iterator<Objet> itMovEnemy = enemy.iterator();
+			Objet ob=((Objet) itMovProj.next());
+			Tir t = (Tir) ob;
+			t.go();
+			if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
+				t.setVisible(false);
+			if(!t.estVisible())
+				itMovProj.remove();
 
-                
-                //test des collisions
-                for (int i=0;i<enemy.size();i++)
-                {
-                	Objet ob2=((Objet) enemy.get(i));
-                	boolean col=t.collision(ob2);
-                	if (col){
-                		explo.add(new Explosion(ob2.getX(), ob2.getY()));
-                		enemy.remove(i);
-                		joueur[0].setScore(joueur[0].getScore()+1);
-    					itMovProj.remove();
-    					vue.hitSound();
-                	}
-                }
-        }
 
-                
-		
+
+			//test des collisions
+			for (int i=0;i<enemy.size();i++)
+			{
+				Objet ob2=((Objet) enemy.get(i));
+				boolean col=t.collision(ob2);
+				if (col){
+					explo.add(new Explosion(ob2.getX(), ob2.getY()));
+					enemy.remove(i);
+					joueur[0].setScore(joueur[0].getScore()+1);
+					itMovProj.remove();
+				}
+			}
+		}
+
+
+
 
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
 
@@ -317,11 +375,11 @@ public class Controleur extends BasicGame {
 			//System.out.println("Un alien arrive");
 		}//*/
 	}
-	
 
-	
-	
-	
+
+
+
+
 	private void menu(GameContainer gc, int delta) {
 		Input input = gc.getInput();
 
@@ -350,6 +408,8 @@ public class Controleur extends BasicGame {
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				vue.setArriveMenu(false);
+				vue.initJeu(); 
+				//vue.setMusicJeu(true);
 				etat = 2;
 			}
 		}else{
@@ -357,7 +417,7 @@ public class Controleur extends BasicGame {
 				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delta);
 
 			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
-				//gc.exit();
+			//gc.exit();
 		}
 
 		if(insideOption){
@@ -399,14 +459,18 @@ public class Controleur extends BasicGame {
 	{	
 
 		//On compte les animations pour l'affichage
-		param[2]=enemy.size();
-		param[3]=joueur[0].getScore();
+
 		param[0]=explo.size();
-		param[1]=playerProjectile.size();
+		param[1]=enemy.size();
+		param[2]=playerProjectile.size();
+		param[3]=joueur[0].getScore();
 
 
 		// Suivant le type d'affichae on affiche le bon		
 		switch (etat) {
+		case -1:
+			vue.renderChargement(container, g);
+			break;
 		case 0: // Menu
 			vue.renderMenu(g, menuX, menuY);
 			break;
@@ -418,7 +482,7 @@ public class Controleur extends BasicGame {
 			break;
 		case 10: // JEU
 			vue.renderBg(g, posXBg1, posXBg2);
-			
+
 			for (Iterator<Objet> e = enemy.iterator(); e.hasNext(); ) {
 				Objet obE = (Objet) e.next();
 				vue.render1Vaisseau(g, obE,0);
@@ -429,11 +493,11 @@ public class Controleur extends BasicGame {
 				Objet obPp = (Objet) pp.next();
 				vue.render1Tire(g, obPp,0);
 			}
-			
 
-			
 
-			
+
+
+
 
 			vue.renderJoueur(g,joueur[0].getV());
 			vue.renderExplosion(g, explo);
@@ -444,7 +508,7 @@ public class Controleur extends BasicGame {
 
 			break;
 		case 11: // PAUSE
-			
+
 			break;
 		case 3:
 

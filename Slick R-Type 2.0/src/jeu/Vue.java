@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -18,7 +20,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.loading.DeferredResource;
 import org.newdawn.slick.loading.LoadingList;
 
-
+// Faire un design pattern sigletton
 
 /**
  * Class Vue
@@ -48,12 +50,15 @@ public class Vue {
 	private float optionScale = 0.7f;
 	
 	private ResourceManager rm = ResourceManager.getInstance();
-	private DeferredResource nextResource; 
+	public DeferredResource nextResource; 
 	
 	float alpha = 0;
 	private Music intro = null;
 	private boolean arriveMenu = true;
-	private Sound hit = null;
+	private Font font; 
+	
+	private Music musicJeu = null;
+	
 	
 
 	//
@@ -79,12 +84,18 @@ public class Vue {
 		
 		try {
 			rm.loadResources(new FileInputStream("data/menu.xml"));
-			rm.loadResources(new FileInputStream("data/jeu.xml"));
+			rm.loadResources(new FileInputStream("data/jeu.xml"),true);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		
+		
+		
+	};
+	
+	public void initMenu(){
 		Image menu = rm.getImage("BOUTONS");
 		System.out.println(menu.getHeight());
 		
@@ -92,6 +103,20 @@ public class Vue {
 		optionOption = menu.getSubImage(180, 105, 300, 70);
 		exitOption = menu.getSubImage(278, 184, 200, 70);
 		
+		intro = rm.getMusic("MENU_SOUND");
+		intro.setVolume(1);
+		try {
+			font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+	}
+	
+	public void initJeu(){
+		musicJeu = rm.getMusic("JEU_SOUND");
+		musicJeu.setVolume(1);
 		background[0] = rm.getImage("BACKGROUD_JEU");
 		joueur = rm.getImage("JOUEUR");
 		joueur.setRotation(90.0f);
@@ -99,21 +124,8 @@ public class Vue {
 		missile = rm.getImage("ROCKET");
 		missile.setRotation(90.0f);
 		alien[0] = rm.getImage("ALIEN");
-		alien[0].setRotation(270.0f);
-		
-		hit = rm.getSound("HITSOUND_1");
-		intro = rm.getMusic("MENU_SOUND");
-		intro.setVolume(1);
-		
-//		Image menuOptions = new Image("data/menuoption.png");
-		 
-//		startGameOption = menuOptions.getSubImage(0, 0, 377, 71);
-//		 
-//		exitOption = menuOptions.getSubImage(0, 71, 377, 71);
-		
-		
-		
-	};
+		alien[0].setRotation(270.0f);		
+	}
 	
 	public void load(int etat) throws SlickException{
 		switch (etat) {
@@ -539,15 +551,56 @@ public class Vue {
 	}
 
 	public void setArriveMenu(boolean arriveMenu) {
-		System.out.println("un truc");
 		this.arriveMenu = arriveMenu;
 		if(!arriveMenu)
 			intro.stop();
 		else
 			intro.loop();
 	}
+	
+	public void setMusicJeu(int go) {
+		//System.out.println("je joue un son "+go);
+		System.out.println("bidule truc chouette " +go);
+		switch (go) {
+		case 0:
+			musicJeu.stop();
+			break;
+		case 1:
+			musicJeu.loop();
+			break;
+		case 2:
+			musicJeu.pause();
+			break;
+		case 3:
+			musicJeu.resume();
+			break;
 
-	public void hitSound(){
-		hit.play();
+		default:
+			break;
+		}
 	}
+	
+	
+	public void renderChargement(GameContainer gc, Graphics gr) {
+		 if (nextResource != null) { 
+			 String s = ("Loading: "+nextResource.getDescription());
+			 int l = s.length();
+			 System.out.println("longeur "+l);
+	            gr.drawString("Loading: "+nextResource.getDescription(), 400-l*5, 280); 
+	        } 
+	         
+	        int total = LoadingList.get().getTotalResources(); 
+	        int loaded = LoadingList.get().getTotalResources() - LoadingList.get().getRemainingResources(); 
+	         
+	        float bar = loaded / (float) total; 
+	        gr.fillRect(250,300,loaded*40,20); 
+	        gr.drawRect(250,300,total*40,20); 
+	         
+	        /*if (started) { 
+	            image.draw(100,200); 
+	            font.drawString(100,500,"LOADING COMPLETE"); 
+	        } */
+	}
+
+
 }

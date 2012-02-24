@@ -9,7 +9,8 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/slick.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/Tom/SLICK_HOME/javadoc/"/>
+			<attribute name="javadoc_location" value="file:/S:/ProgrammesFiles/lib/Slick/javadoc/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Slick R-Type 2.0/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
