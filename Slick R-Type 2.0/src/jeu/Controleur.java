@@ -283,8 +283,10 @@ public class Controleur extends BasicGame {
                         t.setVisible(false);
                 if(!t.estVisible())
                         itMovProj.remove();
-                //collisionChecker(t);
+               
+
                 
+                //test des collisions
                 for (int i=0;i<enemy.size();i++)
                 {
                 	Objet ob2=((Objet) enemy.get(i));
@@ -297,26 +299,11 @@ public class Controleur extends BasicGame {
                 	}
                 }
         }
+
                 
 		
 
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
-
-		///////////////////////////////////////// ZONE DE TEST //////////////////////////////////////////
-		/* Test explosions
-if(explo.size()<10000 ){
-for(int i=0;i<100;i++)
-explo.add(new Explosion(255+rand.nextFloat()*(700-255),-45+rand.nextFloat()*((int)(0.85*600))));
-}
-//*/
-
-		/* Test missiles
-if(movable.size()<10){
-for(int i=0;i<1;i++)
-movable.add(new Tire(10,rand.nextFloat()*(500-0)));
-//System.out.println("Un alien arrive");
-}
-//*/
 
 		//* Test alien
 
@@ -329,23 +316,7 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 	
 
 	
-	public void collisionChecker(Tir t)
-	{
-		Iterator<Objet> itMovEnemy = enemy.iterator();
-		while(itMovEnemy.hasNext()){
-			Objet ob2=((Objet) itMovEnemy.next());
-			
-			boolean col=t.collision(ob2);
-			if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
-				explo.add(new Explosion(ob2.getX(), ob2.getY()));
-				enemy.remove(ob2);
-				joueur[0].setScore(joueur[0].getScore()+1);
-				//itMovProj.remove();
-				//obj =null;
-           }	
-               
-		}
-	}
+	
 	private void menu(GameContainer gc, int delta) {
 		Input input = gc.getInput();
 
