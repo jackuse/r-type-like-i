@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+	<resource type="image" id="RESTART">data\menu-.png</resource>
+	<resource type="image" id="EXIT">data\menu-.png</resource>
+	<resource type="image" id="OPTION">data\menu-.png</resource>
+</resources>
+
 <!-- GAMEPLAY -->
-  <!-- Background -->
-  <resource type="image" id="BATTLE_BACKGROUND">data\background.jpg</resource>
-  <!-- Menu -->
-  <resource type="imageBp" id="EXIT">data\exit.jpg</resource>
-  <!-- HUD -->
-  <resource type="image" id="HUD_HEART">data\heart.png</resource>
-  <resource type="image" id="HUD_MONEY">data\coin.png</resource>
-  <!--  Player Animations -->
-  <resource type="image" id="PLAYER" tw="32" th="45" duration="100">data\plane.png</resource>
+<!--   <!-- Background --> -->
+<!--   <resource type="image" id="BATTLE_BACKGROUND">data\background.jpg</resource> -->
+<!--   <!-- Menu --> -->
+<!--   <resource type="imageBp" id="EXIT">data\exit.jpg</resource> -->
+<!--   <!-- HUD --> -->
+<!--   <resource type="image" id="HUD_HEART">data\heart.png</resource> -->
+<!--   <resource type="image" id="HUD_MONEY">data\coin.png</resource> -->
+<!--   <!--  Player Animations --> -->
+<!--   <resource type="image" id="PLAYER" tw="32" th="45" duration="100">data\plane.png</resource> -->
   <!--  
   <resource type="animation" id="AVATAR_WALKING_LEFT" tw="32" th="45" duration="100">data\walking_animation_left.png</resource>
   <resource type="animation" id="AVATAR_WALKING_RIGHT" tw="32" th="45" duration="100">data\walking_animation_right.png</resource>
@@ -25,4 +30,3 @@
   <resource type="image" id="BLADE">data\blade.png</resource>-->
   <!-- SOUNDS -->
   <!-- <resource type="sound" id="BLADE_SWOOSH_SOUND">data\bladeswooch.ogg</resource> -->
-</resources>

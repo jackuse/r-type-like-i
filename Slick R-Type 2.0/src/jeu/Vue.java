@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -46,6 +47,8 @@ public class Vue {
 	
 	private ResourceManager rm = ResourceManager.getInstance();
 	private DeferredResource nextResource; 
+	
+	float alpha = 0;
 	
 
 	//
@@ -491,6 +494,33 @@ public class Vue {
 
 	public void renderSelection(Graphics g) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void renderPause(GameContainer gc, Graphics gr) {
+		float menuX = 250;
+		float menuY = 230;
+		if (gc.isPaused())
+		{
+		    Rectangle rect = new Rectangle (0, 0, 800, 600);
+		    gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
+		    gr.fill(rect);
+
+		    if (alpha < 0.8f)
+		        alpha += 0.05f;
+		    
+		    startGameOption.draw(menuX, menuY, startGameScale);
+			optionOption.draw(menuX, menuY+45, optionScale);
+			 
+			exitOption.draw(menuX, menuY+90, exitScale);
+		}
+		else
+		{
+		    if (alpha > 0)
+		        alpha -= 0.01f;
+		}
+		
+		
 		
 	}
 

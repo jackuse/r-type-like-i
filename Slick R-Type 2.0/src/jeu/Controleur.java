@@ -146,6 +146,9 @@ public class Controleur extends BasicGame {
 		case 10: // JEU
 			jeu(gc,delta );
 			break;
+		case 11: // PAUSE
+			jeu(gc,delta );
+			break;
 
 
 		default:
@@ -238,6 +241,10 @@ public class Controleur extends BasicGame {
 
 			}
 		}
+		
+		// La pause
+		if (gc.getInput().isKeyPressed(Input.KEY_P))
+		    gc.setPaused(!gc.isPaused());
 
 		///////////////////////////////////////FIN DES COMMANDES ///////////////////////////////////////
 
@@ -290,56 +297,7 @@ public class Controleur extends BasicGame {
                 	}
                 }
         }
-                /*while(itMovEnemy.hasNext()){
-                        Objet ob2=((Objet) itMovEnemy.next());
-                        
-                        boolean col=t.collision(ob2);
-                        if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
-        					explo.add(new Explosion(ob2.getX(), ob2.getY()));
-        					enemy.remove(ob2);
-        					joueur[0].setScore(joueur[0].getScore()+1);
-        					itMovProj.remove();
-        					//obj =null;
-        				}
-        				//else if(!t.estVisible())
-        					//itMovProj.remove();
-                }
-                        
-        }
-		
-		/*Iterator<Objet> itMov = movable.iterator();
-		while(itMov.hasNext()){
-			Objet ob= ((Objet) itMov.next());
-			if(ob.getId()-20<10 && ob.getId()-20>0){ // C'est un Tire
-				Tir t = (Tir)ob;
-				t.go();
-				if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
-<<<<<<< .mine
-					t.setVisible(false);
-				/*boolean col = t.collision(obj);  
-=======
-					t.setVisible(false); /*
-				boolean col = t.collision(obj);  
->>>>>>> .r32
-				if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
-					explo.add(new Explosion(obj.getX(), obj.getY()));
-					movable.remove(obj);
-					joueur[0].setScore(joueur[0].getScore()+1);
-					itMov.remove();
-					//obj =null;
-				}
-<<<<<<< .mine
-				else if(!t.estVisible())
-=======
-				else //*if(!t.estVisible())
->>>>>>> .r32
-					itMov.remove();
-			}
-			if(ob.getId()==10){ // C'est un alien
-
-			}
-<<<<<<< .mine
-		}*/
+                
 		
 
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
@@ -500,7 +458,13 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 			vue.renderJoueur(g,joueur[0].getV());
 			vue.renderExplosion(g, explo);
 			vue.renderBoard(g,param);
+			//vue.renderTest(g);
+			vue.renderPause(container,g);
 
+
+			break;
+		case 11: // PAUSE
+			
 			break;
 		case 3:
 
