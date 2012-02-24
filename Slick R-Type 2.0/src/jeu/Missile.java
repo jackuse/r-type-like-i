@@ -16,7 +16,7 @@ public class Missile extends Tir {
   public Missile () { }
 
 public Missile(float x, float y) {
-	  super(x-15,y-15);
+	  super(x-15,y-15,28,48);
 	  id = 22;
 	  speed=13;
 };

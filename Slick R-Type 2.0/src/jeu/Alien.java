@@ -18,7 +18,7 @@ public class Alien extends Vaisseau {
 	public Alien () { };
 
 	public Alien (float x, float y) { 
-		super(x,y);
+		super(x,y,64,64);
 		id = 10;
 	};
 

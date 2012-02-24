@@ -22,8 +22,8 @@ public class Tir extends Objet {
   //
   public Tir () { };
   
-  public Tir (float x, float y) { 
-	  super(x,y);
+  public Tir (float x, float y, float w, float h) { 
+	  super(x,y,w,h);
 	  id = 20;
 	  speed=13;
   };

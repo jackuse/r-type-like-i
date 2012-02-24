@@ -28,6 +28,13 @@ public class Objet {
 	  this.y =y;
 	  id = 0;
   };
+  public Objet (float x, float y, float w, float h) { 
+	  this.x = x;
+	  this.y =y;
+	  this.h=h;
+	  this.w=w;
+	  id = 0;
+  };
   
   //
   // Methods
@@ -130,17 +137,38 @@ public class Objet {
    * @return       boolean
    * @param        objet
    */
-  public boolean collision( Objet ob )
+  public boolean collision(Objet a) {
+      //System.out.println("it's working");
+	  //System.out.println("x de l'ennemi :"+a.getX()+" y de l'ennemi :"+a.getY());
+      //System.out.println("w de l'ennemi :"+a.getW()+" h de l'ennemi :"+a.getH());
+	  //System.out.println("x du missile :" +x+" y du missile :"+ y);
+	  //System.out.println("w du missile :" +w+" h du missile :"+ h);
+	  if((a.getX() >= x + w)           // trop à droite
+                      || (a.getX() + a.getW() <= x)   // trop à gauche
+                      || (a.getY() >= y + h)   // trop en bas
+                      || (a.getY() + a.getH() <= y))  // trop en haut 
+              return false; 
+      else{
+              //                      System.out.println("col "+(a.getX() >= t.getX() + t.sizeW()));
+              return true; 
+      }
+  
+ /* public boolean collision( Objet ob )
   {
-		if((x >= ob.getX() + ob.getW())         // trop à droite
-				|| (x + w <= ob.getX())   		// trop à gauche
-				|| (y >= ob.getY() + ob.getH()) // trop en bas
-				|| (y + h <= ob.getY())) 		// trop en haut 
+	  return
+			  x>=ob.getX()+ob.getW()-1 && x+w-1<=ob.getX() &&
+			  y>=ob.getY()+ob.getH()-1 && y+h-1<=ob.getY();
+	  
+		if((ob.getX() >= x + w)         // trop à droite
+				|| (ob.getX()+ob.getW() <= x)   		// trop à gauche
+				|| (ob.getY() >= y + h) // trop en bas
+				|| (ob.getY() + ob.getH() <= y)) 		// trop en haut 
 			return false; 
 		else{
 			return true; 
-		}
+		
+	
+  }*/
+
   }
-
-
 }

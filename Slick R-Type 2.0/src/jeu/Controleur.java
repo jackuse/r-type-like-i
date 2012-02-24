@@ -45,8 +45,15 @@ public class Controleur extends BasicGame {
 	private float posXBg2 = 800;
 	private boolean speedUp;
 	private Vue vue;
+
+	private ArrayList<Objet> enemy;
+	private ArrayList<Objet> playerProjectile;
+	private ArrayList<Objet> nastyProjectile;
+	private ArrayList<Objet> movable; // Je crois qu'il faut faire 2 collection a cause des collisions
+	
 	//private ArrayList<Objet> movable; // Je crois qu'il faut faire 2 collection a cause des collisions
 	private int etat = 0; // 0:Menu  1:Option  2:Selection  3:HightScore  10:Jeu  11:Pause
+
 	private int param[];
 	private Joueur joueur[];
 	private int delaiTire = 0; // A supprimer
@@ -58,6 +65,7 @@ public class Controleur extends BasicGame {
 	int menuY = 500;
 	float scaleStep = 0.0002f;
 
+    boolean debug;
 
 	//
 	// Constructors
@@ -65,9 +73,12 @@ public class Controleur extends BasicGame {
 	public Controleur (){ 
 
 		super("R-Type Like It !");
+
 		//movable = new ArrayList<Objet>();
-		aliens = new ArrayList<Alien>();
-		tirs = new ArrayList<Tir>();
+		playerProjectile = new ArrayList<Objet>();
+		nastyProjectile = new ArrayList<Objet>();
+		enemy = new ArrayList<Objet>();
+
 
 		joueur= new Joueur[1];
 		joueur[0]= new Joueur();
@@ -75,6 +86,7 @@ public class Controleur extends BasicGame {
 		param = new int[10];
 		explo = new ArrayList<Explosion>();
 
+		debug = true;
 	};
 
 	//
@@ -207,14 +219,18 @@ public class Controleur extends BasicGame {
 			case 21:
 				delaiTire-=delta;//a modifier
 				if(delaiTire < 0){
-					tirs.add(new Laser(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+
+					playerProjectile.add(new Laser(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+
 					delaiTire = 100;
 				}
 				break;
 			case 22:
 				delaiTire-=delta;
 				if(delaiTire < 0){
-					tirs.add(new Missile(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+
+					playerProjectile.add(new Missile(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+
 					delaiTire = 100;
 					break;
 				}
@@ -249,16 +265,62 @@ public class Controleur extends BasicGame {
 				itexp.remove();
 		}
 
-		/* Traitement des missiles et des aliens
-		Iterator<Objet> itMov = movable.iterator();
+		//Traitement des missiles et des aliens
+        Iterator<Objet> itMovProj = playerProjectile.iterator();
+        while (itMovProj.hasNext()){
+               // Iterator<Objet> itMovEnemy = enemy.iterator();
+                Objet ob=((Objet) itMovProj.next());
+                Tir t = (Tir) ob;
+                t.go();
+                if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
+                        t.setVisible(false);
+                if(!t.estVisible())
+                        itMovProj.remove();
+                //collisionChecker(t);
+                
+                for (int i=0;i<enemy.size();i++)
+                {
+                	Objet ob2=((Objet) enemy.get(i));
+                	boolean col=t.collision(ob2);
+                	if (col){
+                		explo.add(new Explosion(ob2.getX(), ob2.getY()));
+                		enemy.remove(i);
+                		joueur[0].setScore(joueur[0].getScore()+1);
+    					itMovProj.remove();
+                	}
+                }
+        }
+                /*while(itMovEnemy.hasNext()){
+                        Objet ob2=((Objet) itMovEnemy.next());
+                        
+                        boolean col=t.collision(ob2);
+                        if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
+        					explo.add(new Explosion(ob2.getX(), ob2.getY()));
+        					enemy.remove(ob2);
+        					joueur[0].setScore(joueur[0].getScore()+1);
+        					itMovProj.remove();
+        					//obj =null;
+        				}
+        				//else if(!t.estVisible())
+        					//itMovProj.remove();
+                }
+                        
+        }
+		
+		/*Iterator<Objet> itMov = movable.iterator();
 		while(itMov.hasNext()){
 			Objet ob= ((Objet) itMov.next());
 			if(ob.getId()-20<10 && ob.getId()-20>0){ // C'est un Tire
 				Tir t = (Tir)ob;
 				t.go();
 				if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
+<<<<<<< .mine
+					t.setVisible(false);
+				/*boolean col = t.collision(obj);  
+=======
 					t.setVisible(false); /*
 				boolean col = t.collision(obj);  
+>>>>>>> .r32
 				if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
 					explo.add(new Explosion(obj.getX(), obj.getY()));
 					movable.remove(obj);
@@ -266,32 +328,20 @@ public class Controleur extends BasicGame {
 					itMov.remove();
 					//obj =null;
 				}
+<<<<<<< .mine
+				else if(!t.estVisible())
+=======
 				else //*if(!t.estVisible())
+>>>>>>> .r32
 					itMov.remove();
 			}
 			if(ob.getId()==10){ // C'est un alien
 
 			}
-		}//*/
+<<<<<<< .mine
+		}*/
 		
-		// Traitement des missiles
-		Iterator<Tir> itTir = tirs.iterator();
-		while(itTir.hasNext()){
-			Tir t= ((Tir) itTir.next());
-			t.go();
-			if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
-				t.setVisible(false); 
-			Alien ac = ACollision(t); // SI colision on détruit le missile et l'alien
-			if(ac != null){
-				explo.add(new Explosion(ac.getX(), ac.getY()));
-				aliens.remove(ac);
-				joueur[0].setScore(joueur[0].getScore()+1);
-				itTir.remove();
-				ac =null;
-			}
-			else if(!t.estVisible())
-				itTir.remove();
-		}
+
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
 
 		///////////////////////////////////////// ZONE DE TEST //////////////////////////////////////////
@@ -311,27 +361,33 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 //*/
 
 		//* Test alien
-		if(aliens.size()<200 ){
+
+		if(enemy.size()<2 && debug ){
 			for(int i=0;i<10;i++)
-				aliens.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
+				enemy.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
 			//System.out.println("Un alien arrive");
 		}//*/
-
 	}
 	
-	private Alien ACollision(Tir t){
-		if(!aliens.isEmpty()){
-			Iterator<Alien> it = aliens.iterator();
-			while(it.hasNext()){
-				Alien a =((Alien) it.next());
-				if(t.collision(a)){
-					return a;
-				}
-			}
-		}
-		return null;
-	}
 
+	
+	public void collisionChecker(Tir t)
+	{
+		Iterator<Objet> itMovEnemy = enemy.iterator();
+		while(itMovEnemy.hasNext()){
+			Objet ob2=((Objet) itMovEnemy.next());
+			
+			boolean col=t.collision(ob2);
+			if(col){ // SI colision on détruit le missile et l'alien mais comment on fait la ?
+				explo.add(new Explosion(ob2.getX(), ob2.getY()));
+				enemy.remove(ob2);
+				joueur[0].setScore(joueur[0].getScore()+1);
+				//itMovProj.remove();
+				//obj =null;
+           }	
+               
+		}
+	}
 	private void menu(GameContainer gc, int delta) {
 		Input input = gc.getInput();
 
@@ -405,11 +461,10 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 	{	
 
 		//On compte les animations pour l'affichage
-		//param[1]=objet.
+		param[2]=enemy.size();
 		param[3]=joueur[0].getScore();
 		param[0]=explo.size();
-		param[2]=aliens.size();
-		param[1]=tirs.size();
+		param[1]=playerProjectile.size();
 
 
 		// Suivant le type d'affichae on affiche le bon		
@@ -426,52 +481,25 @@ movable.add(new Tire(10,rand.nextFloat()*(500-0)));
 		case 10: // JEU
 			vue.renderBg(g, posXBg1, posXBg2);
 			
-			/*
-			for (Iterator<Objet> o = movable.iterator(); o.hasNext(); ) {
-				Objet ob = (Objet) o.next();
-				if(ob.getId()==10){
-					vue.render1Vaisseau(g, ob,0);
-				}
-				else if(ob.getId()-20<10 && ob.getId()-20>0){
-					vue.render1Tire(g, ob,0);
-				}
-				else{
-					System.out.println("Objet inconnue");
-				}
+			for (Iterator<Objet> e = enemy.iterator(); e.hasNext(); ) {
+				Objet obE = (Objet) e.next();
+				vue.render1Vaisseau(g, obE,0);
+			}
 
 
-			}*/
-			
-			for (Iterator<Tir> itTir = tirs.iterator(); itTir.hasNext(); ) {
-				Objet ob = (Objet) itTir.next();
-				if(ob.getId()-20<10 && ob.getId()-20>0){
-					vue.render1Tire(g, ob,0);
-				}
-				else{
-					System.out.println("Objet inconnue");
-				}
-
-
+			for (Iterator<Objet> pp = playerProjectile.iterator(); pp.hasNext(); ) {
+				Objet obPp = (Objet) pp.next();
+				vue.render1Tire(g, obPp,0);
 			}
 			
-			for (Iterator<jeu.Alien> itA = aliens.iterator(); itA.hasNext(); ) {
-				Objet ob = (Objet) itA.next();
-				if(ob.getId()==10){
-					vue.render1Vaisseau(g, ob,0);
-				}
-				else{
-					System.out.println("Objet inconnue");
-				}
 
-
-			}
 			
+
 			
 
 			vue.renderJoueur(g,joueur[0].getV());
 			vue.renderExplosion(g, explo);
 			vue.renderBoard(g,param);
-			vue.renderTest(g);
 
 			break;
 		case 3:

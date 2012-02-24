@@ -16,7 +16,7 @@ public class Laser extends Tir {
   public Laser () { }
 
 public Laser(float x, float y) {
-	  super(x-15,y-15);
+	  super(x-15,y-15,1,1); //changer w et h ici
 	  id = 21;
 	  speed=13;
 };
