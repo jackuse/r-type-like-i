@@ -53,11 +53,11 @@ public class Vue {
 	public DeferredResource nextResource; 
 	
 	float alpha = 0;
-	private Music intro = null;
-	private boolean arriveMenu = true;
+	
 	private Font font; 
 	
-	private Music musicJeu = null;
+	private Music principale = null;
+	private float volumeMusic = 0.5f;
 	
 	
 
@@ -103,8 +103,8 @@ public class Vue {
 		optionOption = menu.getSubImage(180, 105, 300, 70);
 		exitOption = menu.getSubImage(278, 184, 200, 70);
 		
-		intro = rm.getMusic("MENU_SOUND");
-		intro.setVolume(1);
+		principale = rm.getMusic("MENU_SOUND");
+		principale.setVolume(volumeMusic);
 		try {
 			font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
 		} catch (SlickException e) {
@@ -115,8 +115,8 @@ public class Vue {
 	}
 	
 	public void initJeu(){
-		musicJeu = rm.getMusic("JEU_SOUND");
-		musicJeu.setVolume(1);
+		principale = rm.getMusic("JEU_SOUND");
+		principale.setVolume(volumeMusic);
 		background[0] = rm.getImage("BACKGROUD_JEU");
 		joueur = rm.getImage("JOUEUR");
 		joueur.setRotation(90.0f);
@@ -546,33 +546,20 @@ public class Vue {
 		
 	}
 
-	public boolean isArriveMenu() {
-		return arriveMenu;
-	}
-
-	public void setArriveMenu(boolean arriveMenu) {
-		this.arriveMenu = arriveMenu;
-		if(!arriveMenu)
-			intro.stop();
-		else
-			intro.loop();
-	}
 	
-	public void setMusicJeu(int go) {
-		//System.out.println("je joue un son "+go);
-		System.out.println("bidule truc chouette " +go);
-		switch (go) {
+	public void setMusic(int etatMusic) {
+		switch (etatMusic) {
 		case 0:
-			musicJeu.stop();
+			principale.stop();
 			break;
 		case 1:
-			musicJeu.loop();
+			principale.loop();
 			break;
 		case 2:
-			musicJeu.pause();
+			principale.pause();
 			break;
 		case 3:
-			musicJeu.resume();
+			principale.resume();
 			break;
 
 		default:

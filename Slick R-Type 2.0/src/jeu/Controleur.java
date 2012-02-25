@@ -170,7 +170,7 @@ public class Controleur extends BasicGame {
 				vue.nextResource = LoadingList.get().getNext(); 
 			} else { 
 				etatTmp = 0;
-				vue.setArriveMenu(true);	
+				vue.setMusic(1);	
 			} 
 		}
 		switch (etat) {
@@ -180,8 +180,7 @@ public class Controleur extends BasicGame {
 		case 1: // Option
 			break;
 		case 2: // Selection
-			vue.setArriveMenu(false);
-			vue.setMusicJeu(1);
+			vue.setMusic(1);
 			etatTmp = 10;
 			etat = 10;// TEMPORAIRE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			break;
@@ -189,11 +188,11 @@ public class Controleur extends BasicGame {
 			jeu(gc,delta );
 			if(changementDEtat){
 				if (etatTmp == 10){
-					vue.setMusicJeu(3);
+					vue.setMusic(3);
 					changementDEtat = false;
 				}
 				else if (etatTmp == 11){
-					vue.setMusicJeu(2);
+					vue.setMusic(2);
 					changementDEtat = false;
 				}
 			}
@@ -407,7 +406,7 @@ public class Controleur extends BasicGame {
 				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				vue.setArriveMenu(false);
+				vue.setMusic(0);
 				vue.initJeu(); 
 				//vue.setMusicJeu(true);
 				etat = 2;
@@ -425,7 +424,7 @@ public class Controleur extends BasicGame {
 				vue.setOptionScale(vue.getOptionScale()+scaleStep * delta);
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				vue.setArriveMenu(false);
+				vue.setMusic(0);
 				etat = 1;
 			}
 		}else{
