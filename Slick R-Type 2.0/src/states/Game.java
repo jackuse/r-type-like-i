@@ -244,6 +244,7 @@ public class Game extends BasicGameState{
 					enemy.remove(i);
 					joueur[0].setScore(joueur[0].getScore()+1);
 					itMovProj.remove();
+					break;
 				}
 			}
 		}
