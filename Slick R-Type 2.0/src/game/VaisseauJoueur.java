@@ -20,10 +20,10 @@ public class VaisseauJoueur extends Vaisseau {
 	//
 	public VaisseauJoueur () { 
 		speed = 10;
-		pdv = 10;
+		pdv = 100;
 		move = false;
-		w=130;
-		h=120;
+		w=60;
+		h=60;
 		y= 240;
 		armeSelect = 22;
 

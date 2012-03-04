@@ -68,6 +68,13 @@ public class Game extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		vue.renderBg(gr, posXBg1, posXBg2);
+		
+		
+		param[0] = explo.size();
+		param[1] = enemy.size();
+		param[2] = playerProjectile.size();
+		param[3] = joueur[0].getScore();
+		param[4] = joueur[0].getV().getPdv();
 
 		for (Iterator<Objet> e = enemy.iterator(); e.hasNext(); ) {
 			Objet obE = (Objet) e.next();
@@ -92,7 +99,7 @@ public class Game extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
-		System.out.println("etat "+sbg.getCurrentStateID()); 
+		//System.out.println("etat "+sbg.getCurrentStateID()); 
 		
 		////////////////////////////////////////LES COMMANDES /////////////////////////////////////////
 		Input input = gc.getInput(); // On récupére les input
@@ -141,6 +148,27 @@ public class Game extends BasicGameState{
 		{
 			bgSpeed = 10;
 			speedUp= true;
+		}
+		
+		// Commande debug 										A SUPRIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if(input.isKeyDown(Input.KEY_DOWN))
+		{
+			delaiTire-=delta;//a modifier
+			if(delaiTire < 0){
+				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
+				System.out.println(joueur[0].getV().getPdv());
+				delaiTire = 100;
+			}
+		}
+		// Commande debug 		2								A SUPRIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if(input.isKeyDown(Input.KEY_UP))
+		{
+			delaiTire-=delta;//a modifier
+			if(delaiTire < 0){
+				joueur[0].getV().setPdv(joueur[0].getV().getPdv()+10);
+				System.out.println(joueur[0].getV().getPdv());
+				delaiTire = 100;
+			}
 		}
 
 		if(!input.isKeyDown(Input.KEY_LCONTROL) && speedUp)
@@ -248,6 +276,25 @@ public class Game extends BasicGameState{
 				}
 			}
 		}
+		
+		for (int i=0;i<enemy.size();i++)
+		{
+			Objet ob2=((Objet) enemy.get(i));
+			boolean col=((Objet)joueur[0].getV()).collision(ob2);
+			if (col){
+				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
+				explo.add(new Explosion(ob2.getX(), ob2.getY()));
+				enemy.remove(i);
+				break;
+			}
+		}
+		
+		
+		if(joueur[0].getV().getPdv()<=0){
+			vue.setPauseBg(gc.getGraphics());
+			sbg.enterState(Main.GAMEOVERSTATE);
+		}
+			
 
 
 

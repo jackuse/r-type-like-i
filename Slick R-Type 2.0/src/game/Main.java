@@ -7,6 +7,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import states.Chargement;
 import states.Game;
+import states.GameOver;
 import states.Highscore;
 import states.Menu;
 import states.Option;
@@ -22,6 +23,10 @@ public class Main extends StateBasedGame {
     public static final int GAMESTATE          = 10;
     public static final int PAUSESTATE         = 11;
     public static final int CHARGEMENTSTATE    = 20;
+    public static final int GAMEOVERSTATE      = 12;
+    
+    public static final int WIDTH    = 800;
+    public static final int HEIGHT    = 600;
     
     public static int etatprecedent = MENUSTATE;
     
@@ -31,6 +36,8 @@ public class Main extends StateBasedGame {
     public Main()
     {
         super("R-Type Like It !");
+        
+        vue.setScreen(WIDTH ,HEIGHT);
  
         this.addState(new Menu(MENUSTATE));
         this.addState(new Game(GAMESTATE));
@@ -39,6 +46,7 @@ public class Main extends StateBasedGame {
         this.addState(new Selection(SELECTIONSTATE ));
         this.addState(new Highscore(HIGHSCORESTATE));
         this.addState(new Chargement(CHARGEMENTSTATE));
+        this.addState(new GameOver(GAMEOVERSTATE));
         this.enterState(MENUSTATE);
         
     }
@@ -51,7 +59,7 @@ public class Main extends StateBasedGame {
     public static void main(String[] args) throws SlickException
     {
          AppGameContainer app = new AppGameContainer(new Main());
-         app.setDisplayMode(800, 600, false);
+         app.setDisplayMode(WIDTH, HEIGHT, false);
          app.start();
     }
  
@@ -66,6 +74,7 @@ public class Main extends StateBasedGame {
         this.getState(OPTIONSTATE).init(gameContainer, this);
         this.getState(HIGHSCORESTATE).init(gameContainer, this);
         this.getState(SELECTIONSTATE).init(gameContainer, this);
+        this.getState(GAMEOVERSTATE).init(gameContainer, this);
         
         
         gameContainer.setTargetFrameRate(60);

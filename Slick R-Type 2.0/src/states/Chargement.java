@@ -62,7 +62,7 @@ public class Chargement extends BasicGameState{
 			vue.nextResource = LoadingList.get().getNext(); 
 		} else { 
 			sbg.enterState(Main.GAMESTATE);
-			vue.setMusic(1);
+			//qdvue.setMusic(1);
 		} 
 		
 	}

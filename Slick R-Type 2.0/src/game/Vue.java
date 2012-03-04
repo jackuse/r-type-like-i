@@ -66,6 +66,11 @@ public class Vue {
 
 	private Image pauseBg = null;
 
+	private int width = 0;
+	private int height = 0 ;
+
+	boolean debugCol = true;
+
 
 
 	public final static Vue getInstance(){
@@ -395,10 +400,11 @@ public class Vue {
 		explosion = rm.getImage("EXPLOSION");
 		missile = rm.getImage("ROCKET");
 		missile.setRotation(90.0f);
-		
+
 		//joueur = rm.getImage("JOUEUR");
 		sheet = rm.getImage("VAISSEAU_1");
-		joueur = sheet.getSubImage(265,3746,123,196);
+		//joueur = sheet.getSubImage(265,3746,123,196);
+		joueur = sheet.getSubImage(97,45,30,30);
 		joueur.setRotation(90.0f);
 		laser = sheet.getSubImage(265,3746,123,196);
 		laser.setRotation(90.0f);
@@ -509,7 +515,7 @@ public class Vue {
 	 * @return       int
 	 * @param        g
 	 */
-	public int renderExplosion( Graphics g, ArrayList<Explosion> explo  )
+	public int renderExplosion( Graphics gr, ArrayList<Explosion> explo  )
 	{
 		float[] cadre;
 		if(!explo.isEmpty()){
@@ -525,44 +531,71 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderJoueur(Graphics g, VaisseauJoueur v) {
-		joueur.draw(v.getX(), v.getY());
+	public int renderJoueur(Graphics gr, VaisseauJoueur v) {
+		joueur.draw(v.getX(), v.getY(),3.0f);
+
+		if(debugCol){
+			Rectangle rect = new Rectangle (v.getX(), v.getY(), 60, 60);
+			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
+			gr.fill(rect);
+		}
 		return 0;
 	}
 
-	public int renderBoard(Graphics g, int[] param) {
+	public int renderBoard(Graphics gr, int[] param) {
 
 		//Tableaux de bord
 		//		g.setColor(org.newdawn.slick.Color.black);
 		Rectangle board1 = new Rectangle (0, 571, 801, 30);
-		g.setColor(new Color (0.2f, 0.2f, 0.2f));
-		g.fill(board1);
+		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
+		gr.fill(board1);
 		//g.drawRect(0, 0, 400, 30);
 		//		g.drawImage(board, 100,100);
-		g.setColor(org.newdawn.slick.Color.white);
+		gr.setColor(org.newdawn.slick.Color.white);
 		//		uFont.drawString(50,10, "nb Explosion ="+nbEx);
 		//		uFont.drawString(100,10,"Explosion :"+nbEx,	org.newdawn.slick.Color.black);
-		g.drawString("Explosion :"+param[0], 10,575);
-		g.drawString("Alien :"+param[1], 150,575);
-		g.drawString("Missile :"+param[2], 300,575);
-		g.drawString("Score :"+param[3], 600,575);
+		gr.drawString("Explosion :"+param[0], 10,height*0.96f);
+		gr.drawString("Alien :"+param[1], 150,height*0.96f);
+		gr.drawString("Missile :"+param[2], 300,height*0.96f);
+		gr.drawString("Score :"+param[3], width*0.85f,height*0.96f);
+
+		//Lifebar
+		Rectangle lifeBack = new Rectangle (width*0.50f, height*0.96f, width*0.10f, height*0.04f);
+		gr.setColor(new Color (0,0,0));
+		gr.fill(lifeBack);
+		Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.10f)*(param[4]/100f), height*0.04f);
+		System.out.println(param[4]/100f);
+		gr.setColor(new Color (1f,0,0));
+		gr.fill(lifebar);
+
 		//Ajouter un timer
 		return 0;
 	}
 
-	public int render1Vaisseau(Graphics g, Objet ob,int type) {
+	public int render1Vaisseau(Graphics gr, Objet ob,int type) {
 		alien[type].draw(ob.getX()+ob.getW()/2,ob.getY()+ob.getH()/2);
+
+		if(debugCol){
+			Rectangle rect = new Rectangle (ob.getX(), ob.getY(), ob.getW(), ob.getH());
+			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
+			gr.fill(rect);
+		}
 		return 0;
 	}
 
-	public int render1Tir(Graphics g, Objet ob, int type) {
+	public int render1Tir(Graphics gr, Objet ob, int type) {
 		if(((Tir)ob).estVisible()){
 			switch (type) {
 			case 0:
-				missile.draw(ob.getX()+10,ob.getY()+38);
+				missile.draw(ob.getX()+joueur.getWidth()/2,ob.getY()+joueur.getHeight()/2);
+				if(debugCol){
+					Rectangle rect = new Rectangle (ob.getX(), ob.getY(), ob.getW(), ob.getH());
+					gr.setColor(new Color (0.2f, 0.2f, 0.2f));
+					gr.fill(rect);
+				}
 				break;
 			case 1:
-				laser.draw(ob.getX()+10,ob.getY()+38);
+				laser.draw(ob.getX()+joueur.getWidth()/2,ob.getY()+joueur.getHeight()/2);
 				break;
 
 			default:
@@ -703,5 +736,25 @@ public class Vue {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void setScreen(int width, int height) {
+		this.width = width;
+		this.height = height;
+
+	}
+
+	public void renderGameOver(GameContainer gc, Graphics gr, int gmOvX,
+			int gmOvY) {
+		pauseBg.draw(0, 0);
+		Rectangle rect = new Rectangle (0, 0, 800, 600);
+		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
+		gr.fill(rect);
+
+		if (alpha < 0.8f)
+			alpha += 0.05f;
+
+		gr.fill(rect);
+
 	}
 }
