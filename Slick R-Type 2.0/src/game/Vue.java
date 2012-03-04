@@ -71,6 +71,8 @@ public class Vue {
 
 	boolean debugCol = false;
 
+	boolean clignotementVie =false;
+
 
 
 	public final static Vue getInstance(){
@@ -568,13 +570,30 @@ public class Vue {
 		gr.drawString("Score :"+param[3], width*0.85f,height*0.96f);
 
 		//Lifebar
-		Rectangle lifeBack = new Rectangle (width*0.50f, height*0.96f, width*0.10f, height*0.04f);
+		Rectangle lifeBack = new Rectangle (width*0.50f, height*0.96f, width*0.20f, height*0.04f);
 		gr.setColor(new Color (0,0,0));
 		gr.fill(lifeBack);
-		Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.10f)*(param[4]/100f), height*0.04f);
-		//System.out.println(param[4]/100f);
+		
+		if(param[4]<=10){
+			clignotementVie = true;
+		}
+		else
+			clignotementVie = false;
+		
+
+		if(clignotementVie && param[5] == 1){}	
+		else{
+		Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.20f)*(param[4]/100f), height*0.04f);
+		
+		if(param[4]>30){
+			gr.setColor(new Color (0,1.0f,0));
+		}
+		else 
 		gr.setColor(new Color (1f,0,0));
+		
+		
 		gr.fill(lifebar);
+		}
 
 		//Ajouter un timer
 		return 0;
@@ -650,6 +669,7 @@ public class Vue {
 //		System.out.println("isMusic "+principale.playing()+" et "+principale.toString());
 		return principale.playing();
 	}
+	
 
 	public void setMusic(int etatMusic) {
 		switch (etatMusic) {
@@ -670,6 +690,7 @@ public class Vue {
 			break;
 		}
 	}
+	
 
 	public void selectMusic(int id) {
 		switch (id) {
@@ -690,6 +711,7 @@ public class Vue {
 			break;
 		}
 	}
+	
 
 	public void setPauseBg(Graphics gr) {
 		gr.copyArea(pauseBg, 0, 0);		
@@ -747,6 +769,7 @@ public class Vue {
 			e.printStackTrace();
 		}
 	}
+	
 
 	public void setScreen(int width, int height) {
 		this.width = width;
@@ -771,6 +794,5 @@ public class Vue {
 		gr.drawString("You loose ! ", 400, 280); 
 		if(ok)
 			gr.drawString("Press escape", 400, 300); 
-
 	}
 }

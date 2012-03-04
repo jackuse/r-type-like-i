@@ -40,6 +40,7 @@ public class Game extends BasicGameState{
 	public Random rand = new Random();
 	private int delaiTire = 0;
 	boolean debug = false;
+	private int delayClig = 200;
 
 	public Game(int stateID) {
 		this.stateID = stateID;
@@ -68,13 +69,15 @@ public class Game extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		vue.renderBg(gr, posXBg1, posXBg2);
-		
-		
+
+
 		param[0] = explo.size();
 		param[1] = enemy.size();
 		param[2] = playerProjectile.size();
 		param[3] = joueur[0].getScore();
 		param[4] = joueur[0].getV().getPdv();
+
+
 
 		for (Iterator<Objet> e = enemy.iterator(); e.hasNext(); ) {
 			Objet obE = (Objet) e.next();
@@ -98,16 +101,26 @@ public class Game extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		
+
 		if(Main.etatprecedent == Main.MENUSTATE){
 			reset();
 			Main.etatprecedent = sbg.getCurrentStateID();	
 			vue.selectMusic(1);
 			vue.setMusic(1);
 		}
-		
+
+		delayClig -=delta;//a modifier
+		if(delayClig < 0){
+			if(param[5] == 1)
+				param[5] = 0;
+			else
+				param[5] = 1;
+			delayClig = 200;
+		}
+
+
 		//System.out.println("etat "+sbg.getCurrentStateID()); 
-		
+
 		////////////////////////////////////////LES COMMANDES /////////////////////////////////////////
 		Input input = gc.getInput(); // On récupére les input
 
@@ -156,7 +169,7 @@ public class Game extends BasicGameState{
 			bgSpeed = 10;
 			speedUp= true;
 		}
-		
+
 		// Commande debug 										A SUPRIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if(input.isKeyDown(Input.KEY_DOWN))
 		{
@@ -283,7 +296,7 @@ public class Game extends BasicGameState{
 				}
 			}
 		}
-		
+
 		for (int i=0;i<enemy.size();i++)
 		{
 			Objet ob2=((Objet) enemy.get(i));
@@ -295,14 +308,14 @@ public class Game extends BasicGameState{
 				break;
 			}
 		}
-		
-		
+
+
 		if(joueur[0].getV().getPdv()<=0){
 			vue.setPauseBg(gc.getGraphics());
 			vue.setMusic(0);
 			sbg.enterState(Main.GAMEOVERSTATE);
 		}
-			
+
 
 
 
@@ -316,14 +329,14 @@ public class Game extends BasicGameState{
 				enemy.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
 			//System.out.println("Un alien arrive");
 		}//*/
-		
+
 		//* Test missile
 		if(playerProjectile.size()<2000 && debug ){
 			for(int i=0;i<50;i++)
 				playerProjectile.add(new Missile(0,rand.nextFloat()*(550-0)));
 
 		}//*
-		
+
 		//* Test explosion
 		if(explo.size()<10000 && debug ){
 			for(int i=0;i<100;i++)
@@ -346,10 +359,10 @@ public class Game extends BasicGameState{
 		if(etatTmp == 11){
 			pause(gc,delta );		
 		}*/
-		
-		
 
-		
+
+
+
 
 	}
 
@@ -357,7 +370,7 @@ public class Game extends BasicGameState{
 	public int getID() {
 		return stateID;
 	}
-	
+
 	public void reset(){
 		joueur[0].getV().setPdv(100);
 		joueur[0].getV().setX(0);
