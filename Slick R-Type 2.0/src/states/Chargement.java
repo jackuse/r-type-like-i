@@ -40,6 +40,7 @@ public class Chargement extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		System.out.println("etat "+sbg.getCurrentStateID());
 		if (vue.nextResource != null) { 
 			System.out.println(vue.nextResource.getDescription());
 			try { 
@@ -61,7 +62,7 @@ public class Chargement extends BasicGameState{
 		if (LoadingList.get().getRemainingResources() > 0) { 
 			vue.nextResource = LoadingList.get().getNext(); 
 		} else { 
-			sbg.enterState(Main.GAMESTATE);
+			sbg.enterState(Main.MENUSTATE);
 			//qdvue.setMusic(1);
 		} 
 		

@@ -17,6 +17,8 @@ public class GameOver extends BasicGameState{
 	
 	int GmOvX = 250;
 	int GmOvY = 230;
+	boolean ok = true;
+	int delay = 200;
 
 	public GameOver(int stateID) {
 		this.stateID = stateID;
@@ -32,13 +34,24 @@ public class GameOver extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderGameOver(gc,gr,GmOvX,GmOvY);
+		vue.renderGameOver(gc,gr,GmOvX,GmOvY,ok);
 		
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		
+		delay-=delta;//a modifier
+		if(delay < 0){
+			if(ok)
+				ok = false;
+			else
+				ok = true;
+			delay = 200;
+		}
+
+		
 		Input input = gc.getInput(); // On récupére les input
 		
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){

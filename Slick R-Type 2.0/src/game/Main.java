@@ -25,10 +25,10 @@ public class Main extends StateBasedGame {
     public static final int CHARGEMENTSTATE    = 20;
     public static final int GAMEOVERSTATE      = 12;
     
-    public static final int WIDTH    = 800;
-    public static final int HEIGHT    = 600;
+    public static int WIDTH    = 800;
+    public static int HEIGHT    = 600;
     
-    public static int etatprecedent = MENUSTATE;
+    public static int etatprecedent = -1;
     
     private Vue vue = Vue.getInstance();
     
@@ -47,7 +47,7 @@ public class Main extends StateBasedGame {
         this.addState(new Highscore(HIGHSCORESTATE));
         this.addState(new Chargement(CHARGEMENTSTATE));
         this.addState(new GameOver(GAMEOVERSTATE));
-        this.enterState(MENUSTATE);
+        this.enterState(CHARGEMENTSTATE);
         
     }
  
@@ -65,10 +65,9 @@ public class Main extends StateBasedGame {
  
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
- 
+    	
+    	this.getState(CHARGEMENTSTATE).init(gameContainer, this);
         this.getState(MENUSTATE).init(gameContainer, this);
-        vue.setMusic(1);
-        this.getState(CHARGEMENTSTATE).init(gameContainer, this);
         this.getState(GAMESTATE).init(gameContainer, this);
         this.getState(PAUSESTATE).init(gameContainer, this);
         this.getState(OPTIONSTATE).init(gameContainer, this);

@@ -51,7 +51,7 @@ public class Pause extends BasicGameState{
 		if (input.isKeyPressed(Input.KEY_P)){
 			gc.setPaused(!gc.isPaused());
 			sbg.enterState(Main.GAMESTATE);
-			vue.setMusic(3);
+			//vue.setMusic(3);
 		}
 		
 		int mouseX = input.getMouseX();
@@ -88,6 +88,7 @@ public class Pause extends BasicGameState{
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				//vue.setMusic(0);
 				vue.setOptionScale(0.7f);
+				
 				sbg.enterState(Main.OPTIONSTATE);
 				//vue.setMusic(3);
 			}
@@ -98,8 +99,9 @@ public class Pause extends BasicGameState{
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				vue.setExitScale(0.7f);
-				sbg.enterState(Main.MENUSTATE);
 				vue.setMusic(0);
+				vue.selectMusic(0);
+				sbg.enterState(Main.MENUSTATE);
 				}
 		}
    

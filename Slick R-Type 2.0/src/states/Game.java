@@ -99,6 +99,13 @@ public class Game extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
+		if(Main.etatprecedent == Main.MENUSTATE){
+			reset();
+			Main.etatprecedent = sbg.getCurrentStateID();	
+			vue.selectMusic(1);
+			vue.setMusic(1);
+		}
+		
 		//System.out.println("etat "+sbg.getCurrentStateID()); 
 		
 		////////////////////////////////////////LES COMMANDES /////////////////////////////////////////
@@ -156,7 +163,7 @@ public class Game extends BasicGameState{
 			delaiTire-=delta;//a modifier
 			if(delaiTire < 0){
 				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
-				System.out.println(joueur[0].getV().getPdv());
+				//System.out.println(joueur[0].getV().getPdv());
 				delaiTire = 100;
 			}
 		}
@@ -166,7 +173,7 @@ public class Game extends BasicGameState{
 			delaiTire-=delta;//a modifier
 			if(delaiTire < 0){
 				joueur[0].getV().setPdv(joueur[0].getV().getPdv()+10);
-				System.out.println(joueur[0].getV().getPdv());
+				//System.out.println(joueur[0].getV().getPdv());
 				delaiTire = 100;
 			}
 		}
@@ -292,6 +299,7 @@ public class Game extends BasicGameState{
 		
 		if(joueur[0].getV().getPdv()<=0){
 			vue.setPauseBg(gc.getGraphics());
+			vue.setMusic(0);
 			sbg.enterState(Main.GAMEOVERSTATE);
 		}
 			
@@ -303,11 +311,25 @@ public class Game extends BasicGameState{
 
 		//* Test alien
 
-		if(enemy.size()<2 && debug ){
-			for(int i=0;i<10;i++)
+		if(enemy.size()<1000 && debug ){
+			for(int i=0;i<50;i++)
 				enemy.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
 			//System.out.println("Un alien arrive");
 		}//*/
+		
+		//* Test missile
+		if(playerProjectile.size()<2000 && debug ){
+			for(int i=0;i<50;i++)
+				playerProjectile.add(new Missile(0,rand.nextFloat()*(550-0)));
+
+		}//*
+		
+		//* Test explosion
+		if(explo.size()<10000 && debug ){
+			for(int i=0;i<100;i++)
+				explo.add(new Explosion(rand.nextFloat()*(700-100),rand.nextFloat()*(500-0)));
+			//System.out.println("Un alien arrive");
+		}//*
 
 		// TODO Auto-generated method stub
 		/*
@@ -324,12 +346,25 @@ public class Game extends BasicGameState{
 		if(etatTmp == 11){
 			pause(gc,delta );		
 		}*/
+		
+		
+
+		
 
 	}
 
 	@Override
 	public int getID() {
 		return stateID;
+	}
+	
+	public void reset(){
+		joueur[0].getV().setPdv(100);
+		joueur[0].getV().setX(0);
+		joueur[0].getV().setY(240);
+		enemy.clear();
+		playerProjectile.clear();
+		explo.clear();
 	}
 
 }

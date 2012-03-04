@@ -44,11 +44,17 @@ public class Menu extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
-		System.out.println("etat "+sbg.getCurrentStateID());
-		System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
-		if(!vue.isMusic()&& (Main.etatprecedent == Main.PAUSESTATE)){
-			//vue.selectMusic(0);
-			//vue.setMusic(1);
+		//System.out.println("etat "+sbg.getCurrentStateID());
+		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
+		if(Main.etatprecedent == -1){
+			vue.selectMusic(0);
+			vue.setMusic(1);
+			Main.etatprecedent = sbg.getCurrentStateID();
+		}
+		
+		if(!vue.isMusic()&& (Main.etatprecedent != sbg.getCurrentStateID())){
+			vue.selectMusic(0);
+			vue.setMusic(1);
 		}
 		//if(!vue.isMusic())
 			//vue.setMusic(1);
@@ -76,6 +82,7 @@ public class Menu extends BasicGameState{
 		}
 
 		if(insideStartGame){
+			System.out.println("je suis dans start game");
 			if(vue.getStartGameScale() < 0.8f)
 				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
 
@@ -84,7 +91,8 @@ public class Menu extends BasicGameState{
 				//vue.initGame(); 
 				//vue.setMusicJeu(true);
 				vue.setStartGameScale(0.7f);
-				sbg.enterState(Main.CHARGEMENTSTATE);
+				Main.etatprecedent = Main.MENUSTATE;
+				sbg.enterState(Main.GAMESTATE);
 			}
 		}else{
 			if(vue.getStartGameScale() > 0.7f)
@@ -122,6 +130,7 @@ public class Menu extends BasicGameState{
 			if(vue.getExitScale() > 0.7f)
 				vue.setExitScale(vue.getExitScale() - scaleStep * delta);
 		}
+		
 		
 	}
 

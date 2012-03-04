@@ -66,10 +66,10 @@ public class Vue {
 
 	private Image pauseBg = null;
 
-	private int width = 0;
-	private int height = 0 ;
+	private int width = Main.WIDTH;
+	private int height = Main.HEIGHT ;
 
-	boolean debugCol = true;
+	boolean debugCol = false;
 
 
 
@@ -236,6 +236,7 @@ public class Vue {
 	}
 
 	public float getStartGameScale() {
+		System.out.println("startGameScale "+startGameScale);
 		return startGameScale;
 	}
 
@@ -366,17 +367,17 @@ public class Vue {
 
 	public void initMenu(){
 
-		try {
-			rm.loadResources(new FileInputStream("data/menu.xml"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			rm.loadResources(new FileInputStream("data/menu.xml"));
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (SlickException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		Image menu = rm.getImage("BOUTONS");
-		System.out.println(menu.getHeight());
+		//System.out.println(menu.getHeight());
 
 		startGameOption = menu.getSubImage(0, 28, 445, 70);
 		optionOption = menu.getSubImage(180, 105, 300, 70);
@@ -384,7 +385,7 @@ public class Vue {
 
 		selectMusic(0);
 		principale.setVolume(volumeMusic);
-		System.out.println("Space !! ");
+		//System.out.println("Space !! ");
 		try {
 			font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
 		} catch (SlickException e) {
@@ -422,6 +423,11 @@ public class Vue {
 	///////////////////////////////////////// RENDER /////////////////////////////////////////
 
 	public void renderChargement(GameContainer gc, Graphics gr) {
+		Rectangle board1 = new Rectangle (0, 571, 801, 30);
+		gr.setColor(new Color (0,0,0));
+		gr.fillRect(0,0,width,height); 
+		gr.setColor(new Color (1.0f,1.0f,1.0f));
+		
 		if (nextResource != null) { 
 			String s = ("Loading: "+nextResource.getDescription());
 			int l = s.length();
@@ -433,6 +439,7 @@ public class Vue {
 		int loaded = LoadingList.get().getTotalResources() - LoadingList.get().getRemainingResources(); 
 
 		float bar = loaded / (float) total; 
+		
 		gr.fillRect(250,300,loaded*40,20); 
 		gr.drawRect(250,300,total*40,20); 
 
@@ -443,7 +450,7 @@ public class Vue {
 	}
 
 	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY) {
-		System.out.println("rendu d'option");
+		//System.out.println("rendu d'option");
 
 		startGameOption.draw(optionX, optionY, startGameScale);
 		optionOption.draw(optionX, optionY+45, optionScale);
@@ -557,7 +564,7 @@ public class Vue {
 		//		uFont.drawString(100,10,"Explosion :"+nbEx,	org.newdawn.slick.Color.black);
 		gr.drawString("Explosion :"+param[0], 10,height*0.96f);
 		gr.drawString("Alien :"+param[1], 150,height*0.96f);
-		gr.drawString("Missile :"+param[2], 300,height*0.96f);
+		gr.drawString("Missile :"+param[2], width*0.31f,height*0.96f);
 		gr.drawString("Score :"+param[3], width*0.85f,height*0.96f);
 
 		//Lifebar
@@ -565,7 +572,7 @@ public class Vue {
 		gr.setColor(new Color (0,0,0));
 		gr.fill(lifeBack);
 		Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.10f)*(param[4]/100f), height*0.04f);
-		System.out.println(param[4]/100f);
+		//System.out.println(param[4]/100f);
 		gr.setColor(new Color (1f,0,0));
 		gr.fill(lifebar);
 
@@ -640,7 +647,7 @@ public class Vue {
 	///////////////////////////////////////// UTILS //////////////////////////////////////////
 
 	public boolean isMusic() {
-		System.out.println("isMusic "+principale.playing()+" et "+principale.toString());
+//		System.out.println("isMusic "+principale.playing()+" et "+principale.toString());
 		return principale.playing();
 	}
 
@@ -669,11 +676,11 @@ public class Vue {
 		case 0:
 			principale = null;
 			principale = rm.getMusic("MENU_MUSIC");
-			System.out.println("MENU_MUSIC "+principale.toString()+" et "+principale.playing());
+//			System.out.println("MENU_MUSIC "+principale.toString()+" et "+principale.playing());
 			break;
 		case 1:
 			principale = rm.getMusic("GAME_MUSIC");
-			System.out.println("GAME_MUSIC "+principale.toString()+" et "+principale.playing());
+//			System.out.println("GAME_MUSIC "+principale.toString()+" et "+principale.playing());
 			break;
 		case 2:
 
@@ -748,9 +755,9 @@ public class Vue {
 	}
 
 	public void renderGameOver(GameContainer gc, Graphics gr, int gmOvX,
-			int gmOvY) {
+			int gmOvY,boolean ok) {
 		pauseBg.draw(0, 0);
-		Rectangle rect = new Rectangle (0, 0, 800, 600);
+		Rectangle rect = new Rectangle (0, 0, 801, 600);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
 		gr.fill(rect);
 
@@ -758,6 +765,12 @@ public class Vue {
 			alpha += 0.05f;
 
 		gr.fill(rect);
+		
+		gr.setColor(new Color (1.0f,1.0f,1.0f));
+
+		gr.drawString("You loose ! ", 400, 280); 
+		if(ok)
+			gr.drawString("Press escape", 400, 300); 
 
 	}
 }
