@@ -1,21 +1,34 @@
 package states;
 
+import game.Chara;
+
+import java.util.ArrayList;
+
 import game.Main;
+import game.Objet;
 import game.Vue;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Pause extends BasicGameState{
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
-	
+
 	int pauseX = 250;
 	int pauseY = 230;
+	private boolean cheatModOn = false;
+	//private char[] charPass; 
+	private ArrayList<Chara> pass;
+	int nbPassword = 2;
+
+
 
 
 	public Pause(int stateID) {
@@ -26,34 +39,127 @@ public class Pause extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		vue.initPause();
-		
+		//charPass = new char[42];
+		pass = new ArrayList<Chara>();
+
+
+
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		vue.renderPause(gc,gr,pauseX,pauseY);
+		if(Game.cheat[0])
+			gr.drawString("GODMOD : ON :", 10,10);
 		
+		if(cheatModOn){
+			Rectangle textArea= new Rectangle (0, 0, 801, 20);
+			gr.setColor(new Color (0, 0, 0));
+			gr.fill(textArea);
+			String s = "";
+			for(int i=0;i<pass.size();i++){
+				s+=pass.get(i).c;
+				//System.out.println("je passe "+s);
+			}
+			gr.setColor(new Color (1.0f, 1.0f, 1.0f));
+			gr.drawString(s,10f,5f);
+			
+		}
+
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		
+
 		if(Main.etatprecedent != Main.PAUSESTATE)
 			Main.etatprecedent = Main.PAUSESTATE;
 
-		
-		System.out.println("etat "+sbg.getCurrentStateID()+" et "+Main.etatprecedent);
-		
+
+		//System.out.println("etat "+sbg.getCurrentStateID()+" et "+Main.etatprecedent);
+
 		Input input = gc.getInput(); // On récupére les input
-		
-		if (input.isKeyPressed(Input.KEY_P)){
+
+		if (input.isKeyPressed(Input.KEY_P) || input.isKeyPressed(Input.KEY_ESCAPE)){
 			gc.setPaused(!gc.isPaused());
 			sbg.enterState(Main.GAMESTATE);
 			//vue.setMusic(3);
 		}
 		
+		
+		
+		///////////////////////////////////////// CHEAT CODE  //////////////////////////////////////////////////////////////
+		if (input.isKeyPressed(42)){
+			if(!cheatModOn){
+				cheatModOn = true;
+				System.out.println("mot de passe a l'écoute");
+			}
+			else
+				cheatModOn = false;
+
+		}
+
+		if(cheatModOn){
+			if (input.isKeyPressed(input.KEY_BACK)){
+				if(pass.size()>0)
+					pass.remove(pass.size()-1);	
+				//System.out.println("on recule "+pass.size());
+			}
+			char c = getChar(input);
+			if(c != '0' && pass.size() < 42){
+				Chara ch = new Chara(c);
+				pass.add(ch);
+				//System.out.println("Je crois que tu a tapper un : "+ch.c);
+			}
+
+			if (input.isKeyPressed(input.KEY_ENTER)){
+
+				String cheatCodeString[] = new String[nbPassword];
+
+				cheatCodeString[0]= "bonnenote";
+				cheatCodeString[1]= "allyourbasearebelongtous";
+				char[][] charArr= new char[nbPassword][42];
+				for(int i=0;i<nbPassword;i++){
+					char[] ca = cheatCodeString[i].toCharArray();
+					for(int j=0;j<cheatCodeString[i].length();j++)
+						charArr[i][j] = ca[j];
+				}	
+				int mdp[] = new int[nbPassword];
+				for(int i=0;i<nbPassword;i++){
+					mdp[i] = 0;
+				}
+				for(int i=0;i<pass.size();i++){
+					if(pass.get(i).c == charArr[0][i])
+						mdp[0]+=1;
+				}
+				for(int i=0;i<nbPassword;i++){
+					if(mdp[i] == cheatCodeString[i].length()){
+						if(!Game.cheat[i])
+							Game.cheat[i] = true;
+						else
+							Game.cheat[i] = false;
+						System.out.println("Password accepted");
+						if(i==0){
+							if(Game.cheat[i])
+								System.out.println("Invincibilité : ON");
+							else
+								System.out.println("Invincibilité : OFF");
+						}
+						pass.clear();
+					}
+				}
+
+				System.out.println("valider");
+
+			}
+
+
+			//System.out.println("Godmod ONNNNN");
+		}
+		
+		///////////////////////////////////////// END CHEAT CODE  //////////////////////////////////////////////////////////////
+
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 
@@ -88,7 +194,7 @@ public class Pause extends BasicGameState{
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				//vue.setMusic(0);
 				vue.setOptionScale(0.7f);
-				
+
 				sbg.enterState(Main.OPTIONSTATE);
 				//vue.setMusic(3);
 			}
@@ -102,15 +208,74 @@ public class Pause extends BasicGameState{
 				vue.setMusic(0);
 				vue.selectMusic(0);
 				sbg.enterState(Main.MENUSTATE);
-				}
+			}
 		}
-   
-		
+
+
 	}
 
 	@Override
 	public int getID() {
 		return stateID;
+	}
+
+
+	public char getChar(Input input){
+		if(input.isKeyPressed(Input.KEY_A))
+			return 'a';
+		else if(input.isKeyPressed(Input.KEY_B))
+			return 'b';
+		else if(input.isKeyPressed(Input.KEY_C))
+			return 'c';
+		else if(input.isKeyPressed(Input.KEY_D))
+			return 'd';
+		else if(input.isKeyPressed(Input.KEY_E))
+			return 'e';
+		else if(input.isKeyPressed(Input.KEY_F))
+			return 'f';
+		else if(input.isKeyPressed(Input.KEY_G))
+			return 'g';
+		else if(input.isKeyPressed(Input.KEY_H))
+			return 'h';
+		else if(input.isKeyPressed(Input.KEY_I))
+			return 'i';
+		else if(input.isKeyPressed(Input.KEY_J))
+			return 'j';
+		else if(input.isKeyPressed(Input.KEY_K))
+			return 'k';
+		else if(input.isKeyPressed(Input.KEY_L))
+			return 'l';
+		else if(input.isKeyPressed(Input.KEY_M))
+			return 'm';
+		else if(input.isKeyPressed(Input.KEY_N))
+			return 'n';
+		else if(input.isKeyPressed(Input.KEY_O))
+			return 'o';
+		else if(input.isKeyPressed(Input.KEY_P))
+			return 'p';
+		else if(input.isKeyPressed(Input.KEY_Q))
+			return 'q';
+		else if(input.isKeyPressed(Input.KEY_R))
+			return 'r';
+		else if(input.isKeyPressed(Input.KEY_S))
+			return 's';
+		else if(input.isKeyPressed(Input.KEY_T))
+			return 't';
+		else if(input.isKeyPressed(Input.KEY_U))
+			return 'u';
+		else if(input.isKeyPressed(Input.KEY_V))
+			return 'v';
+		else if(input.isKeyPressed(Input.KEY_W))
+			return 'w';
+		else if(input.isKeyPressed(Input.KEY_X))
+			return 'x';
+		else if(input.isKeyPressed(Input.KEY_Y))
+			return 'y';
+		else if(input.isKeyPressed(Input.KEY_Z))
+			return 'z';
+		else
+			return '0';
+
 	}
 
 }

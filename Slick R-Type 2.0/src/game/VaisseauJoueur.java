@@ -14,6 +14,8 @@ public class VaisseauJoueur extends Vaisseau {
 	//	protected int pdv = 10;
 	//	protected float speed = 10;
 	private int armeSelect;
+	private boolean invicible = false;
+
 
 	//
 	// Constructors
@@ -54,6 +56,21 @@ public class VaisseauJoueur extends Vaisseau {
 	public int getArme ( ) {
 		return armeSelect;
 	}
+
+
+	public boolean isInvicible() {
+		return invicible;
+	}
+
+	public void setInvicible(boolean invicible) {
+		this.invicible = invicible;
+	}
+
+	public void setPdv ( int newVar ) {
+		if(!invicible)
+			pdv = newVar;
+	}
+
 
 	//
 	// Other methods

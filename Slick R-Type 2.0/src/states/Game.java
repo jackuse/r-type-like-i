@@ -22,6 +22,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Game extends BasicGameState{
+	
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
 
@@ -29,6 +30,7 @@ public class Game extends BasicGameState{
 	private ArrayList<Objet> playerProjectile;
 	private ArrayList<Objet> nastyProjectile;
 	private int param[];
+	public static boolean[] cheat;
 	private Joueur joueur[];
 	private float bgSpeed = 1;
 	private float posXBg1 = 0;
@@ -55,8 +57,11 @@ public class Game extends BasicGameState{
 		enemy = new ArrayList<Objet>();
 
 
-		joueur= new Joueur[1];
-		joueur[0]= new Joueur();
+		joueur = new Joueur[1];
+		joueur[0] = new Joueur();
+		cheat = new boolean[4];
+		for(int i=0;i<4;i++)
+			cheat[i] = false;
 
 		param = new int[10];
 		explo = new ArrayList<Explosion>();
@@ -101,6 +106,14 @@ public class Game extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		
+		//BEGIN CHEAT CODE
+		if(cheat[0])
+			joueur[0].getV().setInvicible(true);
+		else
+			joueur[0].getV().setInvicible(false);
+		
+		//END CHEAT CODE
 
 		if(Main.etatprecedent == Main.MENUSTATE){
 			reset();
@@ -226,7 +239,7 @@ public class Game extends BasicGameState{
 		}
 		//*
 		// La pause
-		if (gc.getInput().isKeyPressed(Input.KEY_P)){
+		if (gc.getInput().isKeyPressed(Input.KEY_P) || input.isKeyPressed(Input.KEY_ESCAPE)){
 			gc.setPaused(!gc.isPaused());
 			vue.setPauseBg(gc.getGraphics());
 			sbg.enterState(Main.PAUSESTATE);
@@ -324,20 +337,20 @@ public class Game extends BasicGameState{
 
 		//* Test alien
 
-		if(enemy.size()<1000 && debug ){
-			for(int i=0;i<50;i++)
+		if(enemy.size()<10 && debug ){
+			for(int i=0;i<10;i++)
 				enemy.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
 			//System.out.println("Un alien arrive");
 		}//*/
 
-		//* Test missile
+		/* Test missile
 		if(playerProjectile.size()<2000 && debug ){
 			for(int i=0;i<50;i++)
 				playerProjectile.add(new Missile(0,rand.nextFloat()*(550-0)));
 
 		}//*
 
-		//* Test explosion
+		/* Test explosion
 		if(explo.size()<10000 && debug ){
 			for(int i=0;i<100;i++)
 				explo.add(new Explosion(rand.nextFloat()*(700-100),rand.nextFloat()*(500-0)));

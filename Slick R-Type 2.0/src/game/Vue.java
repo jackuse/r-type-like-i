@@ -238,7 +238,7 @@ public class Vue {
 	}
 
 	public float getStartGameScale() {
-		System.out.println("startGameScale "+startGameScale);
+		//System.out.println("startGameScale "+startGameScale);
 		return startGameScale;
 	}
 
@@ -534,7 +534,7 @@ public class Vue {
 				cadre = e.getCadre();
 
 				if(cadre != null)
-					explosion.getSubImage((int)cadre[0],(int)cadre[1],(int)cadre[2],(int)cadre[3]).draw(e.getX()+cadre[2]/3,e.getY()+cadre[3]/3,1.5f);
+					explosion.getSubImage((int)cadre[0],(int)cadre[1],(int)cadre[2],(int)cadre[3]).draw(e.getX(),e.getY(),1.5f);
 			}
 		}
 		return 0;
