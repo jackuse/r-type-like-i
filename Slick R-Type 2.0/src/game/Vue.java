@@ -532,13 +532,14 @@ public class Vue {
 	}
 
 	public int renderJoueur(Graphics gr, VaisseauJoueur v) {
-		joueur.draw(v.getX(), v.getY(),3.0f);
+		
 
 		if(debugCol){
-			Rectangle rect = new Rectangle (v.getX(), v.getY(), 60, 60);
+			Rectangle rect = new Rectangle (v.getX(), v.getY(), v.getW(), v.getH());
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 			gr.fill(rect);
 		}
+		joueur.draw(v.getX()+60, v.getY(),3.0f);
 		return 0;
 	}
 
@@ -572,14 +573,15 @@ public class Vue {
 		return 0;
 	}
 
-	public int render1Vaisseau(Graphics gr, Objet ob,int type) {
-		alien[type].draw(ob.getX()+ob.getW()/2,ob.getY()+ob.getH()/2);
+	public int render1Vaisseau(Graphics gr, Objet ob,int type) {	
 
 		if(debugCol){
 			Rectangle rect = new Rectangle (ob.getX(), ob.getY(), ob.getW(), ob.getH());
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 			gr.fill(rect);
 		}
+		
+		alien[type].draw(ob.getX(),ob.getY());
 		return 0;
 	}
 
@@ -587,12 +589,13 @@ public class Vue {
 		if(((Tir)ob).estVisible()){
 			switch (type) {
 			case 0:
-				missile.draw(ob.getX()+joueur.getWidth()/2,ob.getY()+joueur.getHeight()/2);
+				
 				if(debugCol){
 					Rectangle rect = new Rectangle (ob.getX(), ob.getY(), ob.getW(), ob.getH());
 					gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 					gr.fill(rect);
 				}
+				missile.draw(ob.getX()+joueur.getWidth()/2,ob.getY()-joueur.getHeight()/2);
 				break;
 			case 1:
 				laser.draw(ob.getX()+joueur.getWidth()/2,ob.getY()+joueur.getHeight()/2);

@@ -22,8 +22,9 @@ public class VaisseauJoueur extends Vaisseau {
 		speed = 10;
 		pdv = 100;
 		move = false;
-		w=60;
-		h=60;
+		w=90;
+		h=90;
+		x=0;
 		y= 240;
 		armeSelect = 22;
 

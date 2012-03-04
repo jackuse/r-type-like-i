@@ -195,7 +195,7 @@ public class Game extends BasicGameState{
 				delaiTire-=delta;
 				if(delaiTire < 0){
 
-					playerProjectile.add(new Missile(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+					playerProjectile.add(new Missile(joueur[0].getV().getX()+joueur[0].getV().getW()/2,joueur[0].getV().getY()+joueur[0].getV().getH()/2));
 
 					delaiTire = 100;
 					break;

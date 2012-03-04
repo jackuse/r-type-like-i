@@ -138,11 +138,11 @@ public class Objet {
    * @param        objet
    */
   public boolean collision(Objet a) {
-      System.out.println("it's working");
-	  System.out.println("x de l'ennemi :"+a.getX()+" y de l'ennemi :"+a.getY());
-      System.out.println("w de l'ennemi :"+a.getW()+" h de l'ennemi :"+a.getH());
-	  System.out.println("x du missile :" +x+" y du missile :"+ y);
-	  System.out.println("w du missile :" +w+" h du missile :"+ h);
+//      System.out.println("it's working");
+//	  System.out.println("x de l'ennemi :"+a.getX()+" y de l'ennemi :"+a.getY());
+//      System.out.println("w de l'ennemi :"+a.getW()+" h de l'ennemi :"+a.getH());
+//	  System.out.println("x du missile :" +x+" y du missile :"+ y);
+//	  System.out.println("w du missile :" +w+" h du missile :"+ h);
 	  if((a.getX() >= x + w)           // trop à droite
                       || (a.getX() + a.getW() <= x)   // trop à gauche
                       || (a.getY() >= y + h)   // trop en bas
