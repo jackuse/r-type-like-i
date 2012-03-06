@@ -32,12 +32,14 @@ public class Main extends StateBasedGame {
     
     private Vue vue = Vue.getInstance();
     
+    public static AppGameContainer app;
+    
  
     public Main()
     {
         super("R-Type Like It !");
         
-        vue.setScreen(WIDTH ,HEIGHT);
+        
  
         this.addState(new Menu(MENUSTATE));
         this.addState(new Game(GAMESTATE));
@@ -49,6 +51,7 @@ public class Main extends StateBasedGame {
         this.addState(new GameOver(GAMEOVERSTATE));
         this.enterState(CHARGEMENTSTATE);
         
+        
     }
  
 	/**
@@ -58,7 +61,7 @@ public class Main extends StateBasedGame {
 	 */
     public static void main(String[] args) throws SlickException
     {
-         AppGameContainer app = new AppGameContainer(new Main());
+         app = new AppGameContainer(new Main());
          app.setDisplayMode(WIDTH, HEIGHT, false);
          app.start();
     }
@@ -79,5 +82,6 @@ public class Main extends StateBasedGame {
         gameContainer.setTargetFrameRate(60);
         gameContainer.setMaximumLogicUpdateInterval(20);
         gameContainer.setMinimumLogicUpdateInterval(20);
+        vue.setScreen(WIDTH ,HEIGHT,false);
     }
 }

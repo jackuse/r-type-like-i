@@ -16,6 +16,8 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.loading.DeferredResource;
 import org.newdawn.slick.loading.LoadingList;
@@ -59,9 +61,9 @@ public class Vue {
 
 	float alpha = 0;
 
-	private Font font; 
+	private UnicodeFont font; 
 
-	private Music principale = null;
+	public Music principale = null;
 	private float volumeMusic = 0.5f;
 
 	private Image pauseBg = null;
@@ -72,6 +74,13 @@ public class Vue {
 	boolean debugCol = false;
 
 	boolean clignotementVie =false;
+	
+	Image valider = null;
+	Image validerOk = null;
+
+	private boolean validerMusic = true;
+
+	private boolean validerFullscreen;
 
 
 
@@ -348,6 +357,13 @@ public class Vue {
 		gr.copyArea(pauseBg,0,0);
 	}
 
+	public Image getValider() {
+		return valider;
+	}
+
+	public Image getValiderOk() {
+		return validerOk;
+	}
 
 
 
@@ -389,11 +405,19 @@ public class Vue {
 		principale.setVolume(volumeMusic);
 		//System.out.println("Space !! ");
 		try {
-			font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
+			//font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
+			font = new UnicodeFont("data/coolvetica.ttf", 40,false,false);
+			//uFont = new UnicodeFont(font, 20, false, false);
+			font.getEffects().add(new ColorEffect());
+			font.addAsciiGlyphs();
+		    font.loadGlyphs();
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+		valider = rm.getImage("VALIDER");
+		validerOk = rm.getImage("VALIDER_OK");
+		
 	}
 
 	public void initGame(){
@@ -454,9 +478,22 @@ public class Vue {
 	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY) {
 		//System.out.println("rendu d'option");
 
-		startGameOption.draw(optionX, optionY, startGameScale);
-		optionOption.draw(optionX, optionY+45, optionScale);
-		exitOption.draw(optionX, optionY+90, exitScale);
+		//startGameOption.draw(optionX, optionY, startGameScale);
+		
+		font.drawString(optionX, optionY, "Music",new Color(1.0f,1.0f,1.0f));
+		if(validerMusic)
+			validerOk.draw(optionX+width*0.20f, optionY,0.7f);
+		else
+			valider.draw(optionX+width*0.20f, optionY,0.7f);
+		
+		font.drawString(optionX, optionY+height*0.10f, "Fullscreen",new Color(1.0f,1.0f,1.0f));
+		if(validerFullscreen)
+			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+		else
+			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+		//optionOption.draw(optionX, optionY+45, optionScale);
+		exitOption.draw(optionX, optionY+width*0.20f, exitScale);
+		
 	}
 
 	public void renderSelection(Graphics g) {
@@ -635,6 +672,14 @@ public class Vue {
 		return 0;
 	}
 
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
 	public void renderPause(GameContainer gc, Graphics gr,int pauseX, int pauseY) {
 		//		if (gc.isPaused())
 		//		{
@@ -771,9 +816,16 @@ public class Vue {
 	}
 	
 
-	public void setScreen(int width, int height) {
+	public void setScreen(int width, int height,boolean fullscreen) {
 		this.width = width;
 		this.height = height;
+		try {
+			System.out.println(width+" "+height+" "+fullscreen);
+			Main.app.setDisplayMode(width,height,fullscreen);
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -794,5 +846,24 @@ public class Vue {
 		gr.drawString("You loose ! ", 400, 280); 
 		if(ok)
 			gr.drawString("Press escape", 400, 300); 
+	}
+
+	public void setValiderMusic(boolean b) {
+		validerMusic  = b;
+		
+	}
+	
+	public boolean isValiderMusic() {
+		return validerMusic;
+		
+	}
+
+	public void setValiderFullScreen(boolean b) {
+		validerFullscreen = b;
+		
+	}
+
+	public boolean getValiderFullScreen() {
+		return validerFullscreen;
 	}
 }

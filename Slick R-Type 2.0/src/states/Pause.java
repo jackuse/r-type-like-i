@@ -72,7 +72,7 @@ public class Pause extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-
+		//System.out.println("pause delta"+ delta);
 		if(Main.etatprecedent != Main.PAUSESTATE)
 			Main.etatprecedent = Main.PAUSESTATE;
 

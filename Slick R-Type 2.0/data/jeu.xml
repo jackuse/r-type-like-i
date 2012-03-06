@@ -12,6 +12,8 @@
 	<resource type="music" id="GAME_MUSIC">data\Asterix and the Great Rescue Mega Drive Title Music.ogg</resource>
 	<resource type="sound" id="HITSOUND_1">data\hit.wav</resource>
 	<resource type="image" id="VAISSEAU_1">data\F-4Phantom.png</resource>
+	<resource type="image" id="VALIDER">data\validerB.png</resource>
+	<resource type="image" id="VALIDER_OK">data\validerBok.png</resource>
 	
 
 </resources>

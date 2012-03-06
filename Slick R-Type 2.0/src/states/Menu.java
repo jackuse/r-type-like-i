@@ -18,6 +18,7 @@ public class Menu extends BasicGameState{
 	int menuY = 500;
 	float scaleStep = 0.0002f;
     boolean firstLauch = true;
+    int delay = 20;
 
 	
 
@@ -43,7 +44,7 @@ public class Menu extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		
+		//System.out.println("pause delta "+ delta);
 		//System.out.println("etat "+sbg.getCurrentStateID());
 		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
 		if(Main.etatprecedent == -1){
@@ -54,7 +55,9 @@ public class Menu extends BasicGameState{
 		
 		if(!vue.isMusic()&& (Main.etatprecedent != sbg.getCurrentStateID())){
 			vue.selectMusic(0);
+			if(vue.isValiderMusic()){
 			vue.setMusic(1);
+			}
 		}
 		//if(!vue.isMusic())
 			//vue.setMusic(1);
@@ -84,7 +87,7 @@ public class Menu extends BasicGameState{
 		if(insideStartGame){
 			System.out.println("je suis dans start game");
 			if(vue.getStartGameScale() < 0.8f)
-				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
+				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delay);
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				//vue.setMusic(0);
@@ -96,7 +99,7 @@ public class Menu extends BasicGameState{
 			}
 		}else{
 			if(vue.getStartGameScale() > 0.7f)
-				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delta);
+				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delay);
 
 			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
 			//gc.exit();
@@ -104,7 +107,7 @@ public class Menu extends BasicGameState{
 
 		if(insideOption){
 			if(vue.getOptionScale() < 0.8f)
-				vue.setOptionScale(vue.getOptionScale()+scaleStep * delta);
+				vue.setOptionScale(vue.getOptionScale()+scaleStep * delay);
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				//vue.setMusic(0);
@@ -114,7 +117,7 @@ public class Menu extends BasicGameState{
 			}
 		}else{
 			if(vue.getOptionScale() > 0.7f)
-				vue.setOptionScale(vue.getOptionScale()-scaleStep * delta);
+				vue.setOptionScale(vue.getOptionScale()-scaleStep * delay);
 
 			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
 			//gc.exit();
@@ -123,12 +126,12 @@ public class Menu extends BasicGameState{
 		if(insideExit)
 		{
 			if(vue.getExitScale() < 0.8f)
-				vue.setExitScale(vue.getExitScale() + scaleStep * delta);
+				vue.setExitScale(vue.getExitScale() + scaleStep * delay);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
 				gc.exit();
 		}else{
 			if(vue.getExitScale() > 0.7f)
-				vue.setExitScale(vue.getExitScale() - scaleStep * delta);
+				vue.setExitScale(vue.getExitScale() - scaleStep * delay);
 		}
 		
 		

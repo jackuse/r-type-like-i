@@ -22,7 +22,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Game extends BasicGameState{
-	
+
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
 
@@ -106,20 +106,24 @@ public class Game extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		
+
 		//BEGIN CHEAT CODE
 		if(cheat[0])
 			joueur[0].getV().setInvicible(true);
 		else
 			joueur[0].getV().setInvicible(false);
-		
-		//END CHEAT CODE
 
+		//END CHEAT CODE
+		
 		if(Main.etatprecedent == Main.MENUSTATE){
 			reset();
 			Main.etatprecedent = sbg.getCurrentStateID();	
 			vue.selectMusic(1);
 			vue.setMusic(1);
+			vue.setMusic(2);
+			if(vue.isValiderMusic()){	
+				vue.setMusic(1);
+			}
 		}
 
 		delayClig -=delta;//a modifier
