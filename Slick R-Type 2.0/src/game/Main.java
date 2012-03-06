@@ -70,8 +70,9 @@ public class Main extends StateBasedGame {
     public void initStatesList(GameContainer gameContainer) throws SlickException {
     	
     	this.getState(CHARGEMENTSTATE).init(gameContainer, this);
+    	this.getState(GAMESTATE).init(gameContainer, this);
         this.getState(MENUSTATE).init(gameContainer, this);
-        this.getState(GAMESTATE).init(gameContainer, this);
+        
         this.getState(PAUSESTATE).init(gameContainer, this);
         this.getState(OPTIONSTATE).init(gameContainer, this);
         this.getState(HIGHSCORESTATE).init(gameContainer, this);

@@ -22,6 +22,8 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.loading.DeferredResource;
 import org.newdawn.slick.loading.LoadingList;
 
+import states.Game;
+
 // Faire un design pattern sigletton
 // Contient toutes les valeurs partagées des etats
 
@@ -64,6 +66,7 @@ public class Vue {
 	private UnicodeFont font; 
 
 	public Music principale = null;
+	private int idMusic;
 	private float volumeMusic = 0.5f;
 
 	private Image pauseBg = null;
@@ -717,6 +720,7 @@ public class Vue {
 	
 
 	public void setMusic(int etatMusic) {
+		System.out.println(principale.toString());
 		switch (etatMusic) {
 		case 0:
 			principale.stop();
@@ -730,31 +734,78 @@ public class Vue {
 		case 3:
 			principale.resume();
 			break;
+		case 4:
+			principale.play();
+			break;
 
 		default:
 			break;
 		}
 	}
 	
+	public void nextMusic(){
+		System.out.println("next music is "+rm.getMusic("MUSIC_"+(idMusic+1))+" and "+"MUSIC_"+(idMusic+1));
+		if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
+			if(idMusic<rm.getNumber("NB_MUSIC_CHEAT")){
+				if(idMusic == (rm.getNumber("NB_MUSIC_CHEAT")-1))
+					idMusic = 0;
+				else
+					idMusic++;
+				principale = rm.getMusic("MUSIC_CHEAT_"+idMusic);
+			}
+		}else if(idMusic<rm.getNumber("NB_MUSIC")){
+			if(idMusic == (rm.getNumber("NB_MUSIC")-1))
+				idMusic = 0;
+			else
+				idMusic++;
+			principale = rm.getMusic("MUSIC_"+idMusic);
+		}
+			System.out.println("real music is "+principale+" and "+"MUSIC_"+idMusic);
+	}
 
 	public void selectMusic(int id) {
+		if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
+			if(id > 0 && id < 3){
+				idMusic = id;
+				principale = rm.getMusic("MUSIC_CHEAT_"+(id+1));
+			}
+		}
+		else if(id > 0 && id < 8){
+			idMusic = id;
+			principale = rm.getMusic("MUSIC_"+(id+1));
+		}
+		/*
 		switch (id) {
 		case 0:
-			principale = null;
-			principale = rm.getMusic("MENU_MUSIC");
+			principale = rm.getMusic("MUSIC_1");
+			//principale = null;
+			//principale = rm.getMusic("MENU_MUSIC");
 //			System.out.println("MENU_MUSIC "+principale.toString()+" et "+principale.playing());
 			break;
 		case 1:
-			principale = rm.getMusic("GAME_MUSIC");
+			principale = rm.getMusic("MUSIC_2");
+			//principale = rm.getMusic("GAME_MUSIC");
 //			System.out.println("GAME_MUSIC "+principale.toString()+" et "+principale.playing());
 			break;
 		case 2:
-
+			principale = rm.getMusic("MUSIC_3");
+			break;
+		case 3:
+			principale = rm.getMusic("MUSIC_4");
+			break;
+		case 4:
+			principale = rm.getMusic("MUSIC_5");
+			break;
+		case 5:
+			principale = rm.getMusic("MUSIC_6");
+			break;
+		case 6:
+			principale = rm.getMusic("MUSIC_7");
 			break;
 
 		default:
 			break;
-		}
+		}*/
 	}
 	
 

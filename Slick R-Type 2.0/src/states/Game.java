@@ -7,6 +7,7 @@ import game.Laser;
 import game.Main;
 import game.Missile;
 import game.Objet;
+import game.ResourceManager;
 import game.Tir;
 import game.Vue;
 
@@ -115,16 +116,24 @@ public class Game extends BasicGameState{
 
 		//END CHEAT CODE
 		
+		
+		// BEGIN MUSIC
+		if(!vue.isMusic()){
+			vue.setMusic(0);
+		}
+		
 		if(Main.etatprecedent == Main.MENUSTATE){
 			reset();
 			Main.etatprecedent = sbg.getCurrentStateID();	
-			vue.selectMusic(1);
-			vue.setMusic(1);
-			vue.setMusic(2);
+			vue.selectMusic(2);
+			//vue.setMusic(1);
+			vue.setMusic(0);
 			if(vue.isValiderMusic()){	
-				vue.setMusic(1);
+				vue.setMusic(4);
 			}
 		}
+		
+		// END MUSIC
 
 		delayClig -=delta;//a modifier
 		if(delayClig < 0){
@@ -206,6 +215,11 @@ public class Game extends BasicGameState{
 				//System.out.println(joueur[0].getV().getPdv());
 				delaiTire = 100;
 			}
+			ResourceManager rm = ResourceManager.getInstance();
+			rm.listR();
+			vue.setMusic(0);
+			vue.nextMusic();
+			vue.setMusic(4);
 		}
 
 		if(!input.isKeyDown(Input.KEY_LCONTROL) && speedUp)
