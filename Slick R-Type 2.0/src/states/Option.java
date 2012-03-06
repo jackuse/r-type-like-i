@@ -83,7 +83,7 @@ public class Option extends BasicGameState{
 			//System.out.println("music in "+delayClick+" et delta"+ delta);
 			delayClick-= 20;
 			if (delayClick<0){
-				
+
 				//System.out.println("music in delay"+delayClick);
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 					if(!vue.isMusic()){
@@ -135,10 +135,14 @@ public class Option extends BasicGameState{
 
 				vue.setExitScale(0.7f);
 
-				if(Main.etatprecedent == Main.PAUSESTATE)
+				if(Main.etatprecedent == Main.PAUSESTATE){
 					sbg.enterState(Main.PAUSESTATE);
-				else if(Main.etatprecedent == Main.MENUSTATE)
+					Main.etatprecedent = sbg.getCurrentStateID();
+				}
+				else if(Main.etatprecedent == Main.MENUSTATE){
 					sbg.enterState(Main.MENUSTATE);
+					Main.etatprecedent = sbg.getCurrentStateID();
+				}
 			}
 		}else{
 			if(vue.getExitScale() > 0.7f)

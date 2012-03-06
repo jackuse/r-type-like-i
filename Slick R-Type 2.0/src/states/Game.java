@@ -122,17 +122,33 @@ public class Game extends BasicGameState{
 			vue.setMusic(0);
 		}
 		
-		if(Main.etatprecedent == Main.MENUSTATE){
-			reset();
-			Main.etatprecedent = sbg.getCurrentStateID();	
-			vue.selectMusic(2);
-			//vue.setMusic(1);
-			vue.setMusic(0);
-			if(vue.isValiderMusic()){	
-				vue.setMusic(4);
+		
+		
+		if(vue.isValiderMusic()){
+			if(!vue.isMusic()){
+				vue.setMusic(0);
+				vue.nextMusic();
+				vue.setMusic(4);		
 			}
 		}
 		
+		
+		if(Main.etatprecedent == Main.MENUSTATE){
+			reset();
+			Main.etatprecedent = sbg.getCurrentStateID();	
+			
+			//vue.setMusic(1);
+			vue.setMusic(0);
+			vue.selectMusic(1);
+			//vue.principale.setPosition(120.0f);
+			if(vue.isValiderMusic()){	
+				vue.setMusic(4);
+			}
+			vue.principale.setVolume(0.4f);
+			
+			
+		}
+		System.out.println("music is "+vue.isMusic()+" and pos="+vue.principale.getPosition()+" and vol="+vue.principale.getVolume()  ); 
 		// END MUSIC
 
 		delayClig -=delta;//a modifier

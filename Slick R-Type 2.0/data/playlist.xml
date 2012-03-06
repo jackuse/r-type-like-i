@@ -7,11 +7,11 @@
 	<resource type="music" id="MUSIC_2">data\songs\DUM DADI DOO BY NIGHT CORE.ogg</resource>
 	<resource type="music" id="MUSIC_3">data\songs\Ghostbusters Techno.ogg</resource>
 	<resource type="music" id="MUSIC_4">data\songs\Nightcore - Around the World.ogg</resource>
-	<!--
+	
 	<resource type="music" id="MUSIC_5">data\songs\Nightcore - Dota.ogg</resource>
 	<resource type="music" id="MUSIC_6">data\songs\Nightcore - Sugar.ogg</resource>
 	<resource type="music" id="MUSIC_7">data\songs\Tetris Techno Trance Remix.ogg</resource>
-	 -->
+	 
 	<!-- PLAYLIST CHEATEUR -->
 	<!--
 	<resource type="nb" id="NB_MUSIC_CHEAT">8</resource>

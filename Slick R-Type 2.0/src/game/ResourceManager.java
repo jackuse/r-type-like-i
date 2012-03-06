@@ -193,7 +193,7 @@ public class ResourceManager {
 		Music music = null;
 
 		try {
-			music = new Music(path);
+			music = new Music(path,true);
 		} catch (SlickException e) {
 			throw new SlickException("Could not load sound", e);
 		}

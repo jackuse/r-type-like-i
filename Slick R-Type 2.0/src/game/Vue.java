@@ -39,7 +39,7 @@ public class Vue {
 	//
 
 
-	private Image[] background = new Image[2];
+	private Image[] background = new Image[4];
 	private Image joueur;
 	private Image[] alien = new Image[2];;
 	private Image laser;
@@ -66,7 +66,7 @@ public class Vue {
 	private UnicodeFont font; 
 
 	public Music principale = null;
-	private int idMusic;
+	private int idMusic = 0;;
 	private float volumeMusic = 0.5f;
 
 	private Image pauseBg = null;
@@ -77,7 +77,7 @@ public class Vue {
 	boolean debugCol = false;
 
 	boolean clignotementVie =false;
-	
+
 	Image valider = null;
 	Image validerOk = null;
 
@@ -137,101 +137,6 @@ public class Vue {
 	//
 
 
-	//	/**
-	//	 * Set the value of background
-	//	 * @param newVar the new value of background
-	//	 */
-	//	private void setBackground ( Image[] newVar ) {
-	//		background = newVar;
-	//	}
-	//
-	//	/**
-	//	 * Get the value of background
-	//	 * @return the value of background
-	//	 */
-	//	private Image[] getBackground ( ) {
-	//		return background;
-	//	}
-	//
-	//	/**
-	//	 * Set the value of joueur
-	//	 * @param newVar the new value of joueur
-	//	 */
-	//	private void setJoueur ( Image newVar ) {
-	//		joueur = newVar;
-	//	}
-	//
-	//	/**
-	//	 * Get the value of joueur
-	//	 * @return the value of joueur
-	//	 */
-	//	private Image getJoueur ( ) {
-	//		return joueur;
-	//	}
-	//
-	//	/**
-	//	 * Set the value of alien
-	//	 * @param newVar the new value of alien
-	//	 */
-	//	private void setAlien ( Image[] newVar ) {
-	//		alien = newVar;
-	//	}
-	//
-	//	/**
-	//	 * Get the value of alien
-	//	 * @return the value of alien
-	//	 */
-	//	private Image[] getAlien ( ) {
-	//		return alien;
-	//	}
-	//
-	//	/**
-	//	 * Set the value of laser
-	//	 * @param newVar the new value of laser
-	//	 */
-	//	private void setLaser ( Image newVar ) {
-	//		laser = newVar;
-	//	}
-	//
-	//	/**
-	//	 * Get the value of laser
-	//	 * @return the value of laser
-	//	 */
-	//	private Image getLaser ( ) {
-	//		return laser;
-	//	}
-	//
-	//	/**
-	//	 * Set the value of missile
-	//	 * @param newVar the new value of missile
-	//	 */
-	//	private void setMissile ( Image newVar ) {
-	//		missile = newVar;
-	//	}
-	//
-	//	/**
-	//	 * Get the value of missile
-	//	 * @return the value of missile
-	//	 */
-	//	private Image getMissile ( ) {
-	//		return missile;
-	//	}
-	//
-	//	/**
-	//	 * Set the value of dossierSkin
-	//	 * @param newVar the new value of dossierSkin
-	//	 */
-	//	private void setDossierSkin ( String newVar ) {
-	//		dossierSkin = newVar;
-	//	}
-	//
-	//	/**
-	//	 * Get the value of dossierSkin
-	//	 * @return the value of dossierSkin
-	//	 */
-	//	private String getDossierSkin ( ) {
-	//		return dossierSkin;
-	//	}
 
 	public Image getExitOption() {
 		return exitOption;
@@ -280,71 +185,6 @@ public class Vue {
 	// Other methods
 	//
 
-	/**
-	 * DEPRECIATED
-	 * Retourne l'image demander suivant le code suivant
-	 * 0 : background
-	 * 1 : joueur
-	 * 2 : alien
-	 * 3 : missile
-	 * 4 : laser
-	 * 
-	 * 
-	 * //Possible de le faire avec des strings
-	 * @return       Image
-	 * @param        noImage
-	 */
-	public Image getImage( int noImage )
-	{
-		switch (noImage) {
-		case 0:
-			return background[0];
-		case 1:
-			return joueur;	
-		case 2:
-			return alien[0];
-		case 3:
-			return missile;
-		case 4:
-			return laser;
-
-		default:
-			break;
-		}
-		return joueur;
-	}
-
-
-	/**
-	 * Teste si les fichier existe dans ce dossier et les charges
-	 * et revoi true
-	 * sinon revoi false
-	 * @return       boolean
-	 * @param        chemin
-	 */
-	public boolean changeSkin( String chemin )
-	{
-		return false;
-	}
-
-
-	/**
-	 * Permet de changer une image comme l'image de fond suivant les niveaux
-	 * @return       boolean
-	 * @param        noImage
-	 * @param        idImage
-	 */
-	public boolean setImage( int noImage, int idImage )
-	{
-		return false;
-	}
-
-
-
-
-
-
-
 
 	public float getOptionScale() {
 		return optionScale;
@@ -388,21 +228,22 @@ public class Vue {
 
 	public void initMenu(){
 
-//		try {
-//			rm.loadResources(new FileInputStream("data/menu.xml"));
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (SlickException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		//		try {
+		//			rm.loadResources(new FileInputStream("data/menu.xml"));
+		//		} catch (FileNotFoundException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		} catch (SlickException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
 		Image menu = rm.getImage("BOUTONS");
 		//System.out.println(menu.getHeight());
 
 		startGameOption = menu.getSubImage(0, 28, 445, 70);
 		optionOption = menu.getSubImage(180, 105, 300, 70);
 		exitOption = menu.getSubImage(278, 184, 200, 70);
+		background[1] = rm.getImage("BACKGROUD_MENU");
 
 		selectMusic(0);
 		principale.setVolume(volumeMusic);
@@ -413,20 +254,22 @@ public class Vue {
 			//uFont = new UnicodeFont(font, 20, false, false);
 			font.getEffects().add(new ColorEffect());
 			font.addAsciiGlyphs();
-		    font.loadGlyphs();
+			font.loadGlyphs();
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		valider = rm.getImage("VALIDER");
 		validerOk = rm.getImage("VALIDER_OK");
-		
+
+
+		background[2] = rm.getImage("BACKGROUD_OPTION");
 	}
 
 	public void initGame(){
-		principale = rm.getMusic("GAME_MUSIC");
+		principale = rm.getMusic("MUSIC_0");
 		principale.setVolume(volumeMusic);
-		background[0] = rm.getImage("BACKGROUD_JEU");
+		background[0] = rm.getImage("BACKGROUD_JEU");	
 		explosion = rm.getImage("EXPLOSION");
 		missile = rm.getImage("ROCKET");
 		missile.setRotation(90.0f);
@@ -452,25 +295,27 @@ public class Vue {
 	///////////////////////////////////////// RENDER /////////////////////////////////////////
 
 	public void renderChargement(GameContainer gc, Graphics gr) {
-		Rectangle board1 = new Rectangle (0, 571, 801, 30);
+
 		gr.setColor(new Color (0,0,0));
-		gr.fillRect(0,0,width,height); 
+		gr.fillRect(0,0,width,height); //fond
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
-		
+
 		if (nextResource != null) { 
 			String s = ("Loading: "+nextResource.getDescription());
 			int l = s.length();
-			//System.out.println("longeur "+l);
 			gr.drawString("Loading: "+nextResource.getDescription(), 400-l*5, 280); 
 		} 
 
 		int total = LoadingList.get().getTotalResources(); 
 		int loaded = LoadingList.get().getTotalResources() - LoadingList.get().getRemainingResources(); 
+		System.out.println("chargement"+total+" "+loaded);
 
 		float bar = loaded / (float) total; 
-		
-		gr.fillRect(250,300,loaded*40,20); 
-		gr.drawRect(250,300,total*40,20); 
+		System.out.println(bar+"/"+total);
+		gr.setColor(new Color (0,1.0f,1.0f));
+		gr.fillRect(200,300,bar*400,20); 
+		gr.setColor(new Color (1.0f,0,1.0f));
+		gr.drawRect(200,300,400,20); 
 
 		/*if (started) { 
 	            image.draw(100,200); 
@@ -482,13 +327,14 @@ public class Vue {
 		//System.out.println("rendu d'option");
 
 		//startGameOption.draw(optionX, optionY, startGameScale);
-		
+		background[2].draw(0, 0);
+
 		font.drawString(optionX, optionY, "Music",new Color(1.0f,1.0f,1.0f));
 		if(validerMusic)
 			validerOk.draw(optionX+width*0.20f, optionY,0.7f);
 		else
 			valider.draw(optionX+width*0.20f, optionY,0.7f);
-		
+
 		font.drawString(optionX, optionY+height*0.10f, "Fullscreen",new Color(1.0f,1.0f,1.0f));
 		if(validerFullscreen)
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
@@ -496,7 +342,7 @@ public class Vue {
 			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
 		exitOption.draw(optionX, optionY+width*0.20f, exitScale);
-		
+
 	}
 
 	public void renderSelection(Graphics g) {
@@ -508,11 +354,12 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderMenu(Graphics g,int menuX, int menuY) {
+	public int renderMenu(Graphics g,int menuX, int menuY,int titreX,int titreY) {
 		Rectangle fond = new Rectangle (0, 0, 800, 600);
 		g.setColor(new Color (0.2f, 0.2f, 0.2f));
 		g.fill(fond);
-
+		background[1].draw(0, 0);
+		font.drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
 		startGameOption.draw(menuX, menuY, startGameScale);
 		optionOption.draw(menuX+350, menuY, optionScale);
 		exitOption.draw(menuX+600, menuY, exitScale);
@@ -581,7 +428,7 @@ public class Vue {
 	}
 
 	public int renderJoueur(Graphics gr, VaisseauJoueur v) {
-		
+
 
 		if(debugCol){
 			Rectangle rect = new Rectangle (v.getX(), v.getY(), v.getW(), v.getH());
@@ -613,26 +460,26 @@ public class Vue {
 		Rectangle lifeBack = new Rectangle (width*0.50f, height*0.96f, width*0.20f, height*0.04f);
 		gr.setColor(new Color (0,0,0));
 		gr.fill(lifeBack);
-		
+
 		if(param[4]<=10){
 			clignotementVie = true;
 		}
 		else
 			clignotementVie = false;
-		
+
 
 		if(clignotementVie && param[5] == 1){}	
 		else{
-		Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.20f)*(param[4]/100f), height*0.04f);
-		
-		if(param[4]>30){
-			gr.setColor(new Color (0,1.0f,0));
-		}
-		else 
-		gr.setColor(new Color (1f,0,0));
-		
-		
-		gr.fill(lifebar);
+			Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.20f)*(param[4]/100f), height*0.04f);
+
+			if(param[4]>30){
+				gr.setColor(new Color (0,1.0f,0));
+			}
+			else 
+				gr.setColor(new Color (1f,0,0));
+
+
+			gr.fill(lifebar);
 		}
 
 		//Ajouter un timer
@@ -646,7 +493,7 @@ public class Vue {
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 			gr.fill(rect);
 		}
-		
+
 		alien[type].draw(ob.getX(),ob.getY());
 		return 0;
 	}
@@ -655,7 +502,7 @@ public class Vue {
 		if(((Tir)ob).estVisible()){
 			switch (type) {
 			case 0:
-				
+
 				if(debugCol){
 					Rectangle rect = new Rectangle (ob.getX(), ob.getY(), ob.getW(), ob.getH());
 					gr.setColor(new Color (0.2f, 0.2f, 0.2f));
@@ -714,13 +561,13 @@ public class Vue {
 	///////////////////////////////////////// UTILS //////////////////////////////////////////
 
 	public boolean isMusic() {
-//		System.out.println("isMusic "+principale.playing()+" et "+principale.toString());
+		//		System.out.println("isMusic "+principale.playing()+" et "+principale.toString());
 		return principale.playing();
 	}
-	
+
 
 	public void setMusic(int etatMusic) {
-		System.out.println(principale.toString());
+		//System.out.println(principale.toString());
 		switch (etatMusic) {
 		case 0:
 			principale.stop();
@@ -742,9 +589,10 @@ public class Vue {
 			break;
 		}
 	}
-	
+
 	public void nextMusic(){
 		System.out.println("next music is "+rm.getMusic("MUSIC_"+(idMusic+1))+" and "+"MUSIC_"+(idMusic+1));
+
 		if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
 			if(idMusic<rm.getNumber("NB_MUSIC_CHEAT")){
 				if(idMusic == (rm.getNumber("NB_MUSIC_CHEAT")-1))
@@ -760,20 +608,38 @@ public class Vue {
 				idMusic++;
 			principale = rm.getMusic("MUSIC_"+idMusic);
 		}
-			System.out.println("real music is "+principale+" and "+"MUSIC_"+idMusic);
+
+		System.out.println("real music is "+principale+" and "+"MUSIC_"+idMusic);
 	}
 
 	public void selectMusic(int id) {
-		if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
-			if(id > 0 && id < 3){
-				idMusic = id;
-				principale = rm.getMusic("MUSIC_CHEAT_"+(id+1));
+//		boolean ok = true;
+//		while(ok){
+			//System.out.println("boucle select "+id);
+			if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
+				if(id > 0 && id < 3){
+					idMusic = id;
+					principale = rm.getMusic("MUSIC_CHEAT_"+(id+1));
+				}
 			}
+			else if(id > 0 && id < 8){
+				idMusic = id;
+				System.out.println("MUSIC_"+id);
+				System.out.println("load a "+principale);
+				principale = rm.getMusic("MUSIC_"+id);
+				System.out.println("load b "+principale);
+//			}
+//			else
+//				ok = false;
+//			if(principale == null ){
+//				loadNext();
+//				System.out.println("load next ");
+//			}
+//			else
+//				ok = false;
 		}
-		else if(id > 0 && id < 8){
-			idMusic = id;
-			principale = rm.getMusic("MUSIC_"+(id+1));
-		}
+
+			
 		/*
 		switch (id) {
 		case 0:
@@ -807,7 +673,7 @@ public class Vue {
 			break;
 		}*/
 	}
-	
+
 
 	public void setPauseBg(Graphics gr) {
 		gr.copyArea(pauseBg, 0, 0);		
@@ -865,7 +731,7 @@ public class Vue {
 			e.printStackTrace();
 		}
 	}
-	
+
 
 	public void setScreen(int width, int height,boolean fullscreen) {
 		this.width = width;
@@ -891,7 +757,7 @@ public class Vue {
 			alpha += 0.05f;
 
 		gr.fill(rect);
-		
+
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
 
 		gr.drawString("You loose ! ", 400, 280); 
@@ -901,20 +767,35 @@ public class Vue {
 
 	public void setValiderMusic(boolean b) {
 		validerMusic  = b;
-		
+
 	}
-	
+
 	public boolean isValiderMusic() {
 		return validerMusic;
-		
+
 	}
 
 	public void setValiderFullScreen(boolean b) {
 		validerFullscreen = b;
-		
+
 	}
 
 	public boolean getValiderFullScreen() {
 		return validerFullscreen;
+	}
+
+	public void loadNext(){
+		try { 
+			nextResource.load(); 
+			// slow down loading for example purposes 
+			//try { Thread.sleep(50); } catch (Exception e) {} 
+		} catch (IOException e) { 
+			try {
+				throw new SlickException("Failed to load: "+nextResource.getDescription(), e);
+			} catch (SlickException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} 
+		} 
 	}
 }
