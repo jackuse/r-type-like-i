@@ -55,22 +55,36 @@ public class Menu extends BasicGameState{
 			vue.setMusic(1);
 			//Main.etatprecedent = sbg.getCurrentStateID();
 		}
-
-		if(Main.etatprecedent != sbg.getCurrentStateID()){
-				if(titreY<200){
-					titreY+=5;
-				}
-				else
-					Main.etatprecedent = sbg.getCurrentStateID();	
+		if(Main.etatprecedent == Main.OPTIONSTATE){
+			vue.setMusic(0);
 		}
 
+		if(Main.etatprecedent != sbg.getCurrentStateID()){
+			
+			if(titreY<200){
+				titreY+=5;
+			}
+			else{
+
+				if(Main.etatprecedent != Main.OPTIONSTATE){
+					//vue.selectMusic(0);
+					vue.setMusic(0);
+					if(vue.isValiderMusic()){
+						vue.setMusic(1);
+					}
+				}
+				Main.etatprecedent = sbg.getCurrentStateID();
+			}
+		}
+
+		/*
 		if(!vue.isMusic()&& (Main.etatprecedent == sbg.getCurrentStateID())){
 			vue.selectMusic(0);
 			if(vue.isValiderMusic()){
 				vue.setMusic(1);
 			}
 
-		}
+		}*/
 		//if(!vue.isMusic())
 		//vue.setMusic(1);
 
@@ -150,7 +164,7 @@ public class Menu extends BasicGameState{
 
 
 	}
-	
+
 	public void resetMenu(){
 		titreY = -100;
 	}

@@ -571,6 +571,7 @@ public class Vue {
 		switch (etatMusic) {
 		case 0:
 			principale.stop();
+			System.out.println(isMusic());
 			break;
 		case 1:
 			principale.loop();
@@ -594,16 +595,15 @@ public class Vue {
 		System.out.println("next music is "+rm.getMusic("MUSIC_"+(idMusic+1))+" and "+"MUSIC_"+(idMusic+1));
 
 		if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
-			if(idMusic<rm.getNumber("NB_MUSIC_CHEAT")){
-				if(idMusic == (rm.getNumber("NB_MUSIC_CHEAT")-1))
-					idMusic = 0;
-				else
-					idMusic++;
-				principale = rm.getMusic("MUSIC_CHEAT_"+idMusic);
-			}
-		}else if(idMusic<rm.getNumber("NB_MUSIC")){
-			if(idMusic == (rm.getNumber("NB_MUSIC")-1))
+			if(idMusic == (rm.getNumber("NB_MUSIC_CHEAT")-1) || idMusic>rm.getNumber("NB_MUSIC_CHEAT"))
 				idMusic = 0;
+			else
+				idMusic++;
+			principale = rm.getMusic("MUSIC_CHEAT_"+idMusic);
+			
+		}else{
+			if(idMusic == (rm.getNumber("NB_MUSIC")-1) || idMusic>rm.getNumber("NB_MUSIC"))
+				idMusic = 1;
 			else
 				idMusic++;
 			principale = rm.getMusic("MUSIC_"+idMusic);
@@ -617,26 +617,17 @@ public class Vue {
 //		while(ok){
 			//System.out.println("boucle select "+id);
 			if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
-				if(id > 0 && id < 3){
+				if(id > -1 && id < rm.getNumber("NB_MUSIC_CHEAT")){
 					idMusic = id;
 					principale = rm.getMusic("MUSIC_CHEAT_"+(id+1));
 				}
 			}
-			else if(id > 0 && id < 8){
+			else if(id > -1 && id < rm.getNumber("NB_MUSIC")){
 				idMusic = id;
-				System.out.println("MUSIC_"+id);
-				System.out.println("load a "+principale);
+				//System.out.println("MUSIC_"+id);
+				//System.out.println("load a "+principale);
 				principale = rm.getMusic("MUSIC_"+id);
-				System.out.println("load b "+principale);
-//			}
-//			else
-//				ok = false;
-//			if(principale == null ){
-//				loadNext();
-//				System.out.println("load next ");
-//			}
-//			else
-//				ok = false;
+				//System.out.println("load b "+principale);
 		}
 
 			
@@ -653,22 +644,6 @@ public class Vue {
 			//principale = rm.getMusic("GAME_MUSIC");
 //			System.out.println("GAME_MUSIC "+principale.toString()+" et "+principale.playing());
 			break;
-		case 2:
-			principale = rm.getMusic("MUSIC_3");
-			break;
-		case 3:
-			principale = rm.getMusic("MUSIC_4");
-			break;
-		case 4:
-			principale = rm.getMusic("MUSIC_5");
-			break;
-		case 5:
-			principale = rm.getMusic("MUSIC_6");
-			break;
-		case 6:
-			principale = rm.getMusic("MUSIC_7");
-			break;
-
 		default:
 			break;
 		}*/

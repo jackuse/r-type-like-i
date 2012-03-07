@@ -141,8 +141,10 @@ public class Pause extends BasicGameState{
 							Game.cheat[i] = false;
 						System.out.println("Password accepted");
 						if(i==0){
-							if(Game.cheat[i])
+							if(Game.cheat[i]){
 								System.out.println("Invincibilité : ON");
+								vue.nextMusic();
+							}
 							else
 								System.out.println("Invincibilité : OFF");
 						}
@@ -204,8 +206,8 @@ public class Pause extends BasicGameState{
 		{
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				vue.setExitScale(0.7f);
 				vue.setMusic(0);
+				vue.setExitScale(0.7f);
 				vue.selectMusic(0);
 				sbg.enterState(Main.MENUSTATE);
 			}

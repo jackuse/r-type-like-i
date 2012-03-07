@@ -50,6 +50,7 @@ public class GameOver extends BasicGameState{
 				ok = true;
 			delay = 200;
 		}
+		vue.selectMusic(0);
 
 		
 		Input input = gc.getInput(); // On récupére les input

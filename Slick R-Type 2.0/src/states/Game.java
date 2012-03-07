@@ -44,6 +44,7 @@ public class Game extends BasicGameState{
 	private int delaiTire = 0;
 	boolean debug = false;
 	private int delayClig = 200;
+	private int delay = 20;
 
 	public Game(int stateID) {
 		this.stateID = stateID;
@@ -118,20 +119,7 @@ public class Game extends BasicGameState{
 		
 		
 		// BEGIN MUSIC
-		if(!vue.isMusic()){
-			vue.setMusic(0);
-		}
-		
-		
-		
-		if(vue.isValiderMusic()){
-			if(!vue.isMusic()){
-				vue.setMusic(0);
-				vue.nextMusic();
-				vue.setMusic(4);		
-			}
-		}
-		
+	
 		
 		if(Main.etatprecedent == Main.MENUSTATE){
 			reset();
@@ -148,10 +136,22 @@ public class Game extends BasicGameState{
 			
 			
 		}
-		System.out.println("music is "+vue.isMusic()+" and pos="+vue.principale.getPosition()+" and vol="+vue.principale.getVolume()  ); 
+		
+		if(vue.isValiderMusic()){
+			if(!vue.isMusic()){
+				vue.setMusic(0);
+				vue.nextMusic();
+				vue.setMusic(4);		
+			}
+		}
+		
+//		if(!vue.isMusic()){
+//			vue.setMusic(0);
+//		}
+		///System.out.println("music is "+vue.isMusic()+" and pos="+vue.principale.getPosition()+" and vol="+vue.principale.getVolume()  ); 
 		// END MUSIC
 
-		delayClig -=delta;//a modifier
+		delayClig -=delay;//a modifier
 		if(delayClig < 0){
 			if(param[5] == 1)
 				param[5] = 0;
@@ -215,7 +215,7 @@ public class Game extends BasicGameState{
 		// Commande debug 										A SUPRIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if(input.isKeyDown(Input.KEY_DOWN))
 		{
-			delaiTire-=delta;//a modifier
+			delaiTire-=delay;//a modifier
 			if(delaiTire < 0){
 				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
 				//System.out.println(joueur[0].getV().getPdv());
@@ -225,18 +225,28 @@ public class Game extends BasicGameState{
 		// Commande debug 		2								A SUPRIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if(input.isKeyDown(Input.KEY_UP))
 		{
-			delaiTire-=delta;//a modifier
+			delaiTire-=delay;//a modifier
 			if(delaiTire < 0){
 				joueur[0].getV().setPdv(joueur[0].getV().getPdv()+10);
 				//System.out.println(joueur[0].getV().getPdv());
 				delaiTire = 100;
 			}
-			ResourceManager rm = ResourceManager.getInstance();
-			rm.listR();
-			vue.setMusic(0);
-			vue.nextMusic();
-			vue.setMusic(4);
 		}
+		
+		// Commande debug 		3								A SUPRIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if(input.isKeyDown(Input.KEY_RIGHT))
+				{
+					delaiTire-=delay;//a modifier
+					if(delaiTire < 0){
+						delaiTire = 100;
+						ResourceManager rm = ResourceManager.getInstance();
+						rm.listR();
+						vue.setMusic(0);
+						vue.nextMusic();
+						vue.setMusic(4);
+					}
+					
+				}
 
 		if(!input.isKeyDown(Input.KEY_LCONTROL) && speedUp)
 		{
@@ -250,7 +260,7 @@ public class Game extends BasicGameState{
 		{
 			switch (joueur[0].getV().getArme()) {
 			case 21:
-				delaiTire-=delta;//a modifier
+				delaiTire-=delay;//a modifier
 				if(delaiTire < 0){
 
 					playerProjectile.add(new Laser(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
@@ -259,7 +269,7 @@ public class Game extends BasicGameState{
 				}
 				break;
 			case 22:
-				delaiTire-=delta;
+				delaiTire-=delay;
 				if(delaiTire < 0){
 
 					playerProjectile.add(new Missile(joueur[0].getV().getX()+joueur[0].getV().getW()/2,joueur[0].getV().getY()+joueur[0].getV().getH()/2));
@@ -360,6 +370,8 @@ public class Game extends BasicGameState{
 		if(joueur[0].getV().getPdv()<=0){
 			vue.setPauseBg(gc.getGraphics());
 			vue.setMusic(0);
+			for(int i=0;i<4;i++)
+				cheat[i]=false;
 			sbg.enterState(Main.GAMEOVERSTATE);
 		}
 

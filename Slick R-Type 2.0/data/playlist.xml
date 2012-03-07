@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 	<!-- PLAYLIST -->
-	<resource type="nb"    id="NB_MUSIC">5</resource>
+	<resource type="nb"    id="NB_MUSIC">7</resource>
 	<resource type="music" id="MUSIC_0">data\songs\musiqueStarWars.ogg</resource>
-	<resource type="music" id="MUSIC_1">data\songs\Asterix and the Great Rescue Mega Drive Title Music.ogg</resource>
-	<resource type="music" id="MUSIC_2">data\songs\DUM DADI DOO BY NIGHT CORE.ogg</resource>
-	<resource type="music" id="MUSIC_3">data\songs\Ghostbusters Techno.ogg</resource>
-	<resource type="music" id="MUSIC_4">data\songs\Nightcore - Around the World.ogg</resource>
-	
-	<resource type="music" id="MUSIC_5">data\songs\Nightcore - Dota.ogg</resource>
-	<resource type="music" id="MUSIC_6">data\songs\Nightcore - Sugar.ogg</resource>
-	<resource type="music" id="MUSIC_7">data\songs\Tetris Techno Trance Remix.ogg</resource>
+	<resource type="music" id="MUSIC_1">data\songs\DUM DADI DOO BY NIGHT CORE.ogg</resource>
+	<resource type="music" id="MUSIC_2">data\songs\Ghostbusters Techno.ogg</resource>
+	<resource type="music" id="MUSIC_3">data\songs\Nightcore - Around the World.ogg</resource>
+	<resource type="music" id="MUSIC_4">data\songs\Nightcore - Dota.ogg</resource>
+	<resource type="music" id="MUSIC_5">data\songs\Nightcore - Sugar.ogg</resource>
+	<resource type="music" id="MUSIC_6">data\songs\Tetris Techno Trance Remix.ogg</resource>
 	 
 	<!-- PLAYLIST CHEATEUR -->
-	<!--
-	<resource type="nb" id="NB_MUSIC_CHEAT">8</resource>
-	<resource type="music" id="MUSIC_CHEAT_1">data\songs\Meuporg!! - Le Remix.ogg</resource>
-	<resource type="music" id="MUSIC_CHEAT_2">data\songs\Music using ONLY sounds from Windows XP and 98.ogg</resource>
-	<resource type="music" id="MUSIC_CHEAT_3">data\songs\DOUBLE RAINBOW SONG.ogg</resource>
-	 -->
+
+	<resource type="nb" id="NB_MUSIC_CHEAT">4</resource>
+	<resource type="music" id="MUSIC_CHEAT_0">data\songs\Meuporg!! - Le Remix.ogg</resource>
+	<resource type="music" id="MUSIC_CHEAT_1">data\songs\Music using ONLY sounds from Windows XP and 98.ogg</resource>
+	<resource type="music" id="MUSIC_CHEAT_2">data\songs\DOUBLE RAINBOW SONG.ogg</resource>
+	<resource type="music" id="MUSIC_CHEAT_3">data\songs\Asterix and the Great Rescue Mega Drive Title Music.ogg</resource>
+
 </resources>
 
