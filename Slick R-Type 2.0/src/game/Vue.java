@@ -66,6 +66,7 @@ public class Vue {
 	private float exitScale = 0.7f;
 	private float optionScale = 0.7f;
 
+
 	private ResourceManager rm = ResourceManager.getInstance();
 	public DeferredResource nextResource; 
 	public String sheetname = "VAISSEAU_1";
@@ -76,23 +77,32 @@ public class Vue {
 
 	public Music principale = null;
 	private int idMusic = 0;;
-	private float volumeMusic = 0.5f;
+	private float volumeMusic = 0.8f;
+	private boolean selectMusic[];
 
 	private Image pauseBg = null;
 
 	private int width = Main.WIDTH;
 	private int height = Main.HEIGHT ;
 
-	boolean debugCol = true;
-
+	
+	private int nbCligne = 0;
 	boolean clignotementVie =false;
 
 	Image valider = null;
 	Image validerOk = null;
-
 	private boolean validerMusic = true;
-
 	private boolean validerFullscreen;
+
+	private boolean msgOn = false;
+	private String msg = "";
+	private int msgTime = 0;
+
+	private boolean debug = false;
+	boolean debugCol = false;
+
+
+
 
 
 
@@ -309,6 +319,8 @@ public class Vue {
 		explosion = rm.getImage("EXPLOSION");
 		missile = rm.getImage("ROCKET");
 		missile.setRotation(90.0f);
+		laser = rm.getImage("LASER");
+		laser.setRotation(90.0f);
 		nastyProjectile = nastyProjectileSheet.getSprite("nastyProjectile1.gif");
 		//nastyProjectile.setRotation(270.0f);
 
@@ -318,11 +330,11 @@ public class Vue {
 		//joueur = sheet.getSubImage(97,45,30,30);
 		joueur=sheetTest.getSprite("VAISSEAU_1.gif");
 		joueur.setRotation(90.0f);
-		laser = sheet.getSubImage(265,3746,123,196);
-		laser.setRotation(90.0f);
+		//laser = sheet.getSubImage(265,3746,123,196);
+		//laser.setRotation(90.0f);
 
 
-		alien[0] = rm.getImage("ALIEN");
+		alien[0] = rm.getImage("ALIEN_0");
 		alien[0].setRotation(270.0f);	
 		try {
 			pauseBg = new Image(800,600);
@@ -331,6 +343,18 @@ public class Vue {
 			e.printStackTrace();
 		}
 	}
+
+	public boolean[] initSelectionMusic(boolean[] selectMusicO) {
+		selectMusic = new boolean[rm.getNumber("NB_MUSIC")];
+		selectMusicO = new boolean[rm.getNumber("NB_MUSIC")];
+		for(int i=1;i<selectMusicO.length;i++){
+			selectMusic[i] = true;
+			selectMusicO[i] = false;
+		}
+		return selectMusicO;
+
+	}
+
 	
 	
 	///////////////////////////////////////// RENDER /////////////////////////////////////////
@@ -340,7 +364,7 @@ public class Vue {
 		gr.setColor(new Color (0,0,0));
 		gr.fillRect(0,0,width,height); //fond
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
-
+		/*
 		if (nextResource != null) { 
 			String s = ("Loading: "+nextResource.getDescription());
 			int l = s.length();
@@ -352,12 +376,12 @@ public class Vue {
 		System.out.println("chargement"+total+" "+loaded);
 
 		float bar = loaded / (float) total; 
-		System.out.println(bar+"/"+total);
+		System.out.println((int)(bar*400)+"/"+total);
 		gr.setColor(new Color (0,1.0f,1.0f));
 		gr.fillRect(200,300,bar*400,20); 
 		gr.setColor(new Color (1.0f,0,1.0f));
 		gr.drawRect(200,300,400,20); 
-
+		 */
 		/*if (started) { 
 	            image.draw(100,200); 
 	            font.drawString(100,500,"LOADING COMPLETE"); 
@@ -376,13 +400,15 @@ public class Vue {
 		else
 			valider.draw(optionX+width*0.20f, optionY,0.7f);
 
-		font.drawString(optionX, optionY+height*0.10f, "Fullscreen",new Color(1.0f,1.0f,1.0f));
+		font.drawString(optionX, optionY+height*0.10f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
+
+		font.drawString(optionX, optionY+height*0.20f, "Fullscreen",new Color(1.0f,1.0f,1.0f));
 		if(validerFullscreen)
-			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+			validerOk.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
 		else
-			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+			valider.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
-		exitOption.draw(optionX, optionY+width*0.20f, exitScale);
+		exitOption.draw(optionX, optionY+height*0.30f, exitScale);
 
 	}
 
@@ -480,7 +506,7 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderJoueur(Graphics gr, VaisseauJoueur v) {
+	public int renderJoueur(Graphics gr, VaisseauJoueur v,int clig) {
 
 		sheet = rm.getImage(sheetname);
 		//joueur = sheet.getSubImage(97,45,30,30);
@@ -489,9 +515,30 @@ public class Vue {
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 			gr.fill(rect);
 		}
+
+		
+
+		if(v.isBorn()){
+			
+			if(clig == 1){
+				nbCligne++;
+				joueur.draw(v.getX()+60, v.getY(),3.0f);
+			}else{
+
+			}
+			if(nbCligne >4){
+				v.setBorn(false);
+				nbCligne = 0;
+			}
+
+		}else{
+			joueur.draw(v.getX()+60, v.getY(),3.0f);
+		}
+
 		joueur.draw(v.getX(), v.getY());
 		//joueur.draw(v.getX(), v.getY(), v.getW(), v.getH());
 	
+
 		return 0;
 	}
 
@@ -499,7 +546,7 @@ public class Vue {
 
 		//Tableaux de bord
 		//		g.setColor(org.newdawn.slick.Color.black);
-		Rectangle board1 = new Rectangle (0, 571, 801, 30);
+		Rectangle board1 = new Rectangle (0, height*0.955f, (width+1), 30);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 		gr.fill(board1);
 		//g.drawRect(0, 0, 400, 30);
@@ -507,28 +554,38 @@ public class Vue {
 		gr.setColor(org.newdawn.slick.Color.white);
 		//		uFont.drawString(50,10, "nb Explosion ="+nbEx);
 		//		uFont.drawString(100,10,"Explosion :"+nbEx,	org.newdawn.slick.Color.black);
-		gr.drawString("Explosion :"+param[0], 10,height*0.96f);
-		gr.drawString("Alien :"+param[1], 150,height*0.96f);
-		gr.drawString("Missile :"+param[2], width*0.31f,height*0.96f);
-		gr.drawString("Score :"+param[3], width*0.85f,height*0.96f);
+		if(debug ){
+			gr.drawString("Explosion :"+param[1], 10,height*0.96f);
+			gr.drawString("Alien :"+param[2], 150,height*0.96f);
+			gr.drawString("Missile :"+param[3], width*0.31f,height*0.96f);
+		}
+		gr.drawString("Score:"+param[4], width*0.85f,height*0.96f);
+		gr.drawString("Life:"+param[7], width*0.15f,height*0.96f);
+		
+		gr.drawString("Weapon:", 10,height*0.96f);
+		if(param[6] == 21){
+			laser.draw(width*0.11f,height*0.95f, 1f);
+		}else if(param[6] == 22){
+			missile.draw(width*0.09f,height*0.945f, 0.7f);
+		}
 
 		//Lifebar
 		Rectangle lifeBack = new Rectangle (width*0.50f, height*0.96f, width*0.20f, height*0.04f);
 		gr.setColor(new Color (0,0,0));
 		gr.fill(lifeBack);
 
-		if(param[4]<=10){
+		if(param[5]<=10){
 			clignotementVie = true;
 		}
 		else
 			clignotementVie = false;
 
 
-		if(clignotementVie && param[5] == 1){}	
+		if(clignotementVie && param[0] == 1){}	
 		else{
-			Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.20f)*(param[4]/100f), height*0.04f);
+			Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.20f)*(param[5]/100f), height*0.04f);
 
-			if(param[4]>30){
+			if(param[5]>30){
 				gr.setColor(new Color (0,1.0f,0));
 			}
 			else 
@@ -536,7 +593,10 @@ public class Vue {
 
 
 			gr.fill(lifebar);
+
 		}
+		gr.setColor(new Color (1f,0,1f));
+		gr.drawString(""+param[5], width*0.58f,height*0.965f);
 
 		//Ajouter un timer
 		return 0;
@@ -556,19 +616,19 @@ public class Vue {
 
 	public int render1Tir(Graphics gr, Objet ob, int type) {
 		if(((Tir)ob).estVisible()){
+			if(debugCol){
+				Rectangle rect = new Rectangle (ob.getX(), ob.getY(), ob.getW(), ob.getH());
+				gr.setColor(new Color (0.2f, 0.2f, 0.2f));
+				gr.fill(rect);
+			}
 			switch (type) {
-			case 0:
+			case 21:
+				laser.draw(ob.getX()+10,ob.getY()-15);
+				break;
 
-				if(debugCol){
-					Rectangle rect = new Rectangle (ob.getX(), ob.getY(), ob.getW(), ob.getH());
-					gr.setColor(new Color (0.2f, 0.2f, 0.2f));
-					gr.fill(rect);
-				}
+			case 22:
 				//missile.draw(ob.getX()+joueur.getWidth()/2,ob.getY()-joueur.getHeight()/2);
 				missile.draw(ob.getX(), ob.getY()-ob.getH()/2);
-				break;
-			case 1:
-				laser.draw(ob.getX()+joueur.getWidth()/2,ob.getY()+joueur.getHeight()/2);
 				break;
 			case 3:
 				nastyProjectile.draw(ob.getX(), ob.getY());
@@ -588,12 +648,14 @@ public class Vue {
 		return height;
 	}
 
-	public void renderPause(GameContainer gc, Graphics gr,int pauseX, int pauseY) {
+	public void renderPause(GameContainer gc, Graphics gr,int pauseX, int pauseY, boolean cheatModOn, ArrayList<Chara> pass) {
 		//		if (gc.isPaused())
 		//		{
-		Rectangle rect = new Rectangle (0, 0, 800, 600);
+		Rectangle rect = new Rectangle (0, 0, 801, 600);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
 		gr.fill(rect);
+
+
 
 		if (alpha < 0.8f)
 			alpha += 0.05f;
@@ -610,10 +672,78 @@ public class Vue {
 		//				alpha -= 0.01f;
 		//		}
 
+		if(cheatModOn){
+			Rectangle textArea= new Rectangle (0, 0, 801, 30);
+			gr.setColor(new Color (0, 0, 0));
+			gr.fill(textArea);
+			String s = "";
+			for(int i=0;i<pass.size();i++){
+				s+=pass.get(i).c;
+				//System.out.println("je passe "+s);
+			}
+			gr.setColor(new Color (1.0f, 1.0f, 1.0f));
+			gr.drawString(s,10f,5f);
+
+		}
+
+		if(msgOn){
+			//System.out.println("on message "+msg);
+			gr.setColor(new Color (1f,1f,1f));
+			//gr.drawString(msg, width*0.80f,5f);
+			gr.drawString(msg, 10f,5f);
+			//font.drawString(width*0.8f, 10, msg, new Color(1f,1f,1f));		
+			msgTime-=10;
+			if(msgTime <0){
+				System.out.println("fin boucle message");
+				msgTime = 0;
+				msgOn = false;
+			}
+		}
 
 
 	}
 
+	public void renderGameOver(GameContainer gc, Graphics gr, int gmOvX,
+			int gmOvY,boolean ok) {
+		pauseBg.draw(0, 0);
+		Rectangle rect = new Rectangle (0, 0, 801, 600);
+		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
+		gr.fill(rect);
+
+		if (alpha < 0.8f)
+			alpha += 0.05f;
+
+		gr.fill(rect);
+
+		gr.setColor(new Color (1.0f,1.0f,1.0f));
+
+		gr.drawString("You loose ! ", 400, 280); 
+		if(ok)
+			gr.drawString("Press escape", 400, 300); 
+	}
+
+
+	public void renderSelection(GameContainer gc, Graphics gr,int selectX, int selectY) {
+		for(int i=1;i<rm.getNumber("NB_MUSIC");i++){
+			//			Rectangle rect = new Rectangle (selectX+10, selectY+40*(i-1)+50, getValider().getWidth()*0.45f, getValider().getHeight()*0.45f);
+			//			gr.setColor(new Color (1.0f, 0.2f, 0.2f));
+			//			gr.fill(rect);
+			font.drawString(selectX+10, selectY, "Select your music : ",new Color(1.0f,1.0f,1.0f));
+			font.drawString(selectX+width*0.08f, selectY+height*0.066f*i, rm.getPlaylist("MUSIC_"+i),new Color(1.0f,1.0f,1.0f));
+			if(selectMusic[i])
+				validerOk.draw(selectX, selectY+height*0.066f*i,0.7f);
+			else
+				valider.draw(selectX, selectY+height*0.066f*i,0.7f);
+
+			exitOption.draw(selectX+10, selectY+height*0.80f, exitScale);
+
+
+
+			//selectX && mouseX <= selectX + vue.getValider().getWidth()) &&
+			//( mouseY >= selectY+vue.getValider().getHeight()*i && mouseY <= selectY  + vue.getValider().getHeight()*i*0.05f) ){
+		}
+
+	}
 
 
 	///////////////////////////////////////// UTILS //////////////////////////////////////////
@@ -629,7 +759,6 @@ public class Vue {
 		switch (etatMusic) {
 		case 0:
 			principale.stop();
-			System.out.println(isMusic());
 			break;
 		case 1:
 			principale.loop();
@@ -650,7 +779,7 @@ public class Vue {
 	}
 
 	public void nextMusic(){
-		System.out.println("next music is "+rm.getMusic("MUSIC_"+(idMusic+1))+" and "+"MUSIC_"+(idMusic+1));
+		//System.out.println("next music is "+rm.getMusic("MUSIC_"+(idMusic+1))+" and "+"MUSIC_"+(idMusic+1));
 
 		if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
 			if(idMusic == (rm.getNumber("NB_MUSIC_CHEAT")-1) || idMusic>rm.getNumber("NB_MUSIC_CHEAT"))
@@ -658,7 +787,7 @@ public class Vue {
 			else
 				idMusic++;
 			principale = rm.getMusic("MUSIC_CHEAT_"+idMusic);
-			
+
 		}else{
 			if(idMusic == (rm.getNumber("NB_MUSIC")-1) || idMusic>rm.getNumber("NB_MUSIC"))
 				idMusic = 1;
@@ -667,44 +796,26 @@ public class Vue {
 			principale = rm.getMusic("MUSIC_"+idMusic);
 		}
 
-		System.out.println("real music is "+principale+" and "+"MUSIC_"+idMusic);
+		//System.out.println("real music is "+principale+" and "+"MUSIC_"+idMusic);
 	}
 
 	public void selectMusic(int id) {
-//		boolean ok = true;
-//		while(ok){
-			//System.out.println("boucle select "+id);
-			if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
-				if(id > -1 && id < rm.getNumber("NB_MUSIC_CHEAT")){
-					idMusic = id;
-					principale = rm.getMusic("MUSIC_CHEAT_"+(id+1));
-				}
-			}
-			else if(id > -1 && id < rm.getNumber("NB_MUSIC")){
+		//		boolean ok = true;
+		//		while(ok){
+		//System.out.println("boucle select "+id);
+		if(Game.cheat[0] ||Game.cheat[1] ||Game.cheat[2] ||Game.cheat[3] ){
+			if(id > -1 && id < rm.getNumber("NB_MUSIC_CHEAT")){
 				idMusic = id;
-				//System.out.println("MUSIC_"+id);
-				//System.out.println("load a "+principale);
-				principale = rm.getMusic("MUSIC_"+id);
-				//System.out.println("load b "+principale);
+				principale = rm.getMusic("MUSIC_CHEAT_"+(id+1));
+			}
 		}
-
-			
-		/*
-		switch (id) {
-		case 0:
-			principale = rm.getMusic("MUSIC_1");
-			//principale = null;
-			//principale = rm.getMusic("MENU_MUSIC");
-//			System.out.println("MENU_MUSIC "+principale.toString()+" et "+principale.playing());
-			break;
-		case 1:
-			principale = rm.getMusic("MUSIC_2");
-			//principale = rm.getMusic("GAME_MUSIC");
-//			System.out.println("GAME_MUSIC "+principale.toString()+" et "+principale.playing());
-			break;
-		default:
-			break;
-		}*/
+		else if(id > -1 && id < rm.getNumber("NB_MUSIC")){
+			idMusic = id;
+			//System.out.println("MUSIC_"+id);
+			//System.out.println("load a "+principale);
+			principale = rm.getMusic("MUSIC_"+id);
+			//System.out.println("load b "+principale);
+		}
 	}
 
 
@@ -779,26 +890,9 @@ public class Vue {
 
 	}
 
-	public void renderGameOver(GameContainer gc, Graphics gr, int gmOvX,
-			int gmOvY,boolean ok) {
-		pauseBg.draw(0, 0);
-		Rectangle rect = new Rectangle (0, 0, 801, 600);
-		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
-		gr.fill(rect);
 
-		if (alpha < 0.8f)
-			alpha += 0.05f;
 
-		gr.fill(rect);
-
-		gr.setColor(new Color (1.0f,1.0f,1.0f));
-
-		gr.drawString("You loose ! ", 400, 280); 
-		if(ok)
-			gr.drawString("Press escape", 400, 300); 
-	}
-
-	public void setValiderMusic(boolean b) {
+	public void setValiderSetMusic(boolean b) {
 		validerMusic  = b;
 
 	}
@@ -830,5 +924,28 @@ public class Vue {
 				e1.printStackTrace();
 			} 
 		} 
+	}
+
+
+
+
+
+	public boolean isSelectMusic(int i) {
+		return selectMusic[i];
+	}
+
+
+
+	public void setValiderSelectMusic(int i, boolean b) {
+		selectMusic[i] =b;
+
+	}
+
+	public void setMessage(String msg, int i) {
+		msgOn = true;
+		this.msg=msg;
+		msgTime=i;
+		System.out.println("new message");
+
 	}
 }

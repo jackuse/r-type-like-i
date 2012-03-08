@@ -55,9 +55,7 @@ public class Menu extends BasicGameState{
 			vue.setMusic(1);
 			//Main.etatprecedent = sbg.getCurrentStateID();
 		}
-		if(Main.etatprecedent == Main.OPTIONSTATE){
-			vue.setMusic(0);
-		}
+
 
 		if(Main.etatprecedent != sbg.getCurrentStateID()){
 			
@@ -160,6 +158,10 @@ public class Menu extends BasicGameState{
 		}else{
 			if(vue.getExitScale() > 0.7f)
 				vue.setExitScale(vue.getExitScale() - scaleStep * delay);
+		}
+		
+		if (input.isKeyPressed(Input.KEY_ESCAPE)){
+			Main.app.exit();
 		}
 
 

@@ -14,12 +14,14 @@ public class Joueur {
 
   private int score;
   private VaisseauJoueur v = new VaisseauJoueur();
+  private int life;
   
   //
   // Constructors
   //
   public Joueur () { 
 	  score = 0;
+	  life = 3;
 	  
   };
   
@@ -55,6 +57,15 @@ public class Joueur {
   public VaisseauJoueur getV ( ) {
 	  return v;
   }
+
+public int getLife() {
+	return life;
+}
+
+public void setLife(int l) {
+	life = l;
+	
+}
 
   //
   // Other methods

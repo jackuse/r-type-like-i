@@ -15,22 +15,24 @@ public class VaisseauJoueur extends Vaisseau {
 	//	protected float speed = 10;
 	private int armeSelect;
 	private boolean invicible = false;
+	private boolean born = true;
 
 
 	//
 	// Constructors
 	//
 	public VaisseauJoueur () { 
-		speed = 10;
+		speed = 10;// Rapidité de tire ? dans un tableau
 		pdv = 100;
-		move = false;
 		w=90;
 		h=90;
 		x=0;
 		y= 240;
-		armeSelect = 22;
+		armeSelect = 21;
 
 	};
+	
+
 
 	//
 	// Methods
@@ -71,9 +73,44 @@ public class VaisseauJoueur extends Vaisseau {
 			pdv = newVar;
 	}
 
+	public void setNArme(boolean next) {
+		if(next){
+			if(armeSelect < 22)
+				armeSelect++;
+			else
+				armeSelect = 21;
+		}else{
+			if(armeSelect > 21)
+				armeSelect--;
+			else
+				armeSelect = 22;
+		}
+
+	}
+
 
 	//
 	// Other methods
 	//
 
+	public void rest(){
+		speed = 10;
+		pdv = 100;
+		w=90;
+		h=90;
+		x=0;
+		y= 240;
+		armeSelect = 21;
+		born = true;
+	}
+
+
+
+	public boolean isBorn() {
+		return born;
+	}
+	
+	public boolean setBorn(boolean b) {
+		return born = b;
+	}
 }

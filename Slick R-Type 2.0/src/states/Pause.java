@@ -27,8 +27,14 @@ public class Pause extends BasicGameState{
 	//private char[] charPass; 
 	private ArrayList<Chara> pass;
 	int nbPassword = 2;
+	private int delayClick = 150;
 
-
+	/* Ajouter un curseur pour de déplacer au clavier
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
 
 
 	public Pause(int stateID) {
@@ -49,23 +55,11 @@ public class Pause extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderPause(gc,gr,pauseX,pauseY);
-		if(Game.cheat[0])
-			gr.drawString("GODMOD : ON :", 10,10);
-		
-		if(cheatModOn){
-			Rectangle textArea= new Rectangle (0, 0, 801, 20);
-			gr.setColor(new Color (0, 0, 0));
-			gr.fill(textArea);
-			String s = "";
-			for(int i=0;i<pass.size();i++){
-				s+=pass.get(i).c;
-				//System.out.println("je passe "+s);
-			}
-			gr.setColor(new Color (1.0f, 1.0f, 1.0f));
-			gr.drawString(s,10f,5f);
-			
-		}
+		vue.renderPause(gc,gr,pauseX,pauseY,cheatModOn,pass);
+		//		if(Game.cheat[0])
+		//			gr.drawString("GODMOD : ON :", 10,10);
+
+
 
 	}
 
@@ -86,14 +80,21 @@ public class Pause extends BasicGameState{
 			sbg.enterState(Main.GAMESTATE);
 			//vue.setMusic(3);
 		}
-		
-		
-		
+
+		if(vue.isValiderMusic()){
+			if(!vue.isMusic()){
+				vue.setMusic(0);
+				vue.nextMusic();
+				vue.setMusic(4);		
+			}
+		}
+
 		///////////////////////////////////////// CHEAT CODE  //////////////////////////////////////////////////////////////
 		if (input.isKeyPressed(42)){
 			if(!cheatModOn){
 				cheatModOn = true;
-				System.out.println("mot de passe a l'écoute");
+				pass.clear();
+				//System.out.println("mot de passe a l'écoute");
 			}
 			else
 				cheatModOn = false;
@@ -142,11 +143,15 @@ public class Pause extends BasicGameState{
 						System.out.println("Password accepted");
 						if(i==0){
 							if(Game.cheat[i]){
-								System.out.println("Invincibilité : ON");
+								//System.out.println("Invincibilité : ON");
+								vue.setMessage("GodMod : ON",1000);
 								vue.nextMusic();
 							}
-							else
-								System.out.println("Invincibilité : OFF");
+							else{
+								//System.out.println("Invincibilité : OFF");
+								vue.setMessage("GodMod : OFF",1000);
+								vue.nextMusic();
+							}
 						}
 						pass.clear();
 					}
@@ -159,7 +164,7 @@ public class Pause extends BasicGameState{
 
 			//System.out.println("Godmod ONNNNN");
 		}
-		
+
 		///////////////////////////////////////// END CHEAT CODE  //////////////////////////////////////////////////////////////
 
 		int mouseX = input.getMouseX();
@@ -173,15 +178,15 @@ public class Pause extends BasicGameState{
 		if( ( mouseX >= pauseX && mouseX <= pauseX + vue.getStartGameOption().getWidth()*0.7) &&
 				( mouseY >= pauseY && mouseY <= pauseY + vue.getStartGameOption().getHeight()*0.7) ){
 			insideStartGame = true;
-			System.out.println("on StartGame");
+			//System.out.println("on StartGame");
 		}else if( ( mouseX >= pauseX && mouseX <= pauseX + vue.getOptionOption().getWidth()*0.7) &&
 				( mouseY >= pauseY+45 && mouseY <= pauseY+45 + vue.getOptionOption().getHeight()*0.7) ){
 			insideOption = true;
-			System.out.println("on option");
+			//System.out.println("on option");
 		}else if( ( mouseX >= pauseX&& mouseX <= pauseX + vue.getExitOption().getWidth()*0.7) &&
 				( mouseY >= pauseY+90 && mouseY <= pauseY+90 + vue.getExitOption().getHeight()*0.7) ){
 			insideExit = true;
-			System.out.println("on Exit");
+			//System.out.println("on Exit");
 		}
 
 		if(insideStartGame){
@@ -193,12 +198,16 @@ public class Pause extends BasicGameState{
 		}
 
 		if(insideOption){
-			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				//vue.setMusic(0);
-				vue.setOptionScale(0.7f);
+			delayClick-= 20;
+			if (delayClick<0){
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+					//vue.setMusic(0);
+					vue.setOptionScale(0.7f);
 
-				sbg.enterState(Main.OPTIONSTATE);
-				//vue.setMusic(3);
+					sbg.enterState(Main.OPTIONSTATE);
+					//vue.setMusic(3);
+				}
+				delayClick = 150;
 			}
 		}
 

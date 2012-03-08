@@ -10,8 +10,9 @@
 	<resource type="image" id="BACKGROUD_CHARSELECT">data\charSelectBackground.png</resource>
 	<resource type="image" id="JOUEUR">data\plane.png</resource>
 	<resource type="image" id="EXPLOSION">data\explosion.png</resource>
-	<resource type="image" id="ALIEN">data\alien2.png</resource>
+	<resource type="image" id="ALIEN_0">data\alien2.png</resource>
 	<resource type="image" id="ROCKET">data\rocket.png</resource>
+	<resource type="image" id="LASER">data\laser.png</resource>
 <!-- 	<resource type="music" id="GAME_MUSIC">data\Asterix and the Great Rescue Mega Drive Title Music.ogg</resource> -->
 	<resource type="sound" id="HITSOUND_1">data\hit.wav</resource>
 	<resource type="image" id="VAISSEAU_1">data\F-117StealthFighter.png</resource>

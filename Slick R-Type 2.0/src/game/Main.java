@@ -13,6 +13,7 @@ import states.Menu;
 import states.Option;
 import states.Pause;
 import states.Select;
+import states.SelectionMusic;
 
 public class Main extends StateBasedGame {
  
@@ -20,6 +21,7 @@ public class Main extends StateBasedGame {
     public static final int OPTIONSTATE        = 1;
     //public static final int SELECTIONSTATE     = 2;
     public static final int HIGHSCORESTATE     = 3;
+    public static final int SELECTIONMUSICSTATE = 5;
     public static final int GAMESTATE          = 10;
     public static final int PAUSESTATE         = 11;
     public static final int CHARGEMENTSTATE    = 20;
@@ -50,6 +52,7 @@ public class Main extends StateBasedGame {
         this.addState(new Highscore(HIGHSCORESTATE));
         this.addState(new Chargement(CHARGEMENTSTATE));
         this.addState(new GameOver(GAMEOVERSTATE));
+        this.addState(new SelectionMusic(SELECTIONMUSICSTATE));
         this.addState(new Select(SELECTSTATE));
         this.enterState(CHARGEMENTSTATE);
         
@@ -65,7 +68,10 @@ public class Main extends StateBasedGame {
     {
          app = new AppGameContainer(new Main());
          app.setDisplayMode(WIDTH, HEIGHT, false);
+         app.setIcon("data/icon.png");
          app.start();
+         
+         
     }
  
     @Override
@@ -80,9 +86,11 @@ public class Main extends StateBasedGame {
         this.getState(HIGHSCORESTATE).init(gameContainer, this);
         //this.getState(SELECTIONSTATE).init(gameContainer, this);
         this.getState(GAMEOVERSTATE).init(gameContainer, this);
+        this.getState(SELECTIONMUSICSTATE).init(gameContainer, this);
         this.getState(SELECTSTATE).init(gameContainer, this);
         
         
+        gameContainer.setShowFPS(true);
         gameContainer.setTargetFrameRate(60);
         gameContainer.setMaximumLogicUpdateInterval(20);
         gameContainer.setMinimumLogicUpdateInterval(20);

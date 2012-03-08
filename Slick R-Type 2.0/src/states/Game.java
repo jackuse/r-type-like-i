@@ -10,6 +10,7 @@ import game.Objet;
 import game.ResourceManager;
 import game.Tir;
 import game.Vue;
+import game.Bonus;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ public class Game extends BasicGameState{
 	private ArrayList<Objet> enemy;
 	private ArrayList<Objet> playerProjectile;
 	private ArrayList<Objet> nastyProjectile;
+	private ArrayList<Bonus> bonus;
 	private int param[];
 	public static boolean[] cheat;
 	private Joueur joueur[];
@@ -42,10 +44,22 @@ public class Game extends BasicGameState{
 	private ArrayList<Explosion> explo;
 	public Random rand = new Random();
 	private int delaiTire = 0;
-	boolean debug = false;
+	boolean debug =false;
 	private int delayClig = 200;
 	private int delay = 20;
+
+	private int delayChangeW = 200;
+
+
+
 	public int shotRandomizer;
+
+	/* Mettre en place des bonus et le boss et 2 lvl et 2 armes
+	 * Faire des lvl pour les armes
+	 * 
+	 * 
+	 * 
+	 */
 	public Game(int stateID) {
 		this.stateID = stateID;
 	}
@@ -57,6 +71,7 @@ public class Game extends BasicGameState{
 		playerProjectile = new ArrayList<Objet>();
 		nastyProjectile = new ArrayList<Objet>();
 		enemy = new ArrayList<Objet>();
+		bonus = new ArrayList<Bonus>();		
 
 
 		joueur = new Joueur[1];
@@ -78,11 +93,13 @@ public class Game extends BasicGameState{
 		vue.renderBg(gr, posXBg1, posXBg2);
 
 
-		param[0] = explo.size();
-		param[1] = enemy.size();
-		param[2] = playerProjectile.size();
-		param[3] = joueur[0].getScore();
-		param[4] = joueur[0].getV().getPdv();
+		param[1] = explo.size();
+		param[2] = enemy.size();
+		param[3] = playerProjectile.size();
+		param[4] = joueur[0].getScore();
+		param[5] = joueur[0].getV().getPdv();
+		param[6] = joueur[0].getV().getArme();
+		param[7] = joueur[0].getLife();
 
 
 
@@ -94,7 +111,7 @@ public class Game extends BasicGameState{
 
 		for (Iterator<Objet> pp = playerProjectile.iterator(); pp.hasNext(); ) {
 			Objet obPp = (Objet) pp.next();
-			vue.render1Tir(gr, obPp,0);
+			vue.render1Tir(gr, obPp,obPp.getId());
 		}
 		
 		for (Iterator<Objet> pp = nastyProjectile.iterator(); pp.hasNext(); ) {
@@ -102,11 +119,10 @@ public class Game extends BasicGameState{
 			vue.render1Tir(gr, obPp, 3);
 		}
 
-		vue.renderJoueur(gr,joueur[0].getV());
+		vue.renderJoueur(gr,joueur[0].getV(),param[0]);
 		vue.renderExplosion(gr, explo);
 		vue.renderBoard(gr,param);
 		//vue.renderTest(g);
-		//vue.renderPause(gc,gr,pauseX,pauseY);
 
 	}
 
@@ -121,15 +137,15 @@ public class Game extends BasicGameState{
 			joueur[0].getV().setInvicible(false);
 
 		//END CHEAT CODE
-		
-		
+
+
 		// BEGIN MUSIC
-	
-		
+
+
 		if(Main.etatprecedent == Main.SELECTSTATE){
 			reset();
 			Main.etatprecedent = sbg.getCurrentStateID();	
-			
+
 			//vue.setMusic(1);
 			vue.setMusic(0);
 			vue.selectMusic(1);
@@ -138,10 +154,10 @@ public class Game extends BasicGameState{
 				vue.setMusic(4);
 			}
 			vue.principale.setVolume(0.4f);
-			
-			
+
+
 		}
-		
+
 		if(vue.isValiderMusic()){
 			if(!vue.isMusic()){
 				vue.setMusic(0);
@@ -149,19 +165,19 @@ public class Game extends BasicGameState{
 				vue.setMusic(4);		
 			}
 		}
-		
-//		if(!vue.isMusic()){
-//			vue.setMusic(0);
-//		}
+
+		//		if(!vue.isMusic()){
+		//			vue.setMusic(0);
+		//		}
 		///System.out.println("music is "+vue.isMusic()+" and pos="+vue.principale.getPosition()+" and vol="+vue.principale.getVolume()  ); 
 		// END MUSIC
 
 		delayClig -=delay;//a modifier
 		if(delayClig < 0){
-			if(param[5] == 1)
-				param[5] = 0;
+			if(param[0] == 1)
+				param[0] = 0;
 			else
-				param[5] = 1;
+				param[0] = 1;
 			delayClig = 200;
 		}
 
@@ -175,15 +191,22 @@ public class Game extends BasicGameState{
 		// Les commandes de déplacements
 		if(input.isKeyDown(Input.KEY_Z))
 		{
-			joueur[0].getV().setY(joueur[0].getV().getY()-joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getY()<-19)
-				joueur[0].getV().setY(joueur[0].getV().getY()+joueur[0].getV().getSpeed());
+			
+			if(speedUp)
+				joueur[0].getV().setY(joueur[0].getV().getY()-joueur[0].getV().getSpeed()*2);
+			else
+				joueur[0].getV().setY(joueur[0].getV().getY()-joueur[0].getV().getSpeed());
+			if(joueur[0].getV().getY()<0)
+				joueur[0].getV().setY(0);
 		}
 		if(input.isKeyDown(Input.KEY_S))
 		{
-			joueur[0].getV().setY(joueur[0].getV().getY()+joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getY()+joueur[0].getV().getH()>599)
-				joueur[0].getV().setY(joueur[0].getV().getY()-joueur[0].getV().getSpeed());
+			if(speedUp)
+				joueur[0].getV().setY(joueur[0].getV().getY()+joueur[0].getV().getSpeed()*2);
+			else
+				joueur[0].getV().setY(joueur[0].getV().getY()+joueur[0].getV().getSpeed());
+			if(joueur[0].getV().getY()+joueur[0].getV().getH()>vue.getHeight()*0.955f)
+				joueur[0].getV().setY(vue.getHeight()*0.805f);
 		}
 		if(input.isKeyDown(Input.KEY_Q))
 		{
@@ -217,6 +240,28 @@ public class Game extends BasicGameState{
 			speedUp= true;
 		}
 
+		// Commande next Weapon
+		if(input.isKeyDown(Input.KEY_E))
+		{
+			delayChangeW -=20;//a modifier
+			if(delayChangeW < 0){
+				joueur[0].getV().setNArme(true);
+				delayChangeW = 150;
+			}
+		}
+
+		// Commande previous Weapon
+		if(input.isKeyDown(Input.KEY_A))
+		{
+			delayChangeW-=20;//a modifier
+			if(delayChangeW < 0){
+				joueur[0].getV().setNArme(false);
+				delayChangeW = 150;
+			}
+		}
+
+
+
 		// Commande debug 										A SUPRIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if(input.isKeyDown(Input.KEY_DOWN))
 		{
@@ -237,21 +282,23 @@ public class Game extends BasicGameState{
 				delaiTire = 100;
 			}
 		}
-		
+
 		// Commande debug 		3								A SUPRIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				if(input.isKeyDown(Input.KEY_RIGHT))
-				{
-					delaiTire-=delay;//a modifier
-					if(delaiTire < 0){
-						delaiTire = 100;
-						ResourceManager rm = ResourceManager.getInstance();
-						rm.listR();
-						vue.setMusic(0);
-						vue.nextMusic();
-						vue.setMusic(4);
-					}
-					
+		if(input.isKeyDown(Input.KEY_RIGHT))
+		{
+			delaiTire-=delay;//a modifier
+			if(delaiTire < 0){
+				delaiTire = 100;
+				ResourceManager rm = ResourceManager.getInstance();
+				rm.listR();
+				vue.setMusic(0);
+				vue.nextMusic();
+				if(vue.isValiderMusic()){
+					vue.setMusic(4);
 				}
+			}
+
+		}
 
 		if(!input.isKeyDown(Input.KEY_LCONTROL) && speedUp)
 		{
@@ -265,16 +312,16 @@ public class Game extends BasicGameState{
 		{
 			switch (joueur[0].getV().getArme()) {
 			case 21:
-				delaiTire-=delay;//a modifier
+				delaiTire-=40;//a modifier
 				if(delaiTire < 0){
 
-					playerProjectile.add(new Laser(joueur[0].getV().getX()+25,joueur[0].getV().getY()+12));
+					playerProjectile.add(new Laser(joueur[0].getV().getX()+joueur[0].getV().getW()/2,joueur[0].getV().getY()+joueur[0].getV().getH()/2));
 
 					delaiTire = 100;
 				}
 				break;
 			case 22:
-				delaiTire-=delay;
+				delaiTire-=10;
 				if(delaiTire < 0){
 
 					playerProjectile.add(new Missile(joueur[0].getV().getX()+joueur[0].getV().getW()/2,joueur[0].getV().getY()+joueur[0].getV().getH()/2-12));
@@ -335,7 +382,7 @@ public class Game extends BasicGameState{
 		while (itMovProj.hasNext()){
 			// Iterator<Objet> itMovEnemy = enemy.iterator();
 			Objet ob=((Objet) itMovProj.next());
-			Missile t = (Missile) ob;
+			Tir t = (Tir) ob;
 			t.go();
 			if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
 				t.setVisible(false);
@@ -402,13 +449,30 @@ public class Game extends BasicGameState{
 			
 		}
 
+		for (int i=0;i<bonus.size();i++)
+		{
+			Objet ob2=((Objet) bonus.get(i));
+			boolean col=((Objet)joueur[0].getV()).collision(ob2);
+			if (col){
+				bonus.get(i).doEffect(joueur[0]);
+				bonus.remove(i);
+				break;
+			}
+		}
+
 
 		if(joueur[0].getV().getPdv()<=0){
-			vue.setPauseBg(gc.getGraphics());
-			vue.setMusic(0);
-			for(int i=0;i<4;i++)
-				cheat[i]=false;
-			sbg.enterState(Main.GAMEOVERSTATE);
+			joueur[0].setLife(joueur[0].getLife()-1);
+			if(joueur[0].getLife() < 1){
+				vue.setPauseBg(gc.getGraphics());
+				vue.setMusic(0);
+				for(int i=0;i<4;i++)
+					cheat[i]=false;
+				sbg.enterState(Main.GAMEOVERSTATE);
+			}
+			else{
+				joueur[0].getV().rest();
+			}
 		}
 
 
@@ -430,6 +494,12 @@ public class Game extends BasicGameState{
 			for(int i=0;i<50;i++)
 				playerProjectile.add(new Missile(0,rand.nextFloat()*(550-0)));
 
+		}//*/
+		/* Test laser
+		if(playerProjectile.size()<2000 && debug ){
+			for(int i=0;i<50;i++)
+				playerProjectile.add(new Laser(0,rand.nextFloat()*(550-0)));
+
 		}//*
 
 		/* Test explosion
@@ -437,7 +507,7 @@ public class Game extends BasicGameState{
 			for(int i=0;i<100;i++)
 				explo.add(new Explosion(rand.nextFloat()*(700-100),rand.nextFloat()*(500-0)));
 			//System.out.println("Un alien arrive");
-		}//*
+		}//*/
 
 		// TODO Auto-generated method stub
 		/*
@@ -453,7 +523,7 @@ public class Game extends BasicGameState{
 		}
 		if(etatTmp == 11){
 			pause(gc,delta );		
-		}*/
+		}//*/
 
 
 
@@ -467,9 +537,8 @@ public class Game extends BasicGameState{
 	}
 
 	public void reset(){
-		joueur[0].getV().setPdv(100);
-		joueur[0].getV().setX(0);
-		joueur[0].getV().setY(240);
+		joueur[0].getV().rest();
+		joueur[0].setLife(3);
 		enemy.clear();
 		playerProjectile.clear();
 		explo.clear();

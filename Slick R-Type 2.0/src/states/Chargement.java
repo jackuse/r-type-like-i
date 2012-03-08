@@ -62,7 +62,7 @@ public class Chargement extends BasicGameState{
 
 			if(ok){
 				if (vue.nextResource != null) { 
-					System.out.println("kikou "+vue.nextResource.getDescription());
+//					System.out.println("kikou "+vue.nextResource.getDescription());
 					//vue.nextResource.load(); 
 					/*Runnable tache = new LoadThread ();
 					Thread monThread = new Thread (tache);
@@ -77,19 +77,19 @@ public class Chargement extends BasicGameState{
 					if(!T1.isAlive())
 					{
 						T1.run();
-						System.out.println("thread 1 lancer");
+//						System.out.println("thread 1 lancer");
 					}else if(nbProc > 1 && !T2.isAlive())
 					{
 						T2.run();
-						System.out.println("thread 2 lancer");
+//						System.out.println("thread 2 lancer");
 					}else if(nbProc > 2 && !T3.isAlive())
 					{
 						T3.run();
-						System.out.println("thread 3 lancer");
+//						System.out.println("thread 3 lancer");
 					}else if(nbProc > 3 && !T4.isAlive())
 					{
 						T4.run();
-						System.out.println("thread 4 lancer");
+//						System.out.println("thread 4 lancer");
 					}
 					/*
 					System.out.println("thread 1 en vie "+T1.isAlive());

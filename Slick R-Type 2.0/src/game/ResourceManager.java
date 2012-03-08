@@ -182,11 +182,11 @@ public class ResourceManager {
 	}
 
 	private void addElementAsMusic(Element resourceElement) throws SlickException {
-		loadMusic(resourceElement.getAttribute("id"), resourceElement.getTextContent());
+		loadMusic(resourceElement.getAttribute("id"), resourceElement.getTextContent(),resourceElement.getAttribute("name"));
 
 	}
 
-	private Music loadMusic(String id, String path) throws SlickException {
+	private Music loadMusic(String id, String path, String name) throws SlickException {
 		if(path == null || path.length() == 0)
 			throw new SlickException("Sound resource [" + id + "] has invalid path");
 
@@ -198,12 +198,17 @@ public class ResourceManager {
 			throw new SlickException("Could not load sound", e);
 		}
 		this.musicMap.put(id, music);
+		this.playlistMap.put(id, name);
 		return music;
 
 	}
 
 	public final Music getMusic(String ID){
 		return musicMap.get(ID);
+	}
+	
+	public String getPlaylist(String ID) {
+		return playlistMap.get(ID);
 	}
 
 	private void addElementAsAnimation(Element resourceElement) throws SlickException{
@@ -347,4 +352,14 @@ public class ResourceManager {
 		}
 
 	}
+
+
+
+
+
+
+
+
+
+
 }
