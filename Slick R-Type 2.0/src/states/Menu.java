@@ -121,7 +121,7 @@ public class Menu extends BasicGameState{
 				//vue.setMusicJeu(true);
 				vue.setStartGameScale(0.7f);
 				Main.etatprecedent = Main.MENUSTATE;
-				sbg.enterState(Main.GAMESTATE);
+				sbg.enterState(Main.SELECTSTATE);
 				resetMenu();
 			}
 		}else{

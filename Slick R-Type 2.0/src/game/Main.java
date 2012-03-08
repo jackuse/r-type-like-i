@@ -12,18 +12,19 @@ import states.Highscore;
 import states.Menu;
 import states.Option;
 import states.Pause;
-import states.Selection;
+import states.Select;
 
 public class Main extends StateBasedGame {
  
     public static final int MENUSTATE          = 0;
     public static final int OPTIONSTATE        = 1;
-    public static final int SELECTIONSTATE     = 2;
+    //public static final int SELECTIONSTATE     = 2;
     public static final int HIGHSCORESTATE     = 3;
     public static final int GAMESTATE          = 10;
     public static final int PAUSESTATE         = 11;
     public static final int CHARGEMENTSTATE    = 20;
     public static final int GAMEOVERSTATE      = 12;
+    public static final int SELECTSTATE		   =  2;
     
     public static int WIDTH    = 800;
     public static int HEIGHT    = 600;
@@ -45,10 +46,11 @@ public class Main extends StateBasedGame {
         this.addState(new Game(GAMESTATE));
         this.addState(new Pause(PAUSESTATE));
         this.addState(new Option(OPTIONSTATE));
-        this.addState(new Selection(SELECTIONSTATE ));
+        //this.addState(new Selection(SELECTIONSTATE ));
         this.addState(new Highscore(HIGHSCORESTATE));
         this.addState(new Chargement(CHARGEMENTSTATE));
         this.addState(new GameOver(GAMEOVERSTATE));
+        this.addState(new Select(SELECTSTATE));
         this.enterState(CHARGEMENTSTATE);
         
         
@@ -76,8 +78,9 @@ public class Main extends StateBasedGame {
         this.getState(PAUSESTATE).init(gameContainer, this);
         this.getState(OPTIONSTATE).init(gameContainer, this);
         this.getState(HIGHSCORESTATE).init(gameContainer, this);
-        this.getState(SELECTIONSTATE).init(gameContainer, this);
+        //this.getState(SELECTIONSTATE).init(gameContainer, this);
         this.getState(GAMEOVERSTATE).init(gameContainer, this);
+        this.getState(SELECTSTATE).init(gameContainer, this);
         
         
         gameContainer.setTargetFrameRate(60);

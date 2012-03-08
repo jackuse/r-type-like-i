@@ -121,7 +121,7 @@ public class Game extends BasicGameState{
 		// BEGIN MUSIC
 	
 		
-		if(Main.etatprecedent == Main.MENUSTATE){
+		if(Main.etatprecedent == Main.SELECTSTATE){
 			reset();
 			Main.etatprecedent = sbg.getCurrentStateID();	
 			
@@ -272,7 +272,7 @@ public class Game extends BasicGameState{
 				delaiTire-=delay;
 				if(delaiTire < 0){
 
-					playerProjectile.add(new Missile(joueur[0].getV().getX()+joueur[0].getV().getW()/2,joueur[0].getV().getY()+joueur[0].getV().getH()/2));
+					playerProjectile.add(new Missile(joueur[0].getV().getX()+joueur[0].getV().getW()/2,joueur[0].getV().getY()+joueur[0].getV().getH()/2-12));
 
 					delaiTire = 100;
 					break;

@@ -21,6 +21,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.loading.DeferredResource;
 import org.newdawn.slick.loading.LoadingList;
+import org.newdawn.slick.XMLPackedSheet;
 
 import states.Game;
 
@@ -39,13 +40,14 @@ public class Vue {
 	//
 
 
-	private Image[] background = new Image[4];
+	private Image[] background = new Image[5];
 	private Image joueur;
 	private Image[] alien = new Image[2];;
 	private Image laser;
 	private Image missile;
 	private Image explosion;
 	private Image sheet;
+	private XMLPackedSheet sheetTest;
 	private String dossierSkin = "data/skin1";
 	private SpriteSheet skin;
 	private int[][] skinDef;
@@ -54,12 +56,16 @@ public class Vue {
 	private Image startGameOption = null;
 	private Image optionOption = null;
 	private Image highscoreOption = null;
+	private Image ship1 = null;
+	private Image ship2 = null;
+	private Image ship3 = null;
 	private float startGameScale = 0.7f;
 	private float exitScale = 0.7f;
 	private float optionScale = 0.7f;
 
 	private ResourceManager rm = ResourceManager.getInstance();
 	public DeferredResource nextResource; 
+	public String sheetname = "VAISSEAU_1";
 
 	float alpha = 0;
 
@@ -74,7 +80,7 @@ public class Vue {
 	private int width = Main.WIDTH;
 	private int height = Main.HEIGHT ;
 
-	boolean debugCol = false;
+	boolean debugCol = true;
 
 	boolean clignotementVie =false;
 
@@ -265,8 +271,33 @@ public class Vue {
 
 		background[2] = rm.getImage("BACKGROUD_OPTION");
 	}
+	
+	public void initCharacterSelectScreen(){
+		principale = rm.getMusic("MUSIC_7");
+		principale.setVolume(volumeMusic);
+		Image menu2 = rm.getImage("BOUTONS_CHARSELECT");
+		//System.out.println(menu.getHeight());
+		background[4] = rm.getImage("BACKGROUD_CHARSELECT");
+		ship1 = menu2.getSubImage(0, 28, 445, 70);
+		ship2 = menu2.getSubImage(180, 105, 300, 70);
+		ship3 = menu2.getSubImage(220, 184, 220, 70);
 
-	public void initGame(){
+		selectMusic(7);
+		//System.out.println("Space !! ");
+		try {
+			//font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
+			font = new UnicodeFont("data/coolvetica.ttf", 40,false,false);
+			//uFont = new UnicodeFont(font, 20, false, false);
+			font.getEffects().add(new ColorEffect());
+			font.addAsciiGlyphs();
+		    font.loadGlyphs();
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+
+	public void initGame() throws SlickException{
 		principale = rm.getMusic("MUSIC_0");
 		principale.setVolume(volumeMusic);
 		background[0] = rm.getImage("BACKGROUD_JEU");	
@@ -276,9 +307,11 @@ public class Vue {
 
 		//joueur = rm.getImage("JOUEUR");
 		sheet = rm.getImage("VAISSEAU_1");
+		sheetTest= new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
 		//joueur = sheet.getSubImage(265,3746,123,196);
-		joueur = sheet.getSubImage(97,45,30,30);
-		joueur.setRotation(90.0f);
+		//joueur = sheet.getSubImage(97,45,30,30);
+		joueur=sheetTest.getSprite("VAISSEAU_1.png");
+		//joueur.setRotation(90.0f);
 		laser = sheet.getSubImage(265,3746,123,196);
 		laser.setRotation(90.0f);
 
@@ -292,6 +325,8 @@ public class Vue {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	///////////////////////////////////////// RENDER /////////////////////////////////////////
 
 	public void renderChargement(GameContainer gc, Graphics gr) {
@@ -366,6 +401,18 @@ public class Vue {
 		return 0;
 
 	}
+	
+	public int renderCharacterSelectScreen(Graphics g, int menuX, int menuY){
+		Rectangle fond = new Rectangle (0, 0, 800, 600);
+		g.setColor(new Color (0.2f, 0.2f, 0.2f));
+		g.fill(fond);
+
+		background[4].draw(0,0);
+		ship1.draw(menuX, menuY, startGameScale);
+		ship2.draw(menuX+350, menuY, optionScale);
+		ship3.draw(menuX+600, menuY, exitScale);
+		return 0;
+	}
 
 	/**
 	 * @return       boolean
@@ -383,7 +430,7 @@ public class Vue {
 	 * @return       int
 	 * @param        g
 	 */
-	public int renderVaisseau( Graphics g, ArrayList<Vaisseau> vaisseaux )
+	public int renderVaisseau( String sh  )
 	{
 		return 0;
 	}
@@ -429,13 +476,16 @@ public class Vue {
 
 	public int renderJoueur(Graphics gr, VaisseauJoueur v) {
 
-
+		sheet = rm.getImage(sheetname);
+		//joueur = sheet.getSubImage(97,45,30,30);
 		if(debugCol){
 			Rectangle rect = new Rectangle (v.getX(), v.getY(), v.getW(), v.getH());
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 			gr.fill(rect);
 		}
-		joueur.draw(v.getX()+60, v.getY(),3.0f);
+		joueur.draw(v.getX(), v.getY());
+		//joueur.draw(v.getX(), v.getY(), v.getW(), v.getH());
+	
 		return 0;
 	}
 
@@ -508,7 +558,8 @@ public class Vue {
 					gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 					gr.fill(rect);
 				}
-				missile.draw(ob.getX()+joueur.getWidth()/2,ob.getY()-joueur.getHeight()/2);
+				//missile.draw(ob.getX()+joueur.getWidth()/2,ob.getY()-joueur.getHeight()/2);
+				missile.draw(ob.getX(), ob.getY()-ob.getH()/2);
 				break;
 			case 1:
 				laser.draw(ob.getX()+joueur.getWidth()/2,ob.getY()+joueur.getHeight()/2);
