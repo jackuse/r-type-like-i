@@ -45,9 +45,12 @@ public class Vue {
 	private Image[] alien = new Image[2];;
 	private Image laser;
 	private Image missile;
+	
+	private Image nastyProjectile;
 	private Image explosion;
 	private Image sheet;
 	private XMLPackedSheet sheetTest;
+	private XMLPackedSheet nastyProjectileSheet;
 	private String dossierSkin = "data/skin1";
 	private SpriteSheet skin;
 	private int[][] skinDef;
@@ -298,20 +301,23 @@ public class Vue {
 	}
 
 	public void initGame() throws SlickException{
+		sheetTest= new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
+		nastyProjectileSheet=new XMLPackedSheet("data/nastyProjectileSheet.png","data/nastyProjectileSheet.png.xml");
 		principale = rm.getMusic("MUSIC_0");
 		principale.setVolume(volumeMusic);
 		background[0] = rm.getImage("BACKGROUD_JEU");	
 		explosion = rm.getImage("EXPLOSION");
 		missile = rm.getImage("ROCKET");
 		missile.setRotation(90.0f);
+		nastyProjectile = nastyProjectileSheet.getSprite("nastyProjectile1.gif");
+		//nastyProjectile.setRotation(270.0f);
 
 		//joueur = rm.getImage("JOUEUR");
 		sheet = rm.getImage("VAISSEAU_1");
-		sheetTest= new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
 		//joueur = sheet.getSubImage(265,3746,123,196);
 		//joueur = sheet.getSubImage(97,45,30,30);
-		joueur=sheetTest.getSprite("VAISSEAU_1.png");
-		//joueur.setRotation(90.0f);
+		joueur=sheetTest.getSprite("VAISSEAU_1.gif");
+		joueur.setRotation(90.0f);
 		laser = sheet.getSubImage(265,3746,123,196);
 		laser.setRotation(90.0f);
 
@@ -564,7 +570,8 @@ public class Vue {
 			case 1:
 				laser.draw(ob.getX()+joueur.getWidth()/2,ob.getY()+joueur.getHeight()/2);
 				break;
-
+			case 3:
+				nastyProjectile.draw(ob.getX(), ob.getY());
 			default:
 				break;
 			}

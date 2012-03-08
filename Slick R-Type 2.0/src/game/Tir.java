@@ -122,5 +122,10 @@ public class Tir extends Objet {
 	  x+=speed;
   }
 
+  public void nastyGo()
+  {
+	  x-=speed-6;
+  }
+  
 
 }

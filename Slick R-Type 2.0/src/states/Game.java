@@ -23,7 +23,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Game extends BasicGameState{
-
+	int nastyProjectileTimer = 0;
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
 
@@ -45,7 +45,7 @@ public class Game extends BasicGameState{
 	boolean debug = false;
 	private int delayClig = 200;
 	private int delay = 20;
-
+	public int shotRandomizer;
 	public Game(int stateID) {
 		this.stateID = stateID;
 	}
@@ -95,6 +95,11 @@ public class Game extends BasicGameState{
 		for (Iterator<Objet> pp = playerProjectile.iterator(); pp.hasNext(); ) {
 			Objet obPp = (Objet) pp.next();
 			vue.render1Tir(gr, obPp,0);
+		}
+		
+		for (Iterator<Objet> pp = nastyProjectile.iterator(); pp.hasNext(); ) {
+			Objet obPp = (Objet) pp.next();
+			vue.render1Tir(gr, obPp, 3);
 		}
 
 		vue.renderJoueur(gr,joueur[0].getV());
@@ -330,7 +335,7 @@ public class Game extends BasicGameState{
 		while (itMovProj.hasNext()){
 			// Iterator<Objet> itMovEnemy = enemy.iterator();
 			Objet ob=((Objet) itMovProj.next());
-			Tir t = (Tir) ob;
+			Missile t = (Missile) ob;
 			t.go();
 			if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
 				t.setVisible(false);
@@ -354,6 +359,27 @@ public class Game extends BasicGameState{
 			}
 		}
 
+		Iterator<Objet> itMovNastyProj = nastyProjectile.iterator();
+		while (itMovNastyProj.hasNext()){
+			// Iterator<Objet> itMovEnemy = enemy.iterator();
+			Objet nastyOb=((Objet) itMovNastyProj.next());
+			Tir nastyT = (Tir) nastyOb;
+			nastyT.nastyGo();
+			if(nastyT.getX()<-20) // Il il depasse de l'écran on dit qu'il sont invisible
+				nastyT.setVisible(false);
+			if(!nastyT.estVisible())
+				itMovNastyProj.remove();
+
+			boolean col=nastyT.collision((Objet)joueur[0].getV());
+			if (col){
+				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
+				explo.add(new Explosion(joueur[0].getV().getX(), joueur[0].getV().getY()));
+				nastyT.setVisible(false);
+				break;
+			}
+			
+		}
+
 		for (int i=0;i<enemy.size();i++)
 		{
 			Objet ob2=((Objet) enemy.get(i));
@@ -364,6 +390,16 @@ public class Game extends BasicGameState{
 				enemy.remove(i);
 				break;
 			}
+			//shotRandomizer=(int) (rand.nextFloat()*(500-0));
+			//if (shotRandomizer>500){
+			nastyProjectileTimer+=delta;
+			if(nastyProjectileTimer > 1000){
+				nastyProjectileTimer=0;
+				nastyProjectile.add(new Missile(ob2.getX()+ob2.getW()/2,ob2.getY()+ob2.getH()/2-12));
+			}
+			
+			//}
+			
 		}
 
 
