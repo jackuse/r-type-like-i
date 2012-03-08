@@ -1,6 +1,7 @@
 package states;
 
 import game.Alien;
+import game.EnergyBall;
 import game.Explosion;
 import game.Joueur;
 import game.Laser;
@@ -116,7 +117,7 @@ public class Game extends BasicGameState{
 		
 		for (Iterator<Objet> pp = nastyProjectile.iterator(); pp.hasNext(); ) {
 			Objet obPp = (Objet) pp.next();
-			vue.render1Tir(gr, obPp, 3);
+			vue.render1Tir(gr, obPp, obPp.getId());
 		}
 
 		vue.renderJoueur(gr,joueur[0].getV(),param[0]);
@@ -419,7 +420,7 @@ public class Game extends BasicGameState{
 
 			boolean col=nastyT.collision((Objet)joueur[0].getV());
 			if (col){
-				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
+				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-5);
 				explo.add(new Explosion(joueur[0].getV().getX(), joueur[0].getV().getY()));
 				nastyT.setVisible(false);
 				break;
@@ -440,9 +441,9 @@ public class Game extends BasicGameState{
 			//shotRandomizer=(int) (rand.nextFloat()*(500-0));
 			//if (shotRandomizer>500){
 			nastyProjectileTimer+=delta;
-			if(nastyProjectileTimer > 1000){
+			if(nastyProjectileTimer > 2000){
 				nastyProjectileTimer=0;
-				nastyProjectile.add(new Missile(ob2.getX()+ob2.getW()/2,ob2.getY()+ob2.getH()/2-12));
+				nastyProjectile.add(new EnergyBall(ob2.getX()+ob2.getW()/2,ob2.getY()+ob2.getH()/2-12));
 			}
 			
 			//}

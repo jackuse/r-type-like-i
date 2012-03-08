@@ -99,7 +99,7 @@ public class Vue {
 	private int msgTime = 0;
 
 	private boolean debug = false;
-	boolean debugCol = false;
+	boolean debugCol = true;
 
 
 
@@ -522,7 +522,7 @@ public class Vue {
 			
 			if(clig == 1){
 				nbCligne++;
-				joueur.draw(v.getX()+60, v.getY(),3.0f);
+				joueur.draw(v.getX(), v.getY());
 			}else{
 
 			}
@@ -532,10 +532,11 @@ public class Vue {
 			}
 
 		}else{
-			joueur.draw(v.getX()+60, v.getY(),3.0f);
+
+			joueur.draw(v.getX(), v.getY());
 		}
 
-		joueur.draw(v.getX(), v.getY());
+		
 		//joueur.draw(v.getX(), v.getY(), v.getW(), v.getH());
 	
 
@@ -630,7 +631,7 @@ public class Vue {
 				//missile.draw(ob.getX()+joueur.getWidth()/2,ob.getY()-joueur.getHeight()/2);
 				missile.draw(ob.getX(), ob.getY()-ob.getH()/2);
 				break;
-			case 3:
+			case 23:
 				nastyProjectile.draw(ob.getX(), ob.getY());
 			default:
 				break;
