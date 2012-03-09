@@ -131,6 +131,7 @@ public class Menu extends BasicGameState{
 		}
 
 		if(insideOption){
+			//vue.triggerAlt();
 			if(vue.getOptionScale() < 0.8f)
 				vue.setOptionScale(vue.getOptionScale()+scaleStep * delay);
 

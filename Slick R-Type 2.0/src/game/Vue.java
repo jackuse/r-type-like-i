@@ -438,7 +438,7 @@ public class Vue {
 		Rectangle fond = new Rectangle (0, 0, 800, 600);
 		g.setColor(new Color (0.2f, 0.2f, 0.2f));
 		g.fill(fond);
-
+		background[4] = rm.getImage("BACKGROUD_CHARSELECT");
 		background[4].draw(0,0);
 		ship1.draw(menuX, menuY, startGameScale);
 		ship2.draw(menuX+350, menuY, optionScale);
