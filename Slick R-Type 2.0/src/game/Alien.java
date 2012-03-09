@@ -10,7 +10,7 @@ public class Alien extends Vaisseau {
 	//
 	protected boolean move = true;
 	protected int pdv = 2;
-	protected float speed = 1;
+	protected float speed = 2;
 
 	//
 	// Constructors
@@ -21,6 +21,11 @@ public class Alien extends Vaisseau {
 		super(x,y,64,64);
 		id = 10;
 	};
+	
+	public void move(){
+		x-=speed;
+		
+	}
 
 	//
 	// Methods

@@ -69,7 +69,7 @@ public class Vue {
 
 	private ResourceManager rm = ResourceManager.getInstance();
 	public DeferredResource nextResource; 
-	public String sheetname = "VAISSEAU_1";
+	public String shipname = "VAISSEAU_1";
 
 	float alpha = 0;
 
@@ -99,7 +99,7 @@ public class Vue {
 	private int msgTime = 0;
 
 	private boolean debug = false;
-	boolean debugCol = true;
+	boolean debugCol = false;
 
 
 
@@ -508,8 +508,8 @@ public class Vue {
 
 	public int renderJoueur(Graphics gr, VaisseauJoueur v,int clig) {
 
-		sheet = rm.getImage(sheetname);
-		//joueur = sheet.getSubImage(97,45,30,30);
+		joueur=sheetTest.getSprite(shipname);
+		joueur.setRotation(90.0f);
 		if(debugCol){
 			Rectangle rect = new Rectangle (v.getX(), v.getY(), v.getW(), v.getH());
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));

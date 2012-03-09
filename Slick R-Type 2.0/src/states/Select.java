@@ -112,7 +112,7 @@ public class Select extends BasicGameState{
 				//vue.initGame(); 
 				//vue.setMusicJeu(true);
 				vue.setStartGameScale(0.7f);
-				//vue.sheetname="VAISSEAU_1";
+				vue.shipname="VAISSEAU_1.gif";
 				sbg.enterState(Main.GAMESTATE);
 			}
 		}else{
@@ -132,7 +132,7 @@ public class Select extends BasicGameState{
 				//vue.initGame(); 
 				//vue.setMusicJeu(true);
 				vue.setStartGameScale(0.7f);
-				vue.sheetname="VAISSEAU_2";
+				vue.shipname="VAISSEAU_2.gif";
 				sbg.enterState(Main.GAMESTATE);
 			}
 		}else{
@@ -153,7 +153,7 @@ public class Select extends BasicGameState{
 				//vue.initGame(); 
 				//vue.setMusicJeu(true);
 				vue.setStartGameScale(0.7f);
-				vue.sheetname="VAISSEAU_3";
+				vue.shipname="VAISSEAU_3.gif";
 				
 				sbg.enterState(Main.GAMESTATE);
 			}

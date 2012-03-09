@@ -29,7 +29,7 @@ public class Game extends BasicGameState{
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
 
-	private ArrayList<Objet> enemy;
+	private ArrayList<Alien> enemy;
 	private ArrayList<Objet> playerProjectile;
 	private ArrayList<Objet> nastyProjectile;
 	private ArrayList<Bonus> bonus;
@@ -51,7 +51,7 @@ public class Game extends BasicGameState{
 
 	private int delayChangeW = 200;
 
-
+	private int alienSpawnTimer=0;
 
 	public int shotRandomizer;
 
@@ -71,7 +71,7 @@ public class Game extends BasicGameState{
 		vue.initGame();
 		playerProjectile = new ArrayList<Objet>();
 		nastyProjectile = new ArrayList<Objet>();
-		enemy = new ArrayList<Objet>();
+		enemy = new ArrayList<Alien>();
 		bonus = new ArrayList<Bonus>();		
 
 
@@ -104,7 +104,7 @@ public class Game extends BasicGameState{
 
 
 
-		for (Iterator<Objet> e = enemy.iterator(); e.hasNext(); ) {
+		for (Iterator<Alien> e = enemy.iterator(); e.hasNext(); ) {
 			Objet obE = (Objet) e.next();
 			vue.render1Vaisseau(gr, obE,0);
 		}
@@ -395,13 +395,16 @@ public class Game extends BasicGameState{
 			//test des collisions
 			for (int i=0;i<enemy.size();i++)
 			{
+				
 				Objet ob2=((Objet) enemy.get(i));
 				boolean col=t.collision(ob2);
 				if (col){
 					explo.add(new Explosion(ob2.getX(), ob2.getY()));
 					enemy.remove(i);
 					joueur[0].setScore(joueur[0].getScore()+1);
-					itMovProj.remove();
+					if(t.estVisible()){
+						itMovProj.remove();
+					}
 					break;
 				}
 			}
@@ -430,6 +433,8 @@ public class Game extends BasicGameState{
 
 		for (int i=0;i<enemy.size();i++)
 		{
+			enemy.get(i).move();
+			
 			Objet ob2=((Objet) enemy.get(i));
 			boolean col=((Objet)joueur[0].getV()).collision(ob2);
 			if (col){
@@ -441,7 +446,7 @@ public class Game extends BasicGameState{
 			//shotRandomizer=(int) (rand.nextFloat()*(500-0));
 			//if (shotRandomizer>500){
 			nastyProjectileTimer+=delta;
-			if(nastyProjectileTimer > 2000){
+			if(nastyProjectileTimer > 3500 && ob2.getX()<780){
 				nastyProjectileTimer=0;
 				nastyProjectile.add(new EnergyBall(ob2.getX()+ob2.getW()/2,ob2.getY()+ob2.getH()/2-12));
 			}
@@ -481,14 +486,21 @@ public class Game extends BasicGameState{
 
 
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
-
+		alienSpawnTimer+=delta;
+		if (alienSpawnTimer>240)
+		{
+			alienSpawnTimer=0;
+			for(int i=0;i<2;i++)
+				enemy.add(new Alien(800+rand.nextFloat()*(900-800),rand.nextFloat()*(500-0)));
+		}
+		
 		//* Test alien
 
-		if(enemy.size()<10 && debug ){
-			for(int i=0;i<10;i++)
-				enemy.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
+		//if(enemy.size()<10 && debug ){
+			//for(int i=0;i<10;i++)
+				//enemy.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
 			//System.out.println("Un alien arrive");
-		}//*/
+		//}//*/
 
 		/* Test missile
 		if(playerProjectile.size()<2000 && debug ){
