@@ -15,6 +15,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.loading.LoadingList;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
+import org.newdawn.slick.state.transition.SelectTransition;
+import org.newdawn.slick.state.transition.Transition;
 
 public class Chargement extends BasicGameState{
 	int stateID = -1;
@@ -22,12 +26,13 @@ public class Chargement extends BasicGameState{
 	private ResourceManager rm = ResourceManager.getInstance();
 	boolean ok= true;
 	int nbProc = Runtime.getRuntime().availableProcessors();
-	private boolean threadFini= false;
-	Runnable tache;
-	Thread T1;
-	Thread T2;
-	Thread T3;
-	Thread T4;
+	private Transition t[];
+//	private boolean threadFini= false;
+//	Runnable tache;
+//	Thread T1;
+//	Thread T2;
+//	Thread T3;
+//	Thread T4;
 
 	public Chargement(int stateID) {
 		this.stateID = stateID;
@@ -37,13 +42,26 @@ public class Chargement extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		vue.chargemementGame();
-		tache = new LoadThread();
-		T1 = new Thread(tache);
-		T1. setName (" Caroline ");
-		T2 = new Thread(tache);
-		T2. setName (" pierre ");
-		T3 = new Thread(tache);
-		T4 = new Thread(tache);
+//		tache = new LoadThread();
+//		T1 = new Thread(tache);
+//		T1. setName (" Caroline ");
+//		T2 = new Thread(tache);
+//		T2. setName (" pierre ");
+//		T3 = new Thread(tache);
+//		T4 = new Thread(tache);
+		
+		t = new Transition[2];
+		
+		try {
+			t[0] = FadeOutTransition.class.newInstance();
+			t[1] = FadeInTransition.class.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -62,6 +80,7 @@ public class Chargement extends BasicGameState{
 
 			if(ok){
 				if (vue.nextResource != null) { 
+					vue.loadNext();
 //					System.out.println("kikou "+vue.nextResource.getDescription());
 					//vue.nextResource.load(); 
 					/*Runnable tache = new LoadThread ();
@@ -74,23 +93,23 @@ public class Chargement extends BasicGameState{
 					System.out.println("thread 3 en vie "+T3.isAlive());
 					System.out.println("thread 4 en vie "+T4.isAlive());
 */
-					if(!T1.isAlive())
-					{
-						T1.run();
-//						System.out.println("thread 1 lancer");
-					}else if(nbProc > 1 && !T2.isAlive())
-					{
-						T2.run();
-//						System.out.println("thread 2 lancer");
-					}else if(nbProc > 2 && !T3.isAlive())
-					{
-						T3.run();
-//						System.out.println("thread 3 lancer");
-					}else if(nbProc > 3 && !T4.isAlive())
-					{
-						T4.run();
-//						System.out.println("thread 4 lancer");
-					}
+//					if(!T1.isAlive())
+//					{
+//						T1.run();
+////						System.out.println("thread 1 lancer");
+//					}else if(nbProc > 1 && !T2.isAlive())
+//					{
+//						T2.run();
+////						System.out.println("thread 2 lancer");
+//					}else if(nbProc > 2 && !T3.isAlive())
+//					{
+//						T3.run();
+////						System.out.println("thread 3 lancer");
+//					}else if(nbProc > 3 && !T4.isAlive())
+//					{
+//						T4.run();
+////						System.out.println("thread 4 lancer");
+//					}
 					/*
 					System.out.println("thread 1 en vie "+T1.isAlive());
 					System.out.println("thread 2 en vie "+T2.isAlive());
@@ -111,12 +130,12 @@ public class Chargement extends BasicGameState{
 			if (LoadingList.get().getRemainingResources() > 0) { 
 				vue.nextResource = LoadingList.get().getNext(); 
 			} else { 
-				if(!T1.isAlive()&&!T2.isAlive()&&!T3.isAlive()&&!T4.isAlive())
-					threadFini = true;
-				if(threadFini){
-					sbg.enterState(Main.MENUSTATE);
+//				if(!T1.isAlive()&&!T2.isAlive()&&!T3.isAlive()&&!T4.isAlive())
+//					threadFini = true;
+//				if(threadFini){
+					sbg.enterState(Main.MENUSTATE,t[0],t[1]);
 					System.out.println("Fin chargement");
-				}
+//				}
 				//qdvue.setMusic(1);
 			}
 

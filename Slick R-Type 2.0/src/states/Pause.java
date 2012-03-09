@@ -40,6 +40,10 @@ public class Pause extends BasicGameState{
 	public Pause(int stateID) {
 		this.stateID = stateID;
 	}
+	
+	public void enter(GameContainer gc, StateBasedGame sgb) {
+		gc.getInput().clearKeyPressedRecord();
+	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)

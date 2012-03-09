@@ -15,6 +15,8 @@ public class Joueur {
   private int score;
   private VaisseauJoueur v = new VaisseauJoueur();
   private int life;
+  private int kill;
+  private int totalKill;
   
   //
   // Constructors
@@ -22,6 +24,7 @@ public class Joueur {
   public Joueur () { 
 	  score = 0;
 	  life = 3;
+	  kill = 0;
 	  
   };
   
@@ -65,6 +68,27 @@ public int getLife() {
 public void setLife(int l) {
 	life = l;
 	
+}
+
+public int getKill() {
+	return kill;
+}
+
+public int getTotalKill(){
+	return totalKill;
+}
+
+public void incKill() {
+	kill++;
+	totalKill++;
+}
+
+public void restKill() {
+	kill = 0;
+}
+
+public void restTotalKill() {
+	kill = 0;
 }
 
   //

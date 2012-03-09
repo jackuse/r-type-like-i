@@ -106,6 +106,7 @@ public class Vue {
 
 
 
+
 	public final static Vue getInstance(){
 		return _instance;
 	}
@@ -427,6 +428,7 @@ public class Vue {
 		g.fill(fond);
 		background[1].draw(0, 0);
 		font.drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
+		font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
 		startGameOption.draw(menuX, menuY, startGameScale);
 		optionOption.draw(menuX+350, menuY, optionScale);
 		exitOption.draw(menuX+600, menuY, exitScale);
@@ -519,14 +521,14 @@ public class Vue {
 		
 
 		if(v.isBorn()){
-			
 			if(clig == 1){
 				nbCligne++;
 				joueur.draw(v.getX(), v.getY());
+				System.out.println("je clignote "+nbCligne);
 			}else{
 
 			}
-			if(nbCligne >4){
+			if(nbCligne >50){
 				v.setBorn(false);
 				nbCligne = 0;
 			}
@@ -562,6 +564,7 @@ public class Vue {
 		}
 		gr.drawString("Score:"+param[4], width*0.85f,height*0.96f);
 		gr.drawString("Life:"+param[7], width*0.15f,height*0.96f);
+		gr.drawString("Level :"+param[8]+" Objectif : "+param[9]+"/"+param[10], width*0.15f,height*0.96f);
 		
 		gr.drawString("Weapon:", 10,height*0.96f);
 		if(param[6] == 21){
@@ -705,7 +708,7 @@ public class Vue {
 	}
 
 	public void renderGameOver(GameContainer gc, Graphics gr, int gmOvX,
-			int gmOvY,boolean ok) {
+			int gmOvY,boolean ok,int param[]) {
 		pauseBg.draw(0, 0);
 		Rectangle rect = new Rectangle (0, 0, 801, 600);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
@@ -718,9 +721,10 @@ public class Vue {
 
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
 
-		gr.drawString("You loose ! ", 400, 280); 
+		gr.drawString("You loose ! ", width*0.45f, 280); 
+		gr.drawString("Score :  "+param[0], width*0.45f, 300); 
 		if(ok)
-			gr.drawString("Press escape", 400, 300); 
+			gr.drawString("Press space", width*0.45f, 320); 
 	}
 
 

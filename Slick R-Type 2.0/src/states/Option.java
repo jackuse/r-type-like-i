@@ -9,6 +9,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
+import org.newdawn.slick.state.transition.SelectTransition;
+import org.newdawn.slick.state.transition.Transition;
 
 public class Option extends BasicGameState{
 	int stateID = -1;
@@ -19,16 +23,43 @@ public class Option extends BasicGameState{
 	float scaleStep = 0.0002f;
 	int delay = 20;
 	int delayClick = 150;
+	private Transition[] t;
 	
 
 	public Option(int stateID) {
 		this.stateID = stateID;
+	}
+	  
+	public void enter(GameContainer gc, StateBasedGame sgb) {
+		try {
+			t[0] = null;
+			t[1] = SelectTransition.class.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		// TODO Auto-generated method stub
+		
+		t = new Transition[2];
+		
+		try {
+			t[0] = null;
+			t[1] = SelectTransition.class.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -155,7 +186,7 @@ public class Option extends BasicGameState{
 					Main.etatprecedent = sbg.getCurrentStateID();
 				}
 				else if(Main.etatprecedent == Main.MENUSTATE){
-					sbg.enterState(Main.MENUSTATE);
+					sbg.enterState(Main.MENUSTATE,t[0],t[1]);
 					Main.etatprecedent = sbg.getCurrentStateID();
 				}
 			}

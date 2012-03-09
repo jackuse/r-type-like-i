@@ -9,6 +9,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
+import org.newdawn.slick.state.transition.SelectTransition;
+import org.newdawn.slick.state.transition.Transition;
 
 public class Menu extends BasicGameState{
 	int stateID = -1;
@@ -21,6 +25,8 @@ public class Menu extends BasicGameState{
 	int delay = 20;
 	private int titreX = 0;
 	private int titreY = -400;
+	private Transition t[];
+	private Transition to[];
 
 
 
@@ -28,12 +34,31 @@ public class Menu extends BasicGameState{
 		this.stateID = stateID;
 	}
 
+	public void enter(GameContainer gc, StateBasedGame sgb) {
+		try {
+			t[0] = FadeOutTransition.class.newInstance();
+			t[1] = FadeInTransition.class.newInstance();
+			to[0] = null;
+			to[1] = SelectTransition.class.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		vue.initMenu();
 		System.out.println("je suis init menu");
 		titreX = (int)(vue.getWidth()*0.20);
+		t = new Transition[2];
+		to = new Transition[2];
+		
+
 
 	}
 
@@ -41,6 +66,7 @@ public class Menu extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		vue.renderMenu(gr, menuX, menuY, titreX, titreY);
+		System.out.println("passe la");
 
 	}
 
@@ -48,7 +74,7 @@ public class Menu extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		//System.out.println("pause delta "+ delta);
-		//System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.etatprecedent);
+		System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.etatprecedent);
 		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
 		if(Main.etatprecedent == -1){
 			vue.selectMusic(0);
@@ -119,6 +145,7 @@ public class Menu extends BasicGameState{
 				//vue.setMusicJeu(true);
 				vue.setStartGameScale(0.7f);
 				Main.etatprecedent = Main.MENUSTATE;
+				//sbg.enterState(Main.SELECTSTATE,t[0],t[1]);
 				sbg.enterState(Main.SELECTSTATE);
 				resetMenu();
 			}
@@ -139,7 +166,7 @@ public class Menu extends BasicGameState{
 				//vue.setMusic(0);
 				vue.setOptionScale(0.7f);
 				Main.etatprecedent = Main.MENUSTATE;
-				sbg.enterState(Main.OPTIONSTATE);
+				sbg.enterState(Main.OPTIONSTATE,to[0],to[1]);
 				resetMenu();
 			}
 		}else{

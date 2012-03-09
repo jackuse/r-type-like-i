@@ -5,6 +5,7 @@ import game.EnergyBall;
 import game.Explosion;
 import game.Joueur;
 import game.Laser;
+import game.Level;
 import game.Main;
 import game.Missile;
 import game.Objet;
@@ -23,6 +24,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.SelectTransition;
+import org.newdawn.slick.state.transition.Transition;
 
 public class Game extends BasicGameState{
 	int nastyProjectileTimer = 0;
@@ -48,16 +51,18 @@ public class Game extends BasicGameState{
 	boolean debug =false;
 	private int delayClig = 200;
 	private int delay = 20;
+	private Level lvl;
 
 	private int delayChangeW = 200;
 
 	private int alienSpawnTimer=0;
 
 	public int shotRandomizer;
+	private SelectTransition t;
 
-	/* Mettre en place des bonus et le boss et 2 lvl et 2 armes
+	/* Mettre en place des bonus et le boss et 2 lvl
 	 * Faire des lvl pour les armes
-	 * 
+	 * Faire un echange de variable score avec gameover
 	 * 
 	 * 
 	 */
@@ -81,10 +86,12 @@ public class Game extends BasicGameState{
 		for(int i=0;i<4;i++)
 			cheat[i] = false;
 
-		param = new int[10];
+		param = new int[15];
 		explo = new ArrayList<Explosion>();
 
 		debug = true;
+		
+		lvl = new Level(1);
 
 	}
 
@@ -101,6 +108,9 @@ public class Game extends BasicGameState{
 		param[5] = joueur[0].getV().getPdv();
 		param[6] = joueur[0].getV().getArme();
 		param[7] = joueur[0].getLife();
+		param[8] = lvl.getLvl();
+		param[9] = joueur[0].getKill();
+		param[10] = lvl.getKill();
 
 
 
@@ -132,7 +142,7 @@ public class Game extends BasicGameState{
 			throws SlickException {
 
 		//BEGIN CHEAT CODE
-		if(cheat[0])
+		if(cheat[0] ||joueur[0].getV().isBorn())
 			joueur[0].getV().setInvicible(true);
 		else
 			joueur[0].getV().setInvicible(false);
@@ -402,6 +412,7 @@ public class Game extends BasicGameState{
 					explo.add(new Explosion(ob2.getX(), ob2.getY()));
 					enemy.remove(i);
 					joueur[0].setScore(joueur[0].getScore()+1);
+					joueur[0].incKill();
 					if(t.estVisible()){
 						itMovProj.remove();
 					}
@@ -441,6 +452,7 @@ public class Game extends BasicGameState{
 				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
 				explo.add(new Explosion(ob2.getX(), ob2.getY()));
 				enemy.remove(i);
+				joueur[0].incKill();
 				break;
 			}
 			//shotRandomizer=(int) (rand.nextFloat()*(500-0));
@@ -469,11 +481,14 @@ public class Game extends BasicGameState{
 
 		if(joueur[0].getV().getPdv()<=0){
 			joueur[0].setLife(joueur[0].getLife()-1);
+			boolean fin =lvl.next(); // c'est la fin on applaudi
+			joueur[0].restKill();
 			if(joueur[0].getLife() < 1){
 				vue.setPauseBg(gc.getGraphics());
 				vue.setMusic(0);
 				for(int i=0;i<4;i++)
 					cheat[i]=false;
+				//GameOversetParam(int i, int p)
 				sbg.enterState(Main.GAMEOVERSTATE);
 			}
 			else{
@@ -552,9 +567,13 @@ public class Game extends BasicGameState{
 	public void reset(){
 		joueur[0].getV().rest();
 		joueur[0].setLife(3);
+		joueur[0].getV().setInvicible(true);
+		joueur[0].restTotalKill();
 		enemy.clear();
 		playerProjectile.clear();
 		explo.clear();
+		nastyProjectile.clear();
+		lvl.set(1);
 	}
 
 }

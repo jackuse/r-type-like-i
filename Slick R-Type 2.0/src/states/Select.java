@@ -49,6 +49,7 @@ public class Select extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.etatprecedent);
 		if(Main.etatprecedent == Main.MENUSTATE){
 			//reset();
 			Main.etatprecedent = sbg.getCurrentStateID();	
@@ -72,8 +73,8 @@ public class Select extends BasicGameState{
 				vue.setMusic(4);		
 			}
 		}
-		System.out.println("etat "+sbg.getCurrentStateID());
-		System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
+		//System.out.println("etat "+sbg.getCurrentStateID());
+		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
 		if(!vue.isMusic()&& (Main.etatprecedent == Main.PAUSESTATE)){
 			//vue.selectMusic(0);
 			//vue.setMusic(1);

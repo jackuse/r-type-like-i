@@ -19,22 +19,35 @@ public class GameOver extends BasicGameState{
 	int GmOvY = 230;
 	boolean ok = true;
 	int delay = 200;
+	private int[] param;
 
 	public GameOver(int stateID) {
 		this.stateID = stateID;
 	}
 
+	public void enter(GameContainer gc, StateBasedGame sgb) {
+		gc.getInput().clearKeyPressedRecord();
+	}
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		param =new int[10];
 		
+	}
+
+	public int getParam(int i) {
+		return param[i];
+	}
+
+	public void setParam(int i, int p) {
+		this.param[i] = p;
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderGameOver(gc,gr,GmOvX,GmOvY,ok);
+		vue.renderGameOver(gc,gr,GmOvX,GmOvY,ok,param);
 		
 	}
 
@@ -55,7 +68,7 @@ public class GameOver extends BasicGameState{
 		
 		Input input = gc.getInput(); // On récupére les input
 		
-		if (input.isKeyPressed(Input.KEY_ESCAPE)){
+		if (input.isKeyPressed(Input.KEY_SPACE)){
 			sbg.enterState(Main.MENUSTATE);
 			//vue.setMusic(1);
 		}
