@@ -134,7 +134,8 @@ public class ResourceManager {
 		}
 		Document doc = null;
 		try {
-			doc = docBuilder.parse (new FileInputStream(resourceElement.getTextContent()));
+			//doc = docBuilder.parse (new FileInputStream(resourceElement.getTextContent()));
+			doc = docBuilder.parse (getClass().getResourceAsStream("/"+resourceElement.getTextContent())); // Methode compatible avec les jars
 		} catch (SAXException e) {
 			throw new SlickException("Could not load resources", e);
 		} catch (IOException e) {

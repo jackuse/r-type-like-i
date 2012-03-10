@@ -47,6 +47,7 @@ public class Menu extends BasicGameState{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		gc.getInput().clearKeyPressedRecord();
 	}
 	
 	@Override
@@ -66,7 +67,7 @@ public class Menu extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		vue.renderMenu(gr, menuX, menuY, titreX, titreY);
-		System.out.println("passe la");
+		//System.out.println("passe la");
 
 	}
 
@@ -74,7 +75,7 @@ public class Menu extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		//System.out.println("pause delta "+ delta);
-		System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.etatprecedent);
+		//System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.etatprecedent);
 		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
 		if(Main.etatprecedent == -1){
 			vue.selectMusic(0);

@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -335,7 +336,7 @@ public class Vue {
 		//laser.setRotation(90.0f);
 
 
-		alien[0] = rm.getImage("ALIEN_0");
+		alien[0] = rm.getImage("ALIEN_1");
 		alien[0].setRotation(270.0f);	
 		try {
 			pauseBg = new Image(800,600);
@@ -344,7 +345,6 @@ public class Vue {
 			e.printStackTrace();
 		}
 	}
-
 	public boolean[] initSelectionMusic(boolean[] selectMusicO) {
 		selectMusic = new boolean[rm.getNumber("NB_MUSIC")];
 		selectMusicO = new boolean[rm.getNumber("NB_MUSIC")];
@@ -402,12 +402,13 @@ public class Vue {
 			valider.draw(optionX+width*0.20f, optionY,0.7f);
 
 		font.drawString(optionX, optionY+height*0.10f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
-
-		font.drawString(optionX, optionY+height*0.20f, "Fullscreen",new Color(1.0f,1.0f,1.0f));
+		
+		font.drawString(optionX, optionY+height*0.20f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
 		if(validerFullscreen)
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
 		else
 			valider.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
+		gr.drawString( "Only Pro version",optionX+width*0.30f, optionY+height*0.20f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
 		exitOption.draw(optionX, optionY+height*0.30f, exitScale);
 
@@ -422,13 +423,15 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderMenu(Graphics g,int menuX, int menuY,int titreX,int titreY) {
+	public int renderMenu(Graphics gr,int menuX, int menuY,int titreX,int titreY) {
 		Rectangle fond = new Rectangle (0, 0, 800, 600);
-		g.setColor(new Color (0.2f, 0.2f, 0.2f));
-		g.fill(fond);
+		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
+		gr.fill(fond);
 		background[1].draw(0, 0);
 		font.drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
-		font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
+		//font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
+		gr.setColor(new Color (0,0,0));
+		gr.drawString("Beta 2.0", titreX+430, titreY+50); 
 		startGameOption.draw(menuX, menuY, startGameScale);
 		optionOption.draw(menuX+350, menuY, optionScale);
 		exitOption.draw(menuX+600, menuY, exitScale);
@@ -870,11 +873,10 @@ public class Vue {
 
 	public void chargemementGame(){
 		try {
-
-			rm.loadResources(new FileInputStream("data/jeu.xml"),true);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//rm.loadResources(new FileInputStream("data/jeu.xml"),true);
+			rm.loadResources(getClass().getResourceAsStream("/data/jeu.xml"),true); // Methode compatible avec les jars
+			
+			
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
