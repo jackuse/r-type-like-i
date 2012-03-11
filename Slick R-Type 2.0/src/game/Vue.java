@@ -63,6 +63,7 @@ public class Vue {
 	private Image ship1 = null;
 	private Image ship2 = null;
 	private Image ship3 = null;
+	private Image life;
 	private float startGameScale = 0.7f;
 	private float exitScale = 0.7f;
 	private float optionScale = 0.7f;
@@ -101,6 +102,8 @@ public class Vue {
 
 	private boolean debug = false;
 	boolean debugCol = false;
+
+	
 
 
 
@@ -338,6 +341,8 @@ public class Vue {
 
 		alien[0] = rm.getImage("ALIEN_1");
 		alien[0].setRotation(270.0f);	
+		life=rm.getImage("HEART");
+		
 		try {
 			pauseBg = new Image(800,600);
 		} catch (SlickException e) {
@@ -548,18 +553,14 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderBoard(Graphics gr, int[] param) {
+	public int renderHUD(Graphics gr, int[] param) {
 
-		//Tableaux de bord
-		//		g.setColor(org.newdawn.slick.Color.black);
+		//Tableaux de bord 1
+/*
 		Rectangle board1 = new Rectangle (0, height*0.955f, (width+1), 30);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 		gr.fill(board1);
-		//g.drawRect(0, 0, 400, 30);
-		//		g.drawImage(board, 100,100);
 		gr.setColor(org.newdawn.slick.Color.white);
-		//		uFont.drawString(50,10, "nb Explosion ="+nbEx);
-		//		uFont.drawString(100,10,"Explosion :"+nbEx,	org.newdawn.slick.Color.black);
 		if(debug ){
 			gr.drawString("Explosion :"+param[1], 10,height*0.96f);
 			gr.drawString("Alien :"+param[2], 150,height*0.96f);
@@ -604,8 +605,74 @@ public class Vue {
 		}
 		gr.setColor(new Color (1f,0,1f));
 		gr.drawString(""+param[5], width*0.58f,height*0.965f);
+		
+		*/
+		
+		// HUD
+				if(debug ){
+					gr.drawString("Explosion :"+param[1], 10,height*0.96f);
+					gr.drawString("Alien :"+param[2], 150,height*0.96f);
+					gr.drawString("Missile :"+param[3], width*0.31f,height*0.96f);
+				}
+				
+				//back
+				gr.setColor(org.newdawn.slick.Color.black);
+				gr.drawString("P1 - "+param[4], width*0.0125f+1,height*0.04f+1);
+				gr.drawString(param[7]+" x ", width*0.0125f+1,height*0.08f+1);
+				life.draw(width*0.050f+1,height*0.08f+1);
+				gr.drawString("Level 1-"+param[8], width*0.875f+1,height*0.0125f+1);
+				gr.drawString("Timer "+param[11]/1000, width*0.89f+1,height*0.04f+1);
+				
+				gr.drawString("Weapon:", width*0.0125f+1,height*0.92f+1);
+				if(param[6] == 21){
+					laser.draw(width*0.11f,height*0.91f, 1f);
+				}else if(param[6] == 22){
+					missile.draw(width*0.09f,height*0.905f, 0.7f);
+				}
+				
+				//white
+				gr.setColor(org.newdawn.slick.Color.white);
+//				gr.drawString("P1 - "+param[4], width*0.0125f,height*0.0125f);
+				gr.drawString("P1 - "+param[4], width*0.0125f,height*0.04f);
+				gr.drawString(param[7]+" x ", width*0.0125f,height*0.08f);
+				gr.drawString("Level 1-"+param[8], width*0.875f,height*0.0125f);
+				gr.drawString("Timer "+param[11]/1000, width*0.89f,height*0.04f);			
+				gr.drawString("Weapon:", width*0.0125f,height*0.92f);
 
-		//Ajouter un timer
+				
+				
+
+				//Lifebar
+				Rectangle lifeBack = new Rectangle (width*0.0125f, height*0.96f, width*0.20f, height*0.04f);
+				gr.setColor(new Color (0,0,0));
+				gr.fill(lifeBack);
+
+				if(param[5]<=10){
+					clignotementVie = true;
+				}
+				else
+					clignotementVie = false;
+
+
+				if(clignotementVie && param[0] == 1){}	
+				else{
+					Rectangle lifebar = new Rectangle (width*0.0125f, height*0.96f, (width*0.20f)*(param[5]/100f), height*0.04f);
+
+					if(param[5]>30){
+						gr.setColor(new Color (0,1.0f,0));
+					}
+					else 
+						gr.setColor(new Color (1f,0,0));
+
+
+					gr.fill(lifebar);
+
+				}
+				gr.setColor(new Color (1f,0,1f));
+				gr.drawString(""+param[5], width*0.0925f,height*0.965f);
+				
+				//*/
+
 		return 0;
 	}
 
@@ -658,7 +725,7 @@ public class Vue {
 	public void renderPause(GameContainer gc, Graphics gr,int pauseX, int pauseY, boolean cheatModOn, ArrayList<Chara> pass) {
 		//		if (gc.isPaused())
 		//		{
-		Rectangle rect = new Rectangle (0, 0, 801, 600);
+		Rectangle rect = new Rectangle (0, 0, 801, 601);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
 		gr.fill(rect);
 

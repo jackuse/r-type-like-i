@@ -59,6 +59,7 @@ public class Game extends BasicGameState{
 
 	public int shotRandomizer;
 	private SelectTransition t;
+	private int timer = 0;
 
 	/* Mettre en place des bonus et le boss et 2 lvl
 	 * Faire des lvl pour les armes
@@ -111,6 +112,7 @@ public class Game extends BasicGameState{
 		param[8] = lvl.getLvl();
 		param[9] = joueur[0].getKill();
 		param[10] = lvl.getKill();
+		param[11] = timer;
 
 
 
@@ -132,7 +134,7 @@ public class Game extends BasicGameState{
 
 		vue.renderJoueur(gr,joueur[0].getV(),param[0]);
 		vue.renderExplosion(gr, explo);
-		vue.renderBoard(gr,param);
+		vue.renderHUD(gr,param);
 		//vue.renderTest(g);
 
 	}
@@ -140,6 +142,8 @@ public class Game extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		
+		timer+=delta;
 
 		//BEGIN CHEAT CODE
 		if(cheat[0] ||joueur[0].getV().isBorn())
@@ -574,6 +578,7 @@ public class Game extends BasicGameState{
 		explo.clear();
 		nastyProjectile.clear();
 		lvl.set(1);
+		timer =0;
 	}
 
 }

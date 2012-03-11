@@ -23,6 +23,7 @@
 	<resource type="image" id="VALIDER">data\validerB.png</resource>
 	<resource type="image" id="VALIDER_OK">data\validerBok.png</resource>
 	<resource type="playlist" id="NB_MUSIC">data/playlist.xml</resource>
+	<resource type="image" id="HEART">data/heart.png</resource>
 	
 
 </resources>
