@@ -101,7 +101,7 @@ public class Vue {
 	private int msgTime = 0;
 
 	private boolean debug = false;
-	boolean debugCol = false;
+	boolean debugCol = true;
 
 	
 
@@ -413,7 +413,9 @@ public class Vue {
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
 		else
 			valider.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
-		gr.drawString( "Only Pro version",optionX+width*0.30f, optionY+height*0.20f);
+		System.out.println("rendu d'option pro ");
+		gr.setColor(new Color(0.5f,0.5f,0.5f));
+		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.225f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
 		exitOption.draw(optionX, optionY+height*0.30f, exitScale);
 
@@ -520,18 +522,14 @@ public class Vue {
 
 		joueur=sheetTest.getSprite(shipname);
 		joueur.setRotation(90.0f);
-		if(debugCol){
-			Rectangle rect = new Rectangle (v.getX(), v.getY(), v.getW(), v.getH());
-			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
-			gr.fill(rect);
-		}
+		
 
 		
 
 		if(v.isBorn()){
 			if(clig == 1){
 				nbCligne++;
-				joueur.draw(v.getX(), v.getY());
+				joueur.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
 				System.out.println("je clignote "+nbCligne);
 			}else{
 
@@ -543,7 +541,12 @@ public class Vue {
 
 		}else{
 
-			joueur.draw(v.getX(), v.getY());
+			joueur.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+		}
+		if(debugCol){
+			Rectangle rect = new Rectangle (v.getX(), v.getY(), v.getW(), v.getH());
+			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
+			gr.fill(rect);
 		}
 
 		
@@ -1022,4 +1025,16 @@ public class Vue {
 		System.out.println("new message");
 
 	}
+
+//	public void initRes() throws SlickException {
+//		initMenu();
+//		initGame();
+//		initPause();
+//		initCharacterSelectScreen();
+//		
+//		
+//		
+//	}
+
+
 }

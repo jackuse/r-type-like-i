@@ -24,7 +24,7 @@ public class Menu extends BasicGameState{
 	boolean firstLauch = true;
 	int delay = 20;
 	private int titreX = 0;
-	private int titreY = -400;
+	private int titreY = -300;
 	private Transition t[];
 	private Transition to[];
 
@@ -34,7 +34,7 @@ public class Menu extends BasicGameState{
 		this.stateID = stateID;
 	}
 
-	public void enter(GameContainer gc, StateBasedGame sgb) {
+	public void enter(GameContainer gc, StateBasedGame sgb) throws SlickException{
 		try {
 			t[0] = FadeOutTransition.class.newInstance();
 			t[1] = FadeInTransition.class.newInstance();
@@ -48,6 +48,15 @@ public class Menu extends BasicGameState{
 			e.printStackTrace();
 		}
 		gc.getInput().clearKeyPressedRecord();
+		
+//		System.out.println("debut initall");
+//		try { Thread.sleep(2000); } catch (Exception e) {}
+//		if(Main.init){
+//			vue.initRes();
+//			System.out.println("fin initall");
+//			Main.init =false;
+//			try { Thread.sleep(2000); } catch (Exception e) {}
+//		}
 	}
 	
 	@Override
@@ -197,7 +206,7 @@ public class Menu extends BasicGameState{
 	}
 
 	public void resetMenu(){
-		titreY = -100;
+		titreY = -80;
 	}
 
 	@Override

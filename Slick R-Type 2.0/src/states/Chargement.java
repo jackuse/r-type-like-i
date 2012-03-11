@@ -67,7 +67,7 @@ public class Chargement extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderChargement(gc, gr);
+		//vue.renderChargement(gc, gr);
 
 	}
 
@@ -134,6 +134,7 @@ public class Chargement extends BasicGameState{
 //					threadFini = true;
 //				if(threadFini){
 					sbg.enterState(Main.MENUSTATE,t[0],t[1]);
+//					sbg.enterState(Main.HISTORYSTATE);
 					System.out.println("Fin chargement");
 //				}
 				//qdvue.setMusic(1);

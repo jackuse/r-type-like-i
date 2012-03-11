@@ -72,8 +72,8 @@ public class Game extends BasicGameState{
 	}
 
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg)
-			throws SlickException {
+	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
+			 {
 		vue.initGame();
 		playerProjectile = new ArrayList<Objet>();
 		nastyProjectile = new ArrayList<Objet>();

@@ -114,7 +114,8 @@ public class Select extends BasicGameState{
 				//vue.setMusicJeu(true);
 				vue.setStartGameScale(0.7f);
 				vue.shipname="VAISSEAU_1.gif";
-				sbg.enterState(Main.GAMESTATE);
+//				sbg.enterState(Main.GAMESTATE);
+				sbg.enterState(Main.HISTORYSTATE);
 			}
 		}else{
 			if(vue.getStartGameScale() > 0.7f)
@@ -134,7 +135,8 @@ public class Select extends BasicGameState{
 				//vue.setMusicJeu(true);
 				vue.setStartGameScale(0.7f);
 				vue.shipname="VAISSEAU_2.gif";
-				sbg.enterState(Main.GAMESTATE);
+//				sbg.enterState(Main.GAMESTATE);
+				sbg.enterState(Main.HISTORYSTATE);
 			}
 		}else{
 			if(vue.getStartGameScale() > 0.7f)

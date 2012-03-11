@@ -9,7 +9,7 @@
 	<resource type="music" id="MUSIC_4" name="Nightcore - Dota">data\songs\Nightcore - Dota.ogg</resource>
 	<resource type="music" id="MUSIC_5" name="Nightcore - Sugar">data\songs\Nightcore - Sugar.ogg</resource>
 	<resource type="music" id="MUSIC_6" name="Tetris Techno Trance Remix">data\songs\Tetris Techno Trance Remix.ogg</resource>
-	<resource type="music" id="MUSIC_7">data\songs\MVC2 - Character Select Screen.ogg</resource>
+	<resource type="music" id="MUSIC_7" name="MVC2">data\songs\MVC2 - Character Select Screen.ogg</resource>
 	
 	<!-- PLAYLIST CHEATEUR -->
 

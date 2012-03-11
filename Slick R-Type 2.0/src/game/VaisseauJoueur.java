@@ -18,17 +18,26 @@ public class VaisseauJoueur extends Vaisseau {
 	private boolean born = true;
 
 
+	private int decalageX;
+	private int decalageY;
+
+	
+	
+
+
 	//
 	// Constructors
 	//
 	public VaisseauJoueur () { 
 		speed = 10;// Rapidité de tire ? dans un tableau
 		pdv = 100;
-		w=90;
-		h=90;
-		x=0;
+		w=30;
+		h=30;
+		x=30;
 		y= 240;
 		armeSelect = 21;
+		decalageX = 32;
+		decalageY = 30;
 
 	};
 	
@@ -100,9 +109,9 @@ public class VaisseauJoueur extends Vaisseau {
 	public void rest(){
 		speed = 10;
 		pdv = 100;
-		w=90;
-		h=90;
-		x=0;
+		w=30;
+		h=30;
+		x=30;
 		y= 240;
 		armeSelect = 21;
 		born = true;
@@ -117,5 +126,26 @@ public class VaisseauJoueur extends Vaisseau {
 	
 	public boolean setBorn(boolean b) {
 		return born = b;
+	}
+	public int getDecalageX() {
+		return decalageX;
+	}
+
+
+
+	public void setDecalageX(int decalageX) {
+		this.decalageX = decalageX;
+	}
+
+
+
+	public int getDecalageY() {
+		return decalageY;
+	}
+
+
+
+	public void setDecalageY(int decalageY) {
+		this.decalageY = decalageY;
 	}
 }
