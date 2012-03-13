@@ -20,10 +20,16 @@ public class History extends BasicGameState{
 	String text = "";
 	int cpt = 0;
 	//String textaff = "Dans une contré loingtaine trés lointaine des truc ignoble se passe et \n ce texte n'a aucun sens ";
-	String textaff = "Dans les années 45 la france se lance secretement dans un projet aéro spacial\nTOP SECRET appleé le projet R-Type\nElle lance un homme pour la premier fois sur la lune en 61 soit 8 ans avant les americains\nEn 2012 la branche Torchwood du projet R-type a déclaré une guerre inter-galactique\na cause une tasse de café mal placée ... \n\nAu secour [Votre nom ici] vous ete notre seul espoire...";
+	String textaff = "Dans les années 45 la France se lance secrètement dans un projet aérospatial\n" +
+			"TOP SECRET appelé le projet R-Type\n" +
+			"Elle lance un homme pour la première fois sur la lune en 61 soit 8 ans avant " +
+			"les Américains.\n" +
+			"En 2012 la branche Torchwood du projet R-type a déclaré une guerre intergalactique\n" +
+			"à cause une tasse de café mal placée ... \n\n" +
+			"Au secours [Votre nom ici] vous êtes notre seul espoir...";
 	//	String textaff = "Elle lance un homme pour la premier fois sur la lune en 61 soit 8 ans avant les americains";
-	//	String textaff = "En 2012 la branche Torchwood du projet R-type a déclaré une guerre inter-galactique a cause une tasse de café mal placée ... ";
-	//	String textaff = "Au secour [Votre nom ici] vous ete notre seul espoire...";
+	//	String textaff = "En 2012 la branche Torchwood du projet R-type a déclaré une guerre intergalactique à cause une tasse de café mal placée ... ";
+	//	String textaff = "Au secours [Votre nom ici] vous êtes notre seul espoir...";
 	private int delay=50;
 	boolean speedUp=false;
 	private int delayC = 200;

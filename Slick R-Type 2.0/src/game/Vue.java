@@ -46,7 +46,7 @@ public class Vue {
 	private Image[] alien = new Image[2];;
 	private Image laser;
 	private Image missile;
-	
+
 	private Image nastyProjectile;
 	private Image explosion;
 	private Image sheet;
@@ -87,7 +87,7 @@ public class Vue {
 	private int width = Main.WIDTH;
 	private int height = Main.HEIGHT ;
 
-	
+
 	private int nbCligne = 0;
 	boolean clignotementVie =false;
 
@@ -103,7 +103,8 @@ public class Vue {
 	private boolean debug = false;
 	boolean debugCol = true;
 
-	
+
+
 
 
 
@@ -289,7 +290,7 @@ public class Vue {
 
 		background[2] = rm.getImage("BACKGROUD_OPTION");
 	}
-	
+
 	public void initCharacterSelectScreen(){
 		principale = rm.getMusic("MUSIC_7");
 		principale.setVolume(volumeMusic);
@@ -308,7 +309,7 @@ public class Vue {
 			//uFont = new UnicodeFont(font, 20, false, false);
 			font.getEffects().add(new ColorEffect());
 			font.addAsciiGlyphs();
-		    font.loadGlyphs();
+			font.loadGlyphs();
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -342,7 +343,7 @@ public class Vue {
 		alien[0] = rm.getImage("ALIEN_1");
 		alien[0].setRotation(270.0f);	
 		life=rm.getImage("HEART");
-		
+
 		try {
 			pauseBg = new Image(800,600);
 		} catch (SlickException e) {
@@ -361,8 +362,8 @@ public class Vue {
 
 	}
 
-	
-	
+
+
 	///////////////////////////////////////// RENDER /////////////////////////////////////////
 
 	public void renderChargement(GameContainer gc, Graphics gr) {
@@ -407,7 +408,7 @@ public class Vue {
 			valider.draw(optionX+width*0.20f, optionY,0.7f);
 
 		font.drawString(optionX, optionY+height*0.10f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
-		
+
 		font.drawString(optionX, optionY+height*0.20f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
 		if(validerFullscreen)
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
@@ -430,7 +431,7 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderMenu(Graphics gr,int menuX, int menuY,int titreX,int titreY) {
+	public int renderMenu(Graphics gr,int menuX, int menuY,int titreX,int titreY, int hSX,HighscoreManager hm) {
 		Rectangle fond = new Rectangle (0, 0, 800, 600);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 		gr.fill(fond);
@@ -438,14 +439,26 @@ public class Vue {
 		font.drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
 		//font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
 		gr.setColor(new Color (0,0,0));
-		gr.drawString("Beta 2.0", titreX+430, titreY+50); 
+		gr.drawString("Beta 2.0", titreX+430, titreY+50);
+		//System.out.println("titreY "+titreY);
+		//HighScore
+		String s[] = hm.getHighscoreStringTab();
+		gr.setColor(new Color(1.0f,1.0f,1.0f));
+		gr.drawString("HighScores", hSX+50, 200);
+		for(int i=0;i<s.length;i++){	// Il faut faire apparaitre les scores 1 par 1
+			gr.drawString(s[i].substring(4), hSX, 230+25*i);
+		}
+		//gr.drawString(hm.getHighscoreString(), hSX, 300);
+		//System.out.println(hm.getHighscoreString());
+
+		 
 		startGameOption.draw(menuX, menuY, startGameScale);
 		optionOption.draw(menuX+350, menuY, optionScale);
 		exitOption.draw(menuX+600, menuY, exitScale);
 		return 0;
 
 	}
-	
+
 	public int renderCharacterSelectScreen(Graphics g, int menuX, int menuY){
 		Rectangle fond = new Rectangle (0, 0, 800, 600);
 		g.setColor(new Color (0.2f, 0.2f, 0.2f));
@@ -522,9 +535,9 @@ public class Vue {
 
 		joueur=sheetTest.getSprite(shipname);
 		joueur.setRotation(90.0f);
-		
 
-		
+
+
 
 		if(v.isBorn()){
 			if(clig == 1){
@@ -549,9 +562,9 @@ public class Vue {
 			gr.fill(rect);
 		}
 
-		
+
 		//joueur.draw(v.getX(), v.getY(), v.getW(), v.getH());
-	
+
 
 		return 0;
 	}
@@ -559,7 +572,7 @@ public class Vue {
 	public int renderHUD(Graphics gr, int[] param) {
 
 		//Tableaux de bord 1
-/*
+		/*
 		Rectangle board1 = new Rectangle (0, height*0.955f, (width+1), 30);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 		gr.fill(board1);
@@ -572,7 +585,7 @@ public class Vue {
 		gr.drawString("Score:"+param[4], width*0.85f,height*0.96f);
 		gr.drawString("Life:"+param[7], width*0.15f,height*0.96f);
 		gr.drawString("Level :"+param[8]+" Objectif : "+param[9]+"/"+param[10], width*0.15f,height*0.96f);
-		
+
 		gr.drawString("Weapon:", 10,height*0.96f);
 		if(param[6] == 21){
 			laser.draw(width*0.11f,height*0.95f, 1f);
@@ -608,73 +621,73 @@ public class Vue {
 		}
 		gr.setColor(new Color (1f,0,1f));
 		gr.drawString(""+param[5], width*0.58f,height*0.965f);
-		
-		*/
-		
+
+		 */
+
 		// HUD
-				if(debug ){
-					gr.drawString("Explosion :"+param[1], 10,height*0.96f);
-					gr.drawString("Alien :"+param[2], 150,height*0.96f);
-					gr.drawString("Missile :"+param[3], width*0.31f,height*0.96f);
-				}
-				
-				//back
-				gr.setColor(org.newdawn.slick.Color.black);
-				gr.drawString("P1 - "+param[4], width*0.0125f+1,height*0.04f+1);
-				gr.drawString(param[7]+" x ", width*0.0125f+1,height*0.08f+1);
-				life.draw(width*0.050f+1,height*0.08f+1);
-				gr.drawString("Level 1-"+param[8], width*0.875f+1,height*0.0125f+1);
-				gr.drawString("Timer "+param[11]/1000, width*0.89f+1,height*0.04f+1);
-				
-				gr.drawString("Weapon:", width*0.0125f+1,height*0.92f+1);
-				if(param[6] == 21){
-					laser.draw(width*0.11f,height*0.91f, 1f);
-				}else if(param[6] == 22){
-					missile.draw(width*0.09f,height*0.905f, 0.7f);
-				}
-				
-				//white
-				gr.setColor(org.newdawn.slick.Color.white);
-//				gr.drawString("P1 - "+param[4], width*0.0125f,height*0.0125f);
-				gr.drawString("P1 - "+param[4], width*0.0125f,height*0.04f);
-				gr.drawString(param[7]+" x ", width*0.0125f,height*0.08f);
-				gr.drawString("Level 1-"+param[8], width*0.875f,height*0.0125f);
-				gr.drawString("Timer "+param[11]/1000, width*0.89f,height*0.04f);			
-				gr.drawString("Weapon:", width*0.0125f,height*0.92f);
+		if(debug ){
+			gr.drawString("Explosion :"+param[1], 10,height*0.96f);
+			gr.drawString("Alien :"+param[2], 150,height*0.96f);
+			gr.drawString("Missile :"+param[3], width*0.31f,height*0.96f);
+		}
 
-				
-				
+		//back
+		gr.setColor(org.newdawn.slick.Color.black);
+		gr.drawString("P1 - "+param[4], width*0.0125f+1,height*0.04f+1);
+		gr.drawString(param[7]+" x ", width*0.0125f+1,height*0.08f+1);
+		life.draw(width*0.050f+1,height*0.08f+1);
+		gr.drawString("Level 1-"+param[8], width*0.875f+1,height*0.0125f+1);
+		gr.drawString("Timer "+param[11]/1000, width*0.89f+1,height*0.04f+1);
 
-				//Lifebar
-				Rectangle lifeBack = new Rectangle (width*0.0125f, height*0.96f, width*0.20f, height*0.04f);
-				gr.setColor(new Color (0,0,0));
-				gr.fill(lifeBack);
+		gr.drawString("Weapon:", width*0.0125f+1,height*0.92f+1);
+		if(param[6] == 21){
+			laser.draw(width*0.11f,height*0.91f, 1f);
+		}else if(param[6] == 22){
+			missile.draw(width*0.09f,height*0.905f, 0.7f);
+		}
 
-				if(param[5]<=10){
-					clignotementVie = true;
-				}
-				else
-					clignotementVie = false;
+		//white
+		gr.setColor(org.newdawn.slick.Color.white);
+		//				gr.drawString("P1 - "+param[4], width*0.0125f,height*0.0125f);
+		gr.drawString("P1 - "+param[4], width*0.0125f,height*0.04f);
+		gr.drawString(param[7]+" x ", width*0.0125f,height*0.08f);
+		gr.drawString("Level 1-"+param[8], width*0.875f,height*0.0125f);
+		gr.drawString("Timer "+param[11]/1000, width*0.89f,height*0.04f);			
+		gr.drawString("Weapon:", width*0.0125f,height*0.92f);
 
 
-				if(clignotementVie && param[0] == 1){}	
-				else{
-					Rectangle lifebar = new Rectangle (width*0.0125f, height*0.96f, (width*0.20f)*(param[5]/100f), height*0.04f);
-
-					if(param[5]>30){
-						gr.setColor(new Color (0,1.0f,0));
-					}
-					else 
-						gr.setColor(new Color (1f,0,0));
 
 
-					gr.fill(lifebar);
+		//Lifebar
+		Rectangle lifeBack = new Rectangle (width*0.0125f, height*0.96f, width*0.20f, height*0.04f);
+		gr.setColor(new Color (0,0,0));
+		gr.fill(lifeBack);
 
-				}
-				gr.setColor(new Color (1f,0,1f));
-				gr.drawString(""+param[5], width*0.0925f,height*0.965f);
-				
-				//*/
+		if(param[5]<=10){
+			clignotementVie = true;
+		}
+		else
+			clignotementVie = false;
+
+
+		if(clignotementVie && param[0] == 1){}	
+		else{
+			Rectangle lifebar = new Rectangle (width*0.0125f, height*0.96f, (width*0.20f)*(param[5]/100f), height*0.04f);
+
+			if(param[5]>30){
+				gr.setColor(new Color (0,1.0f,0));
+			}
+			else 
+				gr.setColor(new Color (1f,0,0));
+
+
+			gr.fill(lifebar);
+
+		}
+		gr.setColor(new Color (1f,0,1f));
+		gr.drawString(""+param[5], width*0.0925f,height*0.965f);
+
+		//*/
 
 		return 0;
 	}
@@ -781,7 +794,7 @@ public class Vue {
 	}
 
 	public void renderGameOver(GameContainer gc, Graphics gr, int gmOvX,
-			int gmOvY,boolean ok,int param[]) {
+			int gmOvY,boolean ok,int param[],String name) {
 		pauseBg.draw(0, 0);
 		Rectangle rect = new Rectangle (0, 0, 801, 600);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
@@ -794,10 +807,23 @@ public class Vue {
 
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
 
-		gr.drawString("You loose ! ", width*0.45f, 280); 
-		gr.drawString("Score :  "+param[0], width*0.45f, 300); 
-		if(ok)
-			gr.drawString("Press space", width*0.45f, 320); 
+		if(param[2] == 1)
+			gr.drawString("Best score of all the lost time !", width*0.45f, 220); 
+		if(param[1] == 0)
+			gr.drawString("You are not in highscore ", width*0.45f, 240); 
+		else
+			gr.drawString("You are TOP10 ", width*0.45f, 240);
+
+		gr.drawString("Score :  "+param[0], width*0.45f, 260); 
+
+		if(param[1] ==1){
+			gr.drawString("Tape your name here ", width*0.45f, 280);
+			gr.drawString(name, width*0.45f, 300);
+		}
+		else{
+			if(ok)
+				gr.drawString("Press space", width*0.45f, 340); 
+		}
 	}
 
 
@@ -945,8 +971,8 @@ public class Vue {
 		try {
 			//rm.loadResources(new FileInputStream("data/jeu.xml"),true);
 			rm.loadResources(getClass().getResourceAsStream("/data/jeu.xml"),true); // Methode compatible avec les jars
-			
-			
+
+
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1026,15 +1052,15 @@ public class Vue {
 
 	}
 
-//	public void initRes() throws SlickException {
-//		initMenu();
-//		initGame();
-//		initPause();
-//		initCharacterSelectScreen();
-//		
-//		
-//		
-//	}
+	//	public void initRes() throws SlickException {
+	//		initMenu();
+	//		initGame();
+	//		initPause();
+	//		initCharacterSelectScreen();
+	//		
+	//		
+	//		
+	//	}
 
 
 }

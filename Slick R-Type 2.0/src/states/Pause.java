@@ -235,7 +235,7 @@ public class Pause extends BasicGameState{
 	}
 
 
-	public char getChar(Input input){
+	public static char getChar(Input input){
 		if(input.isKeyPressed(Input.KEY_A))
 			return 'a';
 		else if(input.isKeyPressed(Input.KEY_B))

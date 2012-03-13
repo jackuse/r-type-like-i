@@ -82,7 +82,7 @@ public class Game extends BasicGameState{
 
 
 		joueur = new Joueur[1];
-		joueur[0] = new Joueur();
+		joueur[0] = Joueur.getInstance(1);
 		cheat = new boolean[4];
 		for(int i=0;i<4;i++)
 			cheat[i] = false;
@@ -144,7 +144,7 @@ public class Game extends BasicGameState{
 			throws SlickException {
 		
 		timer+=delta;
-
+		System.out.println("delta "+delta+" timer "+timer );
 		//BEGIN CHEAT CODE
 		if(cheat[0] ||joueur[0].getV().isBorn())
 			joueur[0].getV().setInvicible(true);
@@ -569,10 +569,11 @@ public class Game extends BasicGameState{
 	}
 
 	public void reset(){
-		joueur[0].getV().rest();
-		joueur[0].setLife(3);
-		joueur[0].getV().setInvicible(true);
-		joueur[0].restTotalKill();
+//		joueur[0].getV().rest();
+//		joueur[0].setLife(3);
+//		joueur[0].getV().setInvicible(true);
+//		joueur[0].restTotalKill();
+		//joueur[0].rest();
 		enemy.clear();
 		playerProjectile.clear();
 		explo.clear();

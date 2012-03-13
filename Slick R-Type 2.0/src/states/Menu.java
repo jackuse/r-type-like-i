@@ -1,5 +1,6 @@
 package states;
 
+import game.HighscoreManager;
 import game.Main;
 import game.Vue;
 
@@ -27,6 +28,8 @@ public class Menu extends BasicGameState{
 	private int titreY = -300;
 	private Transition t[];
 	private Transition to[];
+	private HighscoreManager hm;
+	private int hSX = 800;
 
 
 
@@ -48,17 +51,19 @@ public class Menu extends BasicGameState{
 			e.printStackTrace();
 		}
 		gc.getInput().clearKeyPressedRecord();
-		
-//		System.out.println("debut initall");
-//		try { Thread.sleep(2000); } catch (Exception e) {}
-//		if(Main.init){
-//			vue.initRes();
-//			System.out.println("fin initall");
-//			Main.init =false;
-//			try { Thread.sleep(2000); } catch (Exception e) {}
-//		}
+
+		//		System.out.println("debut initall");
+		//		try { Thread.sleep(2000); } catch (Exception e) {}
+		//		if(Main.init){
+		//			vue.initRes();
+		//			System.out.println("fin initall");
+		//			Main.init =false;
+		//			try { Thread.sleep(2000); } catch (Exception e) {}
+		//		}
+
+		hm = HighscoreManager.getInstance();
 	}
-	
+
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
@@ -67,7 +72,8 @@ public class Menu extends BasicGameState{
 		titreX = (int)(vue.getWidth()*0.20);
 		t = new Transition[2];
 		to = new Transition[2];
-		
+
+
 
 
 	}
@@ -75,7 +81,7 @@ public class Menu extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderMenu(gr, menuX, menuY, titreX, titreY);
+		vue.renderMenu(gr, menuX, menuY, titreX, titreY,hSX,hm);
 		//System.out.println("passe la");
 
 	}
@@ -94,21 +100,29 @@ public class Menu extends BasicGameState{
 
 
 		if(Main.etatprecedent != sbg.getCurrentStateID()){
-			
-			if(titreY<200){
+
+			if(titreY<100){
 				titreY+=5;
 			}
 			else{
-
-				if(Main.etatprecedent != Main.OPTIONSTATE){
+				if(hSX==800 && Main.etatprecedent != Main.OPTIONSTATE){
 					//vue.selectMusic(0);
 					vue.setMusic(0);
 					if(vue.isValiderMusic()){
 						vue.setMusic(1);
 					}
 				}
-				Main.etatprecedent = sbg.getCurrentStateID();
+				
+				if(hSX>300){
+					hSX-=20;
+				}else{
+					Main.etatprecedent = sbg.getCurrentStateID();
+				}
+
+				
+				
 			}
+
 		}
 
 		/*
@@ -197,9 +211,18 @@ public class Menu extends BasicGameState{
 			if(vue.getExitScale() > 0.7f)
 				vue.setExitScale(vue.getExitScale() - scaleStep * delay);
 		}
-		
+
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){
 			Main.app.exit();
+		}
+		
+		
+		if (input.isKeyPressed(Input.KEY_R)){
+			hm.rest();
+		}
+		
+		if (input.isKeyPressed(Input.KEY_T)){
+			hm.restZ();
 		}
 
 
@@ -207,6 +230,7 @@ public class Menu extends BasicGameState{
 
 	public void resetMenu(){
 		titreY = -80;
+		hSX = 800;
 	}
 
 	@Override

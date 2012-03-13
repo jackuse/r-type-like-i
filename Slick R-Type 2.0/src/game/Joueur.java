@@ -17,6 +17,7 @@ public class Joueur {
   private int life;
   private int kill;
   private int totalKill;
+  private static final Map<Object, Joueur> instances = new HashMap<Object, Joueur>();
   
   //
   // Constructors
@@ -27,6 +28,25 @@ public class Joueur {
 	  kill = 0;
 	  
   };
+  
+  public static Joueur getInstance(Object key) {
+      synchronized (instances) {
+
+          // Our "per key" singleton
+    	  Joueur instance = instances.get(key);
+
+          if (instance == null) {
+
+              // Lazily create instance
+              instance = new Joueur();
+
+              // Add it to map   
+              instances.put(key, instance);
+          }
+
+          return instance;
+      }
+  }
   
   //
   // Methods
@@ -89,6 +109,15 @@ public void restKill() {
 
 public void restTotalKill() {
 	kill = 0;
+}
+
+public void rest() {
+	score = 0;
+	life = 3;
+	restKill();
+	restTotalKill();
+	v.rest();
+	
 }
 
   //
