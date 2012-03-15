@@ -26,8 +26,14 @@ import org.newdawn.slick.XMLPackedSheet;
 
 import states.Game;
 
-// Faire un design pattern sigletton
+
 // Contient toutes les valeurs partagées des etats
+
+/* Problem avec le hight score top10 alors que non
+ * implementer la play list choice
+ * implementer keyconfig ou pas
+ * 
+ */
 
 /**
  * Class Vue
@@ -414,7 +420,7 @@ public class Vue {
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
 		else
 			valider.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
-		System.out.println("rendu d'option pro ");
+		//System.out.println("rendu d'option pro ");
 		gr.setColor(new Color(0.5f,0.5f,0.5f));
 		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.225f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
@@ -439,7 +445,7 @@ public class Vue {
 		font.drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
 		//font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
 		gr.setColor(new Color (0,0,0));
-		gr.drawString("Beta 2.0", titreX+430, titreY+50);
+		gr.drawString("Beta 3.0", titreX+430, titreY+50);
 		//System.out.println("titreY "+titreY);
 		//HighScore
 		String s[] = hm.getHighscoreStringTab();
@@ -533,7 +539,7 @@ public class Vue {
 
 	public int renderJoueur(Graphics gr, VaisseauJoueur v,int clig) {
 
-		joueur=sheetTest.getSprite(shipname);
+		joueur=sheetTest.getSprite(shipname); // Whats the fuck !!!!!!!!
 		joueur.setRotation(90.0f);
 
 
@@ -543,7 +549,7 @@ public class Vue {
 			if(clig == 1){
 				nbCligne++;
 				joueur.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
-				System.out.println("je clignote "+nbCligne);
+				//System.out.println("je clignote "+nbCligne);
 			}else{
 
 			}
@@ -784,7 +790,7 @@ public class Vue {
 			//font.drawString(width*0.8f, 10, msg, new Color(1f,1f,1f));		
 			msgTime-=10;
 			if(msgTime <0){
-				System.out.println("fin boucle message");
+				//System.out.println("fin boucle message");
 				msgTime = 0;
 				msgOn = false;
 			}
@@ -808,17 +814,20 @@ public class Vue {
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
 
 		if(param[2] == 1)
-			gr.drawString("Best score of all the lost time !", width*0.45f, 220); 
+			gr.drawString("Best score !", width*0.45f, 220); 
 		if(param[1] == 0)
-			gr.drawString("You are not in highscore ", width*0.45f, 240); 
+			gr.drawString("You are not in highscore ", width*0.42f, 240); 
 		else
 			gr.drawString("You are TOP10 ", width*0.45f, 240);
 
 		gr.drawString("Score :  "+param[0], width*0.45f, 260); 
 
 		if(param[1] ==1){
-			gr.drawString("Tape your name here ", width*0.45f, 280);
-			gr.drawString(name, width*0.45f, 300);
+			gr.drawString("Type your name here ", width*0.42f, 280);
+			gr.setColor(new Color (0,0,0));
+			gr.fill(new Rectangle (width*0.415f, 300, 180,25 ));
+			gr.setColor(new Color (1.0f,1.0f,1.0f));
+			gr.drawString(name, width*0.42f, 300);
 		}
 		else{
 			if(ok)
@@ -984,7 +993,7 @@ public class Vue {
 		this.width = width;
 		this.height = height;
 		try {
-			System.out.println(width+" "+height+" "+fullscreen);
+			//System.out.println(width+" "+height+" "+fullscreen);
 			Main.app.setDisplayMode(width,height,fullscreen);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
@@ -1048,8 +1057,12 @@ public class Vue {
 		msgOn = true;
 		this.msg=msg;
 		msgTime=i;
-		System.out.println("new message");
+		//System.out.println("new message");
 
+	}
+
+	public Image getIJoueur() {
+		return joueur;
 	}
 
 	//	public void initRes() throws SlickException {

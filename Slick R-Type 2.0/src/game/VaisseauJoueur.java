@@ -75,15 +75,15 @@ public class VaisseauJoueur extends Vaisseau {
 
 	public void setInvicible(boolean invicible) {
 		this.invicible = invicible;
-		System.out.println("invincible " + invicible);
+		//System.out.println("invincible " + invicible);
 	}
 
 	public void setPdv ( int pdv ) {
 		if(!invicible){
 			this.pdv = pdv;
-			System.out.println("aie "+pdv);
+			//System.out.println("aie "+pdv);
 		}
-		System.out.println("invincible " + invicible);
+		//System.out.println("invincible " + invicible);
 	}
 
 	public void setNArme(boolean next) {

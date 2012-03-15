@@ -129,7 +129,7 @@ public class GameOver extends BasicGameState{
 					name =name.substring(0, name.length()-1);
 			}
 			char c = Pause.getChar(input);
-			if(c != '0' && name.length() < 42){;
+			if(c != '\0' && name.length() < 19){;
 				name+=c;
 			}
 			

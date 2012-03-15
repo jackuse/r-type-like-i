@@ -144,7 +144,7 @@ public class Game extends BasicGameState{
 			throws SlickException {
 		
 		timer+=delta;
-		System.out.println("delta "+delta+" timer "+timer );
+		//System.out.println("delta "+delta+" timer "+timer );
 		//BEGIN CHEAT CODE
 		if(cheat[0] ||joueur[0].getV().isBorn())
 			joueur[0].getV().setInvicible(true);
@@ -202,17 +202,16 @@ public class Game extends BasicGameState{
 		////////////////////////////////////////LES COMMANDES /////////////////////////////////////////
 		Input input = gc.getInput(); // On récupére les input
 
-
+		//System.out.println("1: "+vue.getIJoueur().getHeight()+"  1: "+vue.getIJoueur().getWidth());
 		// Les commandes de déplacements
 		if(input.isKeyDown(Input.KEY_Z))
-		{
-			
+		{		
 			if(speedUp)
 				joueur[0].getV().setY(joueur[0].getV().getY()-joueur[0].getV().getSpeed()*2);
 			else
 				joueur[0].getV().setY(joueur[0].getV().getY()-joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getY()<0)
-				joueur[0].getV().setY(0);
+			if(joueur[0].getV().getY()<((vue.getIJoueur().getHeight()-joueur[0].getV().getH())/2))
+				joueur[0].getV().setY(((vue.getIJoueur().getHeight()-joueur[0].getV().getH())/2));
 		}
 		if(input.isKeyDown(Input.KEY_S))
 		{
@@ -220,20 +219,23 @@ public class Game extends BasicGameState{
 				joueur[0].getV().setY(joueur[0].getV().getY()+joueur[0].getV().getSpeed()*2);
 			else
 				joueur[0].getV().setY(joueur[0].getV().getY()+joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getY()+joueur[0].getV().getH()>vue.getHeight()*0.955f)
-				joueur[0].getV().setY(vue.getHeight()*0.805f);
+			if(joueur[0].getV().getY()+joueur[0].getV().getH()>(vue.getHeight()-((vue.getIJoueur().getHeight()+joueur[0].getV().getH())/2)))
+				joueur[0].getV().setY(vue.getHeight()-((vue.getIJoueur().getHeight()+joueur[0].getV().getH())/2));
 		}
 		if(input.isKeyDown(Input.KEY_Q))
 		{
+			System.out.println("1: "+joueur[0].getV().getX()+"  2: "+((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
 			joueur[0].getV().setX(joueur[0].getV().getX()-joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getX()<-8)
-				joueur[0].getV().setX(joueur[0].getV().getX()+joueur[0].getV().getSpeed());
+			if(joueur[0].getV().getX()<((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2))
+				joueur[0].getV().setX(((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
+
 		}
 		if(input.isKeyDown(Input.KEY_D))
 		{
+			System.out.println("1: "+joueur[0].getV().getX()+"  2: "+((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
 			joueur[0].getV().setX(joueur[0].getV().getX()+joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getX()+joueur[0].getV().getW()>810)
-				joueur[0].getV().setX(joueur[0].getV().getX()-joueur[0].getV().getSpeed());
+			if(joueur[0].getV().getX()+joueur[0].getV().getW()>(vue.getWidth()-((vue.getIJoueur().getWidth()+joueur[0].getV().getW())/2)))
+				joueur[0].getV().setX((vue.getWidth()-((vue.getIJoueur().getWidth()+joueur[0].getV().getW())/2)));
 		}
 
 		//Commande laser

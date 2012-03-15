@@ -89,7 +89,7 @@ public class History extends BasicGameState{
 				ok = true;
 			delayC = 400;
 		}
-		System.out.println("delay "+delay+" speedUp "+speedUp+"text aff "+text.length() );
+		//System.out.println("delay "+delay+" speedUp "+speedUp+"text aff "+text.length() );
 		delay-=20;
 		if(delay <0 || speedUp){
 			if(speedUp){

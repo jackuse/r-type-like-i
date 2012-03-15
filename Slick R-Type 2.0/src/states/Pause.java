@@ -112,7 +112,7 @@ public class Pause extends BasicGameState{
 				//System.out.println("on recule "+pass.size());
 			}
 			char c = getChar(input);
-			if(c != '0' && pass.size() < 42){
+			if(c != '\0' && pass.size() < 42){
 				Chara ch = new Chara(c);
 				pass.add(ch);
 				//System.out.println("Je crois que tu a tapper un : "+ch.c);
@@ -288,8 +288,28 @@ public class Pause extends BasicGameState{
 			return 'y';
 		else if(input.isKeyPressed(Input.KEY_Z))
 			return 'z';
-		else
+		else if(input.isKeyPressed(Input.KEY_0) || input.isKeyPressed(Input.KEY_NUMPAD0))
 			return '0';
+		else if(input.isKeyPressed(Input.KEY_1) || input.isKeyPressed(Input.KEY_NUMPAD1))
+			return '1';
+		else if(input.isKeyPressed(Input.KEY_2) || input.isKeyPressed(Input.KEY_NUMPAD2))
+			return '2';
+		else if(input.isKeyPressed(Input.KEY_3) || input.isKeyPressed(Input.KEY_NUMPAD3))
+			return '3';
+		else if(input.isKeyPressed(Input.KEY_4) || input.isKeyPressed(Input.KEY_NUMPAD4))
+			return '4';
+		else if(input.isKeyPressed(Input.KEY_5) || input.isKeyPressed(Input.KEY_NUMPAD5))
+			return '5';
+		else if(input.isKeyPressed(Input.KEY_6) || input.isKeyPressed(Input.KEY_NUMPAD6))
+			return '6';
+		else if(input.isKeyPressed(Input.KEY_7) || input.isKeyPressed(Input.KEY_NUMPAD7))
+			return '7';
+		else if(input.isKeyPressed(Input.KEY_8) || input.isKeyPressed(Input.KEY_NUMPAD8))
+			return '8';
+		else if(input.isKeyPressed(Input.KEY_9) || input.isKeyPressed(Input.KEY_NUMPAD9))
+			return '9';
+		else
+			return '\0';
 
 	}
 
