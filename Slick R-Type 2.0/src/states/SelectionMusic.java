@@ -2,6 +2,7 @@ package states;
 
 import game.Chara;
 import game.Main;
+import game.ResourceManager;
 import game.Vue;
 
 import java.util.ArrayList;
@@ -42,6 +43,13 @@ public class SelectionMusic extends BasicGameState{
 
 
 
+	}
+	
+	public void leave(GameContainer container, StateBasedGame game)
+			throws SlickException{
+		vue.setMusic(0);
+		vue.selectMusic(0);
+		vue.setMusic(1);
 	}
 
 	@Override
@@ -86,6 +94,18 @@ public class SelectionMusic extends BasicGameState{
 				//System.out.println("on music "+i);
 			}
 		}
+		for(int i=0;i<selectMusic.length;i++){
+			if( ( mouseX >= selectX+10 && mouseX <= selectX+10+600) &&
+					( mouseY >= selectY+40*(i-1)+50 && mouseY <= selectY +40*(i-1)+50 + 34) ){
+				if(vue.getIdMusic()!=i){
+				vue.setMusic(0);
+				vue.selectMusic(i);
+				vue.setMusic(1);
+				System.out.println("set music "+i);
+				}
+				System.out.println("on music "+i);
+			}
+		}
 		if( ( mouseX >= selectX+10 && mouseX <= selectX+10 + vue.getOptionOption().getWidth()*0.7) &&
 				( mouseY >= selectY+vue.getHeight()*0.80f && mouseY <= selectY+vue.getHeight()*0.80f + vue.getOptionOption().getHeight()*0.7) ){
 			insideExit = true;
@@ -99,9 +119,11 @@ public class SelectionMusic extends BasicGameState{
 					if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 						if(vue.isSelectMusic(i)){
 							vue.setValiderSelectMusic(i,false);
+							System.out.println("music "+i+" off");							
 						}
 						else{
 							vue.setValiderSelectMusic(i,true);
+							System.out.println("music "+i+" on");
 						}
 					}
 					delayClick = 100;
@@ -109,6 +131,7 @@ public class SelectionMusic extends BasicGameState{
 			}
 
 		}
+		
 
 
 		if(insideExit)

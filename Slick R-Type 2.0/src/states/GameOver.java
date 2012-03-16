@@ -76,6 +76,7 @@ public class GameOver extends BasicGameState{
 		param[0]=j1.getScore();
 		param[1]=top;
 		param[2]=best;
+		param[3]=j1.getTime();
 
 	}
 

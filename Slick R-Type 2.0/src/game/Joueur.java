@@ -17,6 +17,7 @@ public class Joueur {
   private int life;
   private int kill;
   private int totalKill;
+  private int time;
   private static final Map<Object, Joueur> instances = new HashMap<Object, Joueur>();
   
   //
@@ -117,7 +118,15 @@ public void rest() {
 	restKill();
 	restTotalKill();
 	v.rest();
-	
+	time = 0;
+}
+
+public void setTime(int t) {
+	time = t;
+}
+
+public int getTime() {
+	return time;
 }
 
   //

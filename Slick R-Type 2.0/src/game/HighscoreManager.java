@@ -75,7 +75,7 @@ public class HighscoreManager {
 			}
 		}
 
-		return true;
+		return false;
 
 	}
 
@@ -112,6 +112,8 @@ public class HighscoreManager {
 				System.out.println("[Laad] IO Error: " + e.getMessage());
 			}
 		}
+		if(scores.size()<1)
+			initData();
 	}
 
 
@@ -184,6 +186,11 @@ public class HighscoreManager {
 		updateScoreFile(); // si il est pas créé on le crée
 		loadScoreFile(); // on le charge
 		scores.clear();
+		initData();
+		updateScoreFile(); // on le met a jour
+	}
+	
+	public void initData() {
 		scores.add(new Score("Dispsi", 1000));
 		scores.add(new Score("Lala", 700));
 		scores.add(new Score("Poe", 500));
@@ -192,10 +199,9 @@ public class HighscoreManager {
 		scores.add(new Score("JavaMachine", 100));
 		scores.add(new Score("Le blond", 20));
 		scores.add(new Score("Sarko", 0));
-		updateScoreFile(); // on le met a jour
 	}
 
-	public void restZ() {
+	public void restZ() { // ne sert plus a rien
 		updateScoreFile(); // si il est pas créé on le crée
 		loadScoreFile(); // on le charge
 		scores.clear();

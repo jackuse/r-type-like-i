@@ -19,6 +19,7 @@ public class History extends BasicGameState{
 	private UnicodeFont font;
 	String text = "";
 	int cpt = 0;
+	boolean textDone[];
 	//String textaff = "Dans une contré loingtaine trés lointaine des truc ignoble se passe et \n ce texte n'a aucun sens ";
 	String textaff = "Dans les années 45 la France se lance secrètement dans un projet aérospatial\n" +
 			"TOP SECRET appelé le projet R-Type\n" +
@@ -38,10 +39,15 @@ public class History extends BasicGameState{
 	public History(int stateID) {
 		this.stateID = stateID;
 	}
-	public void enter(GameContainer gc, StateBasedGame sgb) {
+	public void enter(GameContainer gc, StateBasedGame sbg) {
 		gc.getInput().clearKeyPressedRecord();
 		vue.selectMusic(6);
 		vue.setMusic(1);
+		
+//		if(textDone[truc.getLevel()]){
+//			sbg.enterState(Main.GAMESTATE);
+//			rest();
+//		}
 	}
 
 	@Override
@@ -59,6 +65,11 @@ public class History extends BasicGameState{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		textDone = new boolean[10];
+		for (boolean t : textDone) {
+			t=false;
+		}
 
 	}
 
@@ -71,7 +82,7 @@ public class History extends BasicGameState{
 		gr.fillRect(0,0,width,height); //fond
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
 		font.drawString(0, 0, text, new Color(0,0,0));
-		System.out.println(text);
+		//System.out.println(text);
 		gr.drawString(text, 10, 20);
 		if(ok)
 			gr.drawString("Presse space to pass", 300, 500);

@@ -308,6 +308,8 @@ public class Pause extends BasicGameState{
 			return '8';
 		else if(input.isKeyPressed(Input.KEY_9) || input.isKeyPressed(Input.KEY_NUMPAD9))
 			return '9';
+		else if(input.isKeyPressed(Input.KEY_SPACE))
+			return '\7';
 		else
 			return '\0';
 

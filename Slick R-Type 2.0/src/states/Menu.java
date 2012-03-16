@@ -30,6 +30,7 @@ public class Menu extends BasicGameState{
 	private Transition to[];
 	private HighscoreManager hm;
 	private int hSX = 800;
+	private boolean credit = false;
 
 
 
@@ -81,7 +82,13 @@ public class Menu extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderMenu(gr, menuX, menuY, titreX, titreY,hSX,hm);
+		if(!credit){
+			vue.renderMenu(gr, menuX, menuY, titreX, titreY,hSX,hm);
+		}
+		else
+		{
+			gr.drawString("version 4.2", 50, 50);
+		}
 		//System.out.println("passe la");
 
 	}
@@ -112,15 +119,15 @@ public class Menu extends BasicGameState{
 						vue.setMusic(1);
 					}
 				}
-				
+
 				if(hSX>300){
 					hSX-=20;
 				}else{
 					Main.etatprecedent = sbg.getCurrentStateID();
 				}
 
-				
-				
+
+
 			}
 
 		}
@@ -145,6 +152,7 @@ public class Menu extends BasicGameState{
 		boolean insideStartGame = false;
 		boolean insideExit = false;
 		boolean insideOption = false;
+		boolean insideCredit = false;
 
 		if( ( mouseX >= menuX && mouseX <= menuX + vue.getStartGameOption().getWidth()*0.7) &&
 				( mouseY >= menuY && mouseY <= menuY + vue.getStartGameOption().getHeight()*0.7) ){
@@ -157,70 +165,83 @@ public class Menu extends BasicGameState{
 				( mouseY >= menuY && mouseY <= menuY + vue.getOptionOption().getHeight()*0.7) ){
 			insideOption = true;
 		}
+		else if( ( mouseX >= vue.getWidth()*0.95f + vue.getWidth()) &&
+				( mouseY >= vue.getHeight()*0.96f + vue.getHeight()) ){
+			insideCredit = true;
+		}
 
-		if(insideStartGame){
-			//System.out.println("je suis dans start game");
-			if(vue.getStartGameScale() < 0.8f)
-				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delay);
+		if(!credit){
 
-			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				//vue.setMusic(0);
-				//vue.initGame(); 
-				//vue.setMusicJeu(true);
-				vue.setStartGameScale(0.7f);
-				Main.etatprecedent = Main.MENUSTATE;
-				//sbg.enterState(Main.SELECTSTATE,t[0],t[1]);
-				sbg.enterState(Main.SELECTSTATE);
-				resetMenu();
+			if(insideStartGame){
+				//System.out.println("je suis dans start game");
+				if(vue.getStartGameScale() < 0.8f)
+					vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delay);
+
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+					//vue.setMusic(0);
+					//vue.initGame(); 
+					//vue.setMusicJeu(true);
+					vue.setStartGameScale(0.7f);
+					Main.etatprecedent = Main.MENUSTATE;
+					//sbg.enterState(Main.SELECTSTATE,t[0],t[1]);
+					sbg.enterState(Main.SELECTSTATE);
+					resetMenu();
+				}
+			}else{
+				if(vue.getStartGameScale() > 0.7f)
+					vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delay);
+
+				//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
+				//gc.exit();
 			}
-		}else{
-			if(vue.getStartGameScale() > 0.7f)
-				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delay);
 
-			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
-			//gc.exit();
-		}
+			if(insideOption){
+				//vue.triggerAlt();
+				if(vue.getOptionScale() < 0.8f)
+					vue.setOptionScale(vue.getOptionScale()+scaleStep * delay);
 
-		if(insideOption){
-			//vue.triggerAlt();
-			if(vue.getOptionScale() < 0.8f)
-				vue.setOptionScale(vue.getOptionScale()+scaleStep * delay);
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+					//vue.setMusic(0);
+					vue.setOptionScale(0.7f);
+					Main.etatprecedent = Main.MENUSTATE;
+					sbg.enterState(Main.OPTIONSTATE,to[0],to[1]);
+					resetMenu();
+				}
+			}else{
+				if(vue.getOptionScale() > 0.7f)
+					vue.setOptionScale(vue.getOptionScale()-scaleStep * delay);
 
-			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				//vue.setMusic(0);
-				vue.setOptionScale(0.7f);
-				Main.etatprecedent = Main.MENUSTATE;
-				sbg.enterState(Main.OPTIONSTATE,to[0],to[1]);
-				resetMenu();
+				//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
+				//gc.exit();
 			}
-		}else{
-			if(vue.getOptionScale() > 0.7f)
-				vue.setOptionScale(vue.getOptionScale()-scaleStep * delay);
 
-			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
-			//gc.exit();
+			if(insideExit)
+			{
+				if(vue.getExitScale() < 0.8f)
+					vue.setExitScale(vue.getExitScale() + scaleStep * delay);
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
+					gc.exit();
+			}else{
+				if(vue.getExitScale() > 0.7f)
+					vue.setExitScale(vue.getExitScale() - scaleStep * delay);
+			}
 		}
 
-		if(insideExit)
-		{
-			if(vue.getExitScale() < 0.8f)
-				vue.setExitScale(vue.getExitScale() + scaleStep * delay);
-			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
-				gc.exit();
-		}else{
-			if(vue.getExitScale() > 0.7f)
-				vue.setExitScale(vue.getExitScale() - scaleStep * delay);
+		if(insideCredit){
+			credit = true;
 		}
+
 
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){
 			Main.app.exit();
+			credit = false;
 		}
-		
-		
+
+
 		if (input.isKeyPressed(Input.KEY_R)){
 			hm.rest();
 		}
-		
+
 		if (input.isKeyPressed(Input.KEY_T)){
 			hm.restZ();
 		}

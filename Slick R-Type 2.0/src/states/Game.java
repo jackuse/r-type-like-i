@@ -10,11 +10,10 @@ import game.Main;
 import game.Missile;
 import game.Objet;
 import game.ResourceManager;
+import game.TimedEvent;
 import game.Tir;
 import game.Vue;
 import game.Bonus;
-import game.TimedEvent;
-
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,10 +65,9 @@ public class Game extends BasicGameState{
 	private SelectTransition t;
 	private int timer = 0;
 
-	/* Mettre en place des bonus et le boss et 2 lvl et 2 armes
+	/* Mettre en place des bonus et le boss et 2 lvl
 	 * Faire des lvl pour les armes
 	 * Faire un echange de variable score avec gameover
-	 * 
 	 * 
 	 * 
 	 */
@@ -313,8 +311,8 @@ public class Game extends BasicGameState{
 			delaiTire-=delay;//a modifier
 			if(delaiTire < 0){
 				delaiTire = 100;
-				ResourceManager rm = ResourceManager.getInstance();
-				rm.listR();
+//				ResourceManager rm = ResourceManager.getInstance();
+//				rm.listR();
 				vue.setMusic(0);
 				vue.nextMusic();
 				if(vue.isValiderMusic()){
@@ -381,12 +379,12 @@ public class Game extends BasicGameState{
 		// Défilement du background
 		posXBg1-=bgSpeed;
 		posXBg2-=bgSpeed;
-		if(posXBg1<-3000){
-			posXBg1=2999;
+		if(posXBg1<-vue.getIBackground(0).getWidth()){
+			posXBg1=vue.getIBackground(0).getWidth();
 			posXBg2=-1;
 		}
-		if(posXBg2<-3000){
-			posXBg2=2999;
+		if(posXBg2<-vue.getIBackground(0).getWidth()){
+			posXBg2=vue.getIBackground(0).getWidth();
 			posXBg1=-1;
 		}
 
@@ -471,10 +469,9 @@ public class Game extends BasicGameState{
 			//shotRandomizer=(int) (rand.nextFloat()*(500-0));
 			//if (shotRandomizer>500){
 			nastyProjectileTimer+=delta;
-			if(nastyProjectileTimer > 5000 && ob2.getX()<780){
-				
-				nastyProjectile.add(new EnergyBall(ob2.getX()+ob2.getW()/2,ob2.getY()+ob2.getH()/2-12));
+			if(nastyProjectileTimer > 3500 && ob2.getX()<780){
 				nastyProjectileTimer=0;
+				nastyProjectile.add(new EnergyBall(ob2.getX()+ob2.getW()/2,ob2.getY()+ob2.getH()/2-12));
 			}
 			
 			//}
@@ -503,6 +500,7 @@ public class Game extends BasicGameState{
 				for(int i=0;i<4;i++)
 					cheat[i]=false;
 				//GameOversetParam(int i, int p)
+				joueur[0].setTime(timer/1000);
 				sbg.enterState(Main.GAMEOVERSTATE);
 			}
 			else{
@@ -513,6 +511,7 @@ public class Game extends BasicGameState{
 
 
 		runLevel(timer,delta);
+
 
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
 		/*alienSpawnTimer+=delta;
@@ -525,7 +524,6 @@ public class Game extends BasicGameState{
 		
 		
 		
-		 	
 		//* Test alien
 
 		//if(enemy.size()<10 && debug ){

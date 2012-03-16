@@ -3,6 +3,7 @@ package states;
 import game.Main;
 import game.Vue;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -24,6 +25,7 @@ public class Option extends BasicGameState{
 	int delay = 20;
 	int delayClick = 150;
 	private Transition[] t;
+	int screenSize = 1;
 	
 
 	public Option(int stateID) {
@@ -60,6 +62,8 @@ public class Option extends BasicGameState{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		vue.initOption();
+		
 
 	}
 
@@ -67,7 +71,7 @@ public class Option extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		//System.out.println("avant rendu option");
-		vue.renderOption(gc, gr, optionX, optionX);
+		vue.renderOption(gc, gr, optionX, optionX,screenSize);
 
 	}
 
@@ -95,26 +99,38 @@ public class Option extends BasicGameState{
 		boolean insideExit = false; // Qui est un bouton
 		boolean insideFullscreen = false; // Qui est un rectangle
 		boolean insideMusicSelection = false;
+		boolean insideBR = false;
+		boolean insideBL = false;
 
 
 		if( ( mouseX >= optionX+vue.getWidth()*0.20f+10 && mouseX <= optionX+vue.getWidth()*0.20f+10 + vue.getValider().getWidth()*0.7) &&
-				( mouseY >= optionY+10 && mouseY <= optionY+10 + vue.getValider().getHeight()) ){
+				( mouseY >= optionY+10+vue.getHeight()*0.10f && mouseY <= optionY+10+vue.getHeight()*0.10f + vue.getValider().getHeight()) ){
 			insideMusic = true;
 			System.out.println("on music");
 		}else if( ( mouseX >= optionX && mouseX <= optionX+vue.getWidth()*0.32f) &&
-				( mouseY >= optionY+vue.getHeight()*0.10f && mouseY <= optionY+vue.getHeight()*0.17f) ){
+				( mouseY >= optionY+vue.getHeight()*0.20f && mouseY <= optionY+vue.getHeight()*0.10f+vue.getHeight()*0.17f) ){
 			insideMusicSelection = true;
 			//System.out.println("on selection");
+//		}else if( ( mouseX >= optionX+vue.getWidth()*0.25f && mouseX <= optionX+vue.getWidth()*0.25f+vue.getButton(0).getWidth()) &&
+//				( mouseY >= optionY+vue.getHeight()*0.22f && mouseY <= optionY+vue.getHeight()*0.22f + vue.getButton(0).getHeight()) ){
+//			insideBL = true;
+//			System.out.println("on screensizeL");
+//		}
+//		else if( ( mouseX >= optionX+vue.getWidth()*0.50f && mouseX <= optionX+vue.getWidth()*0.50f+vue.getButton(1).getWidth()) &&
+//				( mouseY >= optionY+vue.getHeight()*0.22f && mouseY <= optionY+vue.getHeight()*0.22f + vue.getButton(1).getHeight()) ){
+//			insideBR = true;
+//			System.out.println("on screensizeR");
 		}else if( ( mouseX >= optionX+vue.getWidth()*0.20f+10 && mouseX <= optionX+vue.getWidth()*0.20f+10 + vue.getValider().getWidth()*0.7) &&
-				( mouseY >= optionY+vue.getHeight()*0.20+10f&& mouseY <= optionY+vue.getHeight()*0.20f+10 + vue.getValider().getHeight()*0.7) ){
+				( mouseY >= optionY+vue.getHeight()*0.30+10f&& mouseY <= optionY+vue.getHeight()*0.30f+10 + vue.getValider().getHeight()*0.7) ){
 			insideFullscreen = true;
 			//System.out.println("on fullscreen");
 		}
 		else if( ( mouseX >= optionX && mouseX <= optionX + vue.getOptionOption().getWidth()*0.7) &&
-				( mouseY >= optionY+vue.getHeight()*0.30f && mouseY <= optionY+vue.getHeight()*0.30f + vue.getOptionOption().getHeight()*0.7) ){
+				( mouseY >= optionY+vue.getHeight()*0.40f && mouseY <= optionY+vue.getHeight()*0.40f + vue.getOptionOption().getHeight()*0.7) ){
 			insideExit = true;
 			//System.out.println("on exit");
 		}
+		
 
 		if(insideMusic){
 			//System.out.println("music in "+delayClick+" et delta"+ delta);
@@ -143,14 +159,67 @@ public class Option extends BasicGameState{
 			delayClick-= 20;
 			if (delayClick<0){
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-					System.out.println("click");
 					sbg.enterState(Main.SELECTIONMUSICSTATE);
-					System.out.println("click");
 				}
 				delayClick = 150;
 			}
 			
 		}
+		
+//		if(insideBR){
+//
+//			delayClick-= 20;
+//			if (delayClick<0){
+//				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+//					if(screenSize <5)
+//					screenSize++;
+//				}
+//				delayClick = 150;
+//			}
+//			
+//		}
+//		if(insideBR){
+//			
+//			delayClick-= 20;
+//			if (delayClick<0){
+//				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+//					if(screenSize >1)
+//						screenSize--;
+//				}
+//				delayClick = 150;
+//			}
+			
+//		}
+//		if(insideApply){
+//			
+//			delayClick-= 20;
+//			if (delayClick<0){
+//				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+//					switch (screenSize) {
+//					case 1:
+//						vue.setScreen(800, 600, false);
+//						break;
+//					case 2:
+//						vue.setScreen(1024, 768, false);
+//						break;
+//					case 3:
+//						vue.setScreen(1280, 960, false);
+//						break;
+//					case 4:
+//						vue.setScreen(1366, 768, false);
+//						break;
+//					case 5:
+//						vue.setScreen(1920, 1080, false);
+//						break;
+//			
+//					default:
+//						break;
+//					}
+//				}
+//				delayClick = 150;
+//			}
+//			
+//		}
 
 
 
@@ -180,6 +249,28 @@ public class Option extends BasicGameState{
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 
 				vue.setExitScale(0.7f);
+				
+//				//application du mode d'affichage
+//				switch (screenSize) {
+//				case 1:
+//					vue.setScreen(800, 600, false);
+//					break;
+//				case 2:
+//					vue.setScreen(1024, 768, false);
+//					break;
+//				case 3:
+//					vue.setScreen(1280, 960, false);
+//					break;
+//				case 4:
+//					vue.setScreen(1366, 768, false);
+//					break;
+//				case 5:
+//					vue.setScreen(1920, 1080, false);
+//					break;
+//		
+//				default:
+//					break;
+//				}
 
 				if(Main.etatprecedent == Main.PAUSESTATE){
 					sbg.enterState(Main.PAUSESTATE);

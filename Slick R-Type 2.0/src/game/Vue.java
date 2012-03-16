@@ -29,10 +29,23 @@ import states.Game;
 
 // Contient toutes les valeurs partagées des etats
 
-/* Problem avec le hight score top10 alors que non
- * implementer la play list choice
- * implementer keyconfig ou pas
+/* URGENT 
+ * mettre en place les niveaux
+ * commenter le code et le rendre propre
+ * modifier menu selection pour mettre les niveaux et les vaisseaux qui tourne
+ * Ajouter des texte a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
+ * Corriger le highscore
  * 
+ * EN PLUS 
+ * bug dans la gestion de playlist
+ * implementer keyconfig ou pas
+ * renommer les XML
+ * Changer 2 3 polices
+ * mettre en mode francais/anglais
+ * Option résolution ecran // mort trop difficile
+ * credit
+ * 
+ * Faire le rapport / l'affiche / le diapo
  */
 
 /**
@@ -84,7 +97,7 @@ public class Vue {
 	private UnicodeFont font; 
 
 	public Music principale = null;
-	private int idMusic = 0;;
+	private int idMusic = 0;
 	private float volumeMusic = 0.8f;
 	private boolean selectMusic[];
 
@@ -107,7 +120,9 @@ public class Vue {
 	private int msgTime = 0;
 
 	private boolean debug = false;
-	boolean debugCol = true;
+	boolean debugCol = false;
+
+	private Image[] buttons;
 
 
 
@@ -154,7 +169,6 @@ public class Vue {
 		}
 
 		 */
-
 
 	};
 
@@ -401,36 +415,57 @@ public class Vue {
 	        } */
 	}
 
-	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY) {
+	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size) {
 		//System.out.println("rendu d'option");
 
 		//startGameOption.draw(optionX, optionY, startGameScale);
 		background[2].draw(0, 0);
 
-		font.drawString(optionX, optionY, "Music",new Color(1.0f,1.0f,1.0f));
+		font.drawString(optionX, optionY+height*0.10f, "Music",new Color(1.0f,1.0f,1.0f));
 		if(validerMusic)
-			validerOk.draw(optionX+width*0.20f, optionY,0.7f);
+			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
 		else
-			valider.draw(optionX+width*0.20f, optionY,0.7f);
+			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
 
-		font.drawString(optionX, optionY+height*0.10f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
+		font.drawString(optionX, optionY+height*0.20f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
+		
+//		font.drawString(optionX, optionY+height*0.20f, "Screen Size",new Color(0.5f,0.5f,0.5f));
+//		buttons[0].draw(optionX+width*0.25f, optionY+height*0.22f);
+//		buttons[1].draw(optionX+width*0.50f, optionY+height*0.22f);
+//		switch (size) {
+//		case 1:
+//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "800x600",new Color(0.5f,0.5f,0.5f));
+//			break;
+//		case 2:
+//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1024x768	",new Color(0.5f,0.5f,0.5f));
+//			break;
+//		case 3:
+//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1280x960",new Color(0.5f,0.5f,0.5f));
+//			break;
+//		case 4:
+//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1366x768",new Color(0.5f,0.5f,0.5f));
+//			break;
+//		case 5:
+//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1920x1080",new Color(0.5f,0.5f,0.5f));
+//			break;
+//
+//		default:
+//			break;
+//		}
 
-		font.drawString(optionX, optionY+height*0.20f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
+		font.drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
 		if(validerFullscreen)
-			validerOk.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
+			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
 		else
-			valider.draw(optionX+width*0.20f, optionY+height*0.20f,0.7f);
+			valider.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
 		//System.out.println("rendu d'option pro ");
 		gr.setColor(new Color(0.5f,0.5f,0.5f));
-		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.225f);
+		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.325f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
-		exitOption.draw(optionX, optionY+height*0.30f, exitScale);
+		exitOption.draw(optionX, optionY+height*0.40f, exitScale);
 
 	}
 
-	public void renderSelection(Graphics g) {
-		// TODO Auto-generated method stub
-	}
 
 	public int renderTest(Graphics g) {
 		//skin.draw();
@@ -445,7 +480,7 @@ public class Vue {
 		font.drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
 		//font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
 		gr.setColor(new Color (0,0,0));
-		gr.drawString("Beta 3.0", titreX+430, titreY+50);
+		gr.drawString("Beta 4.2", titreX+430, titreY+50);
 		//System.out.println("titreY "+titreY);
 		//HighScore
 		String s[] = hm.getHighscoreStringTab();
@@ -802,7 +837,7 @@ public class Vue {
 	public void renderGameOver(GameContainer gc, Graphics gr, int gmOvX,
 			int gmOvY,boolean ok,int param[],String name) {
 		pauseBg.draw(0, 0);
-		Rectangle rect = new Rectangle (0, 0, 801, 600);
+		Rectangle rect = new Rectangle (0, 0, width+1, height+1);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f, alpha));
 		gr.fill(rect);
 
@@ -814,20 +849,21 @@ public class Vue {
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
 
 		if(param[2] == 1)
-			gr.drawString("Best score !", width*0.45f, 220); 
+			gr.drawString("Best score !", width*0.45f, height*0.33f); 
 		if(param[1] == 0)
-			gr.drawString("You are not in highscore ", width*0.42f, 240); 
+			gr.drawString("You are not in highscore ", width*0.42f, height*0.36f); 
 		else
-			gr.drawString("You are TOP10 ", width*0.45f, 240);
+			gr.drawString("You are TOP10 ", width*0.45f, height*0.36f);
 
-		gr.drawString("Score :  "+param[0], width*0.45f, 260); 
+		gr.drawString("Score :  "+param[0], width*0.45f, height*0.40f); 
+		gr.drawString("Time :  "+param[3], width*0.45f, height*0.43f); 
 
 		if(param[1] ==1){
-			gr.drawString("Type your name here ", width*0.42f, 280);
+			gr.drawString("Type your name here ", width*0.42f, height*0.46f);
 			gr.setColor(new Color (0,0,0));
-			gr.fill(new Rectangle (width*0.415f, 300, 180,25 ));
+			gr.fill(new Rectangle (width*0.415f, height*0.50f, 180,25 ));
 			gr.setColor(new Color (1.0f,1.0f,1.0f));
-			gr.drawString(name, width*0.42f, 300);
+			gr.drawString(name, width*0.42f, height*0.50f);
 		}
 		else{
 			if(ok)
@@ -906,7 +942,10 @@ public class Vue {
 				idMusic = 1;
 			else
 				idMusic++;
-			principale = rm.getMusic("MUSIC_"+idMusic);
+			if(selectMusic[idMusic])
+				principale = rm.getMusic("MUSIC_"+idMusic);
+//			else
+//				principale = rm.getMusic("MUSIC_0");
 		}
 
 		//System.out.println("real music is "+principale+" and "+"MUSIC_"+idMusic);
@@ -1074,6 +1113,29 @@ public class Vue {
 	//		
 	//		
 	//	}
+	public int getIdMusic() {
+		return idMusic;
+	}
 
+	public Image getIBackground(int id) {
+		return background[id];
+	}
+
+	public void initOption() {
+		buttons = new Image[2];
+		buttons[0] = rm.getImage("BOUTON_L");
+		buttons[1] = rm.getImage("BOUTON_R");
+		
+	}
+	
+	public Image getButton(int id) {
+		if(id <=buttons.length)
+			return buttons[id];
+		else
+			return null;
+	}
+	
 
 }
+
+
