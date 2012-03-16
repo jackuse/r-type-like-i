@@ -13,11 +13,14 @@ import game.ResourceManager;
 import game.Tir;
 import game.Vue;
 import game.Bonus;
+import game.TimedEvent;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-
+import java.util.Scanner;
+import java.io.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -28,10 +31,12 @@ import org.newdawn.slick.state.transition.SelectTransition;
 import org.newdawn.slick.state.transition.Transition;
 
 public class Game extends BasicGameState{
+	int levelId=1;
 	int nastyProjectileTimer = 0;
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
 
+	private ArrayList<TimedEvent> event;
 	private ArrayList<Alien> enemy;
 	private ArrayList<Objet> playerProjectile;
 	private ArrayList<Objet> nastyProjectile;
@@ -41,7 +46,7 @@ public class Game extends BasicGameState{
 	private Joueur joueur[];
 	private float bgSpeed = 1;
 	private float posXBg1 = 0;
-	private float posXBg2 = 800;
+	private float posXBg2 = 3000;
 	private boolean speedUp;
 	int pauseX = 250;
 	int pauseY = 230;
@@ -61,9 +66,10 @@ public class Game extends BasicGameState{
 	private SelectTransition t;
 	private int timer = 0;
 
-	/* Mettre en place des bonus et le boss et 2 lvl
+	/* Mettre en place des bonus et le boss et 2 lvl et 2 armes
 	 * Faire des lvl pour les armes
 	 * Faire un echange de variable score avec gameover
+	 * 
 	 * 
 	 * 
 	 */
@@ -77,6 +83,7 @@ public class Game extends BasicGameState{
 		vue.initGame();
 		playerProjectile = new ArrayList<Objet>();
 		nastyProjectile = new ArrayList<Objet>();
+		event = new ArrayList<TimedEvent>();
 		enemy = new ArrayList<Alien>();
 		bonus = new ArrayList<Bonus>();		
 
@@ -93,7 +100,7 @@ public class Game extends BasicGameState{
 		debug = true;
 		
 		lvl = new Level(1);
-
+		initLevel();
 	}
 
 	@Override
@@ -374,12 +381,12 @@ public class Game extends BasicGameState{
 		// Défilement du background
 		posXBg1-=bgSpeed;
 		posXBg2-=bgSpeed;
-		if(posXBg1<-800){
-			posXBg1=799;
+		if(posXBg1<-3000){
+			posXBg1=2999;
 			posXBg2=-1;
 		}
-		if(posXBg2<-800){
-			posXBg2=799;
+		if(posXBg2<-3000){
+			posXBg2=2999;
 			posXBg1=-1;
 		}
 
@@ -464,9 +471,10 @@ public class Game extends BasicGameState{
 			//shotRandomizer=(int) (rand.nextFloat()*(500-0));
 			//if (shotRandomizer>500){
 			nastyProjectileTimer+=delta;
-			if(nastyProjectileTimer > 3500 && ob2.getX()<780){
-				nastyProjectileTimer=0;
+			if(nastyProjectileTimer > 5000 && ob2.getX()<780){
+				
 				nastyProjectile.add(new EnergyBall(ob2.getX()+ob2.getW()/2,ob2.getY()+ob2.getH()/2-12));
+				nastyProjectileTimer=0;
 			}
 			
 			//}
@@ -504,17 +512,20 @@ public class Game extends BasicGameState{
 
 
 
-
+		runLevel(timer,delta);
 
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
-		alienSpawnTimer+=delta;
+		/*alienSpawnTimer+=delta;
 		if (alienSpawnTimer>240)
 		{
 			alienSpawnTimer=0;
 			for(int i=0;i<2;i++)
 				enemy.add(new Alien(800+rand.nextFloat()*(900-800),rand.nextFloat()*(500-0)));
-		}
+		}*/
 		
+		
+		
+		 	
 		//* Test alien
 
 		//if(enemy.size()<10 && debug ){
@@ -582,6 +593,97 @@ public class Game extends BasicGameState{
 		nastyProjectile.clear();
 		lvl.set(1);
 		timer =0;
+	}
+	
+	public void initLevel(){
+		//LEVEL FILE STRUCTURE : TIME QUANTITY DELAY BEHAVIORID X Y ID*/
+		int id=0;
+		int time = 0;
+		int quantity = 0;
+		int delay=0;
+		int behavior=0;
+		int spawnX=0;
+		int spawnY=0;
+		Scanner sc2 = null;
+		try {
+			sc2 = new Scanner(new File("data/level"+levelId+".txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();  
+			
+		}	
+		while (sc2.hasNextLine()) {
+			
+			Scanner s2 = new Scanner(sc2.nextLine());
+			boolean b;
+			int i=0;
+			while (b = s2.hasNext()) {
+				
+				String s = s2.next();
+				if (i==0)
+					time=Integer.parseInt(s);
+				if (i==1)
+					quantity=Integer.parseInt(s);
+				if (i==2)
+					delay=Integer.parseInt(s);
+				if (i==3)
+					behavior=Integer.parseInt(s);
+				if (i==4)
+					spawnX=Integer.parseInt(s);
+				if (i==5)
+					spawnY=Integer.parseInt(s);
+				if (i==6)
+					id=Integer.parseInt(s);
+				//System.out.println(s);
+				i++;
+			}
+			if(time!=0 && quantity!=0 && delay!=0 && behavior!=0 && spawnX!=0 && spawnY!=0 && id!=0)
+			{	event.add(new TimedEvent(time,quantity,delay,behavior,spawnX,spawnY,id));
+				System.out.println("New Event at time "+time+"ms, quantity "+quantity+",delay "+delay+"ms, behavior "+behavior+"spawn x "+spawnX+" y "+spawnY+"");
+			}
+		}
+	}
+	
+	public void runLevel(int timer,int delta){
+		
+		for(int i=0;i<event.size();i++)
+		{
+			if(timer>=event.get(i).getTime() && event.get(i).isEnabled() )
+			{	
+				enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getBehavior()));
+				System.out.println("new alien");
+				/*for(int j=0;j<event.get(i).getQuantity();j++)
+				{
+					alienSpawnTimer+=delta;
+					//System.out.println(j+"");
+					if(alienSpawnTimer>event.get(i).getDelay())
+					{
+						enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getBehavior()));
+						alienSpawnTimer=0;
+					}
+					else j--;*/
+				
+				/*System.out.println(event.get(i).getDelay());
+					int j=0;
+					alienSpawnTimer=0;
+					while(j<event.get(i).getQuantity())
+					{
+						alienSpawnTimer+=delta;
+						//System.out.println(j+"");
+						if(alienSpawnTimer>=event.get(i).getDelay())
+						{
+							System.out.println(alienSpawnTimer+"");System.out.println(delta+"");
+							alienSpawnTimer=0;
+							enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getBehavior()));
+							
+							System.out.println("new alien");
+							j++;
+						}
+					
+					
+				} */
+				alienSpawnTimer = 0;
+				event.get(i).setEnabled(false);}
+		}
 	}
 
 }

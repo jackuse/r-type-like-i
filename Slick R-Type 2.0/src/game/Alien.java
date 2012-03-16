@@ -8,23 +8,29 @@ public class Alien extends Vaisseau {
 	//
 	// Fields
 	//
-	protected boolean move = true;
+	//protected boolean move = true;
 	protected int pdv = 2;
 	protected float speed = 2;
-
+	protected int behavior;
 	//
 	// Constructors
 	//
 	public Alien () { };
 
-	public Alien (float x, float y) { 
+	public Alien (float x, float y, int behav) { 
 		super(x,y,64,64);
+		behavior=behav;
 		id = 10;
 	};
 	
 	public void move(){
-		x-=speed;
-		
+		if (behavior==1)
+			x-=speed;
+		else if (behavior==2)
+		{
+			x-=speed;
+			y-=speed;
+		}
 	}
 
 	//
