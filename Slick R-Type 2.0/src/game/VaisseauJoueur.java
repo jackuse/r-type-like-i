@@ -3,6 +3,8 @@ package game;
 
 /**
  * Class VaisseauJoueur
+ * @author Etienne Grandier-Vazeille
+ *
  */
 public class VaisseauJoueur extends Vaisseau {
 
@@ -10,9 +12,6 @@ public class VaisseauJoueur extends Vaisseau {
 	// Fields
 	//
 
-	//	protected boolean move = false;
-	//	protected int pdv = 10;
-	//	protected float speed = 10;
 	private int armeSelect;
 	private boolean invicible = false;
 	private boolean born = true;
@@ -86,6 +85,12 @@ public class VaisseauJoueur extends Vaisseau {
 		//System.out.println("invincible " + invicible);
 	}
 
+	/**
+	 * Permeet de selectionner l'arme suivante si next=true
+	 * sinon on selectionne l'arme précédente
+	 * 
+	 * @param next
+	 */
 	public void setNArme(boolean next) {
 		if(next){
 			if(armeSelect < 22)
@@ -106,6 +111,9 @@ public class VaisseauJoueur extends Vaisseau {
 	// Other methods
 	//
 
+	/**
+	 * Réinitialisation du vaisseaux du joueur
+	 */
 	public void rest(){
 		speed = 10;
 		pdv = 100;

@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 
 import game.Chara;
 import game.HighscoreManager;
+import game.IOManager;
 import game.Joueur;
 import game.Main;
 import game.Vue;
@@ -26,9 +27,10 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameOver extends BasicGameState{
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
+	private IOManager io = IOManager.getInstance();
 
-	int GmOvX = 250;
-	int GmOvY = 230;
+	int GmOvX = (int) (vue.getWidth()/2.2);
+	int GmOvY = (int) (vue.getHeight()/2.7);
 	boolean ok = true;
 	int delay = 200;
 	private int[] param;
@@ -77,6 +79,11 @@ public class GameOver extends BasicGameState{
 		param[1]=top;
 		param[2]=best;
 		param[3]=j1.getTime();
+//		if(j1.getLife()<1)
+//			param[4]=1;
+//		else
+			param[4]=0;
+		param[5]=j1.getLevel();
 
 	}
 
@@ -98,7 +105,6 @@ public class GameOver extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-
 		vue.renderGameOver(gc,gr,GmOvX,GmOvY,ok,param,name);
 
 	}
@@ -122,26 +128,27 @@ public class GameOver extends BasicGameState{
 
 
 
+		if(param[4] == 1){ // si le jeu est fini
+			if(top==1){
 
-		if(top==1){
-			
-			if (input.isKeyPressed(input.KEY_BACK)){
-				if(name.length()>0)
-					name =name.substring(0, name.length()-1);
-			}
-			char c = Pause.getChar(input);
-			if(c != '\0' && name.length() < 19){;
-				name+=c;
-			}
-			
-			if (input.isKeyPressed(input.KEY_ENTER)){
-				hm.addScore(name, j1.getScore());
-				sbg.enterState(Main.MENUSTATE);
-				j1.rest();
-			}
-		}else if (input.isKeyPressed(Input.KEY_SPACE)){
+//				if (input.isKeyPressed(input.KEY_BACK)){
+//					if(name.length()>0)
+//						name =name.substring(0, name.length()-1);
+//				}
+//				char c = io.getChar(input);
+//				if(c != '\0' && name.length() < 19){;
+//				name+=c;
+//				}
+				name = io.getKeyString(input, name,19);
 
-			/*PrintWriter ecrivain = null;
+				if (input.isKeyPressed(input.KEY_ENTER)){
+					hm.addScore(name, j1.getScore());
+					sbg.enterState(Main.MENUSTATE);
+					j1.rest();
+				}
+			}else if (input.isKeyPressed(Input.KEY_SPACE)){
+
+				/*PrintWriter ecrivain = null;
 		    int n = 5;
 
 		    try {
@@ -155,8 +162,18 @@ public class GameOver extends BasicGameState{
 		    ecrivain.println("Score");
 		    ecrivain.println("name : "+j1.getScore());
 		    ecrivain.close();*/
-			sbg.enterState(Main.MENUSTATE);
-			j1.rest();
+				sbg.enterState(Main.MENUSTATE);
+				j1.rest();
+			}
+
+		}else{
+			if (input.isKeyPressed(Input.KEY_SPACE)){
+				sbg.enterState(Main.GAMESTATE);
+			}
+			
+			if (input.isKeyPressed(Input.KEY_ESCAPE)){
+				param[4] = 1;
+			}
 		}
 
 	}

@@ -121,6 +121,11 @@ public class History extends BasicGameState{
 
 		Input input = gc.getInput(); // On récupére les input
 
+		if (input.isKeyPressed(Input.KEY_ESCAPE)){
+			rest();
+			sbg.enterState(Main.GAMESTATE);
+			input.enableKeyRepeat();
+		}
 
 		if(text.length()<textaff.length()){
 			if (input.isKeyDown(Input.KEY_SPACE)){
@@ -144,11 +149,7 @@ public class History extends BasicGameState{
 			input.clearKeyPressedRecord();
 		}                
 
-		//System.out.println("speedUp "+speedUp);
-//		if (input.isKeyPressed(Input.KEY_V)){
-//			cpt = 0;
-//			text="";
-//		}
+		
 
 
 	}

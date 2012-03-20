@@ -29,6 +29,7 @@ public class Main extends StateBasedGame {
     public static final int GAMEOVERSTATE      = 12;
     public static final int SELECTSTATE		   =  2;
     public static final int HISTORYSTATE	   =  13;
+	public static final float  version         = 5.0f;
     
     public static int WIDTH    = 800;
     public static int HEIGHT   = 600;
@@ -86,12 +87,13 @@ public class Main extends StateBasedGame {
     	
     	this.getState(CHARGEMENTSTATE).init(gameContainer, this);
     	this.getState(SELECTIONMUSICSTATE).init(gameContainer, this);
+    	this.getState(HIGHSCORESTATE).init(gameContainer, this);
     	this.getState(GAMESTATE).init(gameContainer, this);
         this.getState(MENUSTATE).init(gameContainer, this);
         
         this.getState(PAUSESTATE).init(gameContainer, this);
         this.getState(OPTIONSTATE).init(gameContainer, this);
-        this.getState(HIGHSCORESTATE).init(gameContainer, this);
+        
         //this.getState(SELECTIONSTATE).init(gameContainer, this);
         this.getState(GAMEOVERSTATE).init(gameContainer, this);
         this.getState(SELECTSTATE).init(gameContainer, this);

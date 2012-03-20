@@ -3,21 +3,27 @@ package game;
 import java.util.*;
 import java.io.*;
 
+/**
+ * Classe HighscoreManager
+ * Singleton
+ * @author Etienne Grandier-Vazeille
+ *
+ */
 public class HighscoreManager {
 	// An arraylist of the type "score" we will use to work with the scores inside the class
 	private ArrayList<Score> scores;
 
 	private static HighscoreManager _instance = new HighscoreManager();
 
-	// The name of the file where the highscores will be saved
+	// Le nom du fichier ou les highscores serons sauvegardés
 	private static final String HIGHSCORE_FILE = "scores.dat";
 
-	//Initialising an in and outputStream for working with the file
+	// Initialisation du in et outputStream 
 	ObjectOutputStream outputStream = null;
 	ObjectInputStream inputStream = null;
 
 	public HighscoreManager() {
-		//initialising the scores-arraylist
+		// Initialisation du tableau des scores
 		scores = new ArrayList<Score>();
 	}
 
@@ -26,6 +32,10 @@ public class HighscoreManager {
 	}
 
 
+	/**
+	 * Retourne la liste des scores
+	 * @return scores
+	 */
 	public ArrayList<Score> getScores() {
 		loadScoreFile();
 		sort();
@@ -33,17 +43,31 @@ public class HighscoreManager {
 	}
 
 
+	/**
+	 * Trie les scores à l'aide de la classe ScoreComparator
+	 */
 	private void sort() {
 		ScoreComparator comparator = new ScoreComparator();
 		Collections.sort(scores, comparator);
 	}
 
+	/**
+	 * Ajout un score 
+	 * 
+	 * @param name
+	 * @param score
+	 */
 	public void addScore(String name, int score) {
 		loadScoreFile();
 		scores.add(new Score(name, score));
 		updateScoreFile();
 	}
 
+	/**
+	 * Retourne le score maximal
+	 * 
+	 * @return score maximal
+	 */
 	public int getMaxScore() {
 		loadScoreFile();
 		int max = 0;
@@ -55,6 +79,12 @@ public class HighscoreManager {
 
 	}
 
+	/**
+	 * Permet de savoir si un score est dans le top 10
+	 * 
+	 * @param score
+	 * @return true si le score est dans le top 10 et false sinon
+	 */
 	public boolean inTopTen(int score) {
 		loadScoreFile();
 		sort();
@@ -79,6 +109,11 @@ public class HighscoreManager {
 
 	}
 
+	/**
+	 * Retourne le dernier score du top 10
+	 * 
+	 * @return score
+	 */
 	public int getMaxMinScore() {
 		loadScoreFile();
 		sort();
@@ -92,7 +127,12 @@ public class HighscoreManager {
 
 	}
 
+	/**
+	 * Charge le fichier de sauvegarde et si il n'existe pas on en crée un avec un jeu de base
+	 */
 	public void loadScoreFile() {
+		if(outputStream == null)
+		updateScoreFile();
 		try {
 			inputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_FILE));
 			scores = (ArrayList<Score>) inputStream.readObject();
@@ -114,9 +154,13 @@ public class HighscoreManager {
 		}
 		if(scores.size()<1)
 			initData();
+		
 	}
 
 
+	/**
+	 * Enregistrement du fichier de sauvegarde
+	 */
 	public void updateScoreFile() {
 		try {
 			outputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
@@ -137,6 +181,11 @@ public class HighscoreManager {
 		}
 	}
 
+	/**
+	 * Retourne le contenu du fichier HighScore sous la forme d'un string
+	 * 
+	 * @return String
+	 */
 	public String getHighscoreString() {
 		String highscoreString = "";
 		int max = 10;
@@ -150,12 +199,17 @@ public class HighscoreManager {
 			x = max;
 		}
 		while (i < x) {
-			highscoreString += (i + 1) + ". " + scores.get(i).getNaam() + "           " + scores.get(i).getScore() + "\n";
+			highscoreString += (i + 1) + ". " + scores.get(i).getName() + "           " + scores.get(i).getScore() + "\n";
 			i++;
 		}
 		return highscoreString;
 	}
 
+	/**
+	 * Retourne le contenu du fichier HighScore sous la forme d'un tableau de string
+	 * 
+	 * @return String[]
+	 */
 	public String[] getHighscoreStringTab() {
 		int max = 10;
 		int i = 0;
@@ -173,15 +227,36 @@ public class HighscoreManager {
 		scores = getScores();
 
 
-
-		while (i < x) {//Faire en sorte que les espace diminue si le nb de carac dans le score augmente
-			highscoreString[i] += (i + 1) + ". " + scores.get(i).getNaam() + "     " + scores.get(i).getScore() + "\n";
+		while (i < x) {
+			
+			highscoreString[i] = " "+(i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
 			i++;
 		}
+		if(i == 9)
+		highscoreString[i] = (i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
 		return highscoreString;
+	}
+	
+	/**
+	 * Calcule le nombre d'espace necessaire entre le nom et le score pour avoir un affichage aligné
+	 * 
+	 * @param name
+	 * @param score
+	 * @return nombre d'espace
+	 */
+	public String makeMeSpace(String name,int score){
+		String sp = "";
+		int i = name.length()+String.valueOf(score).length();
+		for(;i<23;i++){
+			sp += " ";
+		}
+		return sp;
 	}
 
 
+	/**
+	 * Réinitialisation du fichier de sauvegarde
+	 */
 	public void rest() {
 		updateScoreFile(); // si il est pas créé on le crée
 		loadScoreFile(); // on le charge
@@ -190,6 +265,9 @@ public class HighscoreManager {
 		updateScoreFile(); // on le met a jour
 	}
 	
+	/**
+	 * Mise en place du jeu de donnée de base
+	 */
 	public void initData() {
 		scores.add(new Score("Dispsi", 1000));
 		scores.add(new Score("Lala", 700));
@@ -201,6 +279,9 @@ public class HighscoreManager {
 		scores.add(new Score("Sarko", 0));
 	}
 
+	/**
+	 * Remise a zero du fichier de sauvegarde
+	 */
 	public void restZ() { // ne sert plus a rien
 		updateScoreFile(); // si il est pas créé on le crée
 		loadScoreFile(); // on le charge

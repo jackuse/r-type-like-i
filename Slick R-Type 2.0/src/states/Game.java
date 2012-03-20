@@ -29,6 +29,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.SelectTransition;
 import org.newdawn.slick.state.transition.Transition;
 
+/**
+ * Class Game
+ * @author Etienne Grandier-Vazeille
+ *
+ */
 public class Game extends BasicGameState{
 	int levelId=1;
 	int nastyProjectileTimer = 0;
@@ -99,6 +104,7 @@ public class Game extends BasicGameState{
 		
 		lvl = new Level(1);
 		initLevel();
+		joueur[0].setLevel(levelId);
 	}
 
 	@Override
@@ -106,7 +112,7 @@ public class Game extends BasicGameState{
 			throws SlickException {
 		vue.renderBg(gr, posXBg1, posXBg2);
 
-
+		//sbg.enterState(Main.GAMEOVERSTATE);
 		param[1] = explo.size();
 		param[2] = enemy.size();
 		param[3] = playerProjectile.size();
@@ -380,11 +386,11 @@ public class Game extends BasicGameState{
 		posXBg1-=bgSpeed;
 		posXBg2-=bgSpeed;
 		if(posXBg1<-vue.getIBackground(0).getWidth()){
-			posXBg1=vue.getIBackground(0).getWidth();
+			posXBg1=vue.getIBackground(0).getWidth()-1;
 			posXBg2=-1;
 		}
 		if(posXBg2<-vue.getIBackground(0).getWidth()){
-			posXBg2=vue.getIBackground(0).getWidth();
+			posXBg2=vue.getIBackground(0).getWidth()-1;
 			posXBg1=-1;
 		}
 

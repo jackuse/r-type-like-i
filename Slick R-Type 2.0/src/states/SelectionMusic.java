@@ -16,6 +16,13 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+/**
+ * Class SelectionMusic
+ * @author Etienne Grandier-Vazeille
+ * 
+ * Idée amélioration : faire des pages de musique quand il y en a trop à afficher 
+ *
+ */
 public class SelectionMusic extends BasicGameState{
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
@@ -36,15 +43,14 @@ public class SelectionMusic extends BasicGameState{
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+		
+		// On charge tout les titres des musiques du fichier XML
 		selectMusic=vue.initSelectionMusic(selectMusic);
-		//System.out.println("select init "+selectMusic[0]);
-
-		//on charge tout les noms du fichier XML
-
-
-
 	}
 	
+	/* 
+	 * Quand on quitte le menu de selection de musique on remet la musique du menu
+	 */
 	public void leave(GameContainer container, StateBasedGame game)
 			throws SlickException{
 		vue.setMusic(0);
@@ -56,10 +62,6 @@ public class SelectionMusic extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		vue.renderSelection(gc,gr, selectX, selectY);
-		//System.out.println("du texte ici");
-
-
-
 	}
 
 	@Override
@@ -82,18 +84,21 @@ public class SelectionMusic extends BasicGameState{
 		int mouseY = input.getMouseY();
 		boolean insideExit = false;
 
+		// Initialisation du tableau de selection des musiques
 		for(int i=1;i<selectMusic.length;i++){
 			selectMusic[i] = false;
 		}
 
-
+		
+		// On detecte si la souris et sur le titre d'une musique
 		for(int i=0;i<selectMusic.length;i++){
 			if( ( mouseX >= selectX+10 && mouseX <= selectX+10+vue.getValider().getWidth()*0.45f) &&
 					( mouseY >= selectY+40*(i-1)+50 && mouseY <= selectY +40*(i-1)+50 + vue.getValider().getHeight()*0.45f) ){
 				selectMusic[i]= true;
-				//System.out.println("on music "+i);
 			}
 		}
+		
+		// Si on est sur le titre d'une musique et qu'elle n'est pas lancée on la lance
 		for(int i=0;i<selectMusic.length;i++){
 			if( ( mouseX >= selectX+10 && mouseX <= selectX+10+600) &&
 					( mouseY >= selectY+40*(i-1)+50 && mouseY <= selectY +40*(i-1)+50 + 34) ){
@@ -106,12 +111,14 @@ public class SelectionMusic extends BasicGameState{
 				System.out.println("on music "+i);
 			}
 		}
+		
+		// On detect si on est sur le bouton exit
 		if( ( mouseX >= selectX+10 && mouseX <= selectX+10 + vue.getOptionOption().getWidth()*0.7) &&
 				( mouseY >= selectY+vue.getHeight()*0.80f && mouseY <= selectY+vue.getHeight()*0.80f + vue.getOptionOption().getHeight()*0.7) ){
 			insideExit = true;
-			//System.out.println("on exit");
 		}
 
+		// Si on clique sur la case on active ou non la musique pour la lecture en playlist
 		for(int i=0;i<selectMusic.length;i++){
 			if(selectMusic[i]){
 				delayClick-= 20;
@@ -133,7 +140,7 @@ public class SelectionMusic extends BasicGameState{
 		}
 		
 
-
+		// Si on est sur exit on quit le menu
 		if(insideExit)
 		{
 			if(vue.getExitScale() < 0.8f)

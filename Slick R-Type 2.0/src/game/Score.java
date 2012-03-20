@@ -2,20 +2,27 @@ package game;
 
 import java.io.Serializable;
 
+/**
+ * Classe Score
+ * @author Etienne Grandier-Vazeille
+ * 
+ * Structure de donnée permettent de stocker le score du joueur pour les HighScores
+ *
+ */
 public class Score  implements Serializable {
     private int score;
-    private String naam;
+    private String name;
 
     public int getScore() {
         return score;
     }
 
-    public String getNaam() {
-        return naam;
+    public String getName() {
+        return name;
     }
 
-    public Score(String naam, int score) {
+    public Score(String name, int score) {
         this.score = score;
-        this.naam = naam;
+        this.name = name;
     }
 }

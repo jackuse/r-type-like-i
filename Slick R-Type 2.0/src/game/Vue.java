@@ -32,7 +32,7 @@ import states.Game;
 /* URGENT 
  * mettre en place les niveaux
  * commenter le code et le rendre propre
- * modifier menu selection pour mettre les niveaux et les vaisseaux qui tourne
+ * modifier menu selection pour mettre les vaisseaux qui tourne
  * Ajouter des texte a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
  * Corriger le highscore
  * 
@@ -50,6 +50,9 @@ import states.Game;
 
 /**
  * Class Vue
+ * Singleton
+ * @author Etienne Grandier-Vazeille
+ *
  */
 public class Vue {
 
@@ -94,7 +97,7 @@ public class Vue {
 
 	float alpha = 0;
 
-	private UnicodeFont font; 
+	private UnicodeFont fonts[] = null; 
 
 	public Music principale = null;
 	private int idMusic = 0;
@@ -293,22 +296,55 @@ public class Vue {
 		selectMusic(0);
 		principale.setVolume(volumeMusic);
 		//System.out.println("Space !! ");
-		try {
-			//font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
-			font = new UnicodeFont("data/coolvetica.ttf", 40,false,false);
-			//uFont = new UnicodeFont(font, 20, false, false);
-			font.getEffects().add(new ColorEffect());
-			font.addAsciiGlyphs();
-			font.loadGlyphs();
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		
+//		try {
+//			//font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
+//			fonts[0] = new UnicodeFont("data/coolvetica.ttf", 40,false,false);
+//			//uFont = new UnicodeFont(font, 20, false, false);
+//			fonts[0].getEffects().add(new ColorEffect());
+//			fonts[0].addAsciiGlyphs();
+//			fonts[0].loadGlyphs();
+//		} catch (SlickException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		try {
+//			fonts[1] = initFont("data/coolvetica.ttf",40);
+//			//			//font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
+//			//			fonts[1] = new UnicodeFont("data/coolvetica.ttf", 40,false,false);
+//			//			//uFont = new UnicodeFont(font, 20, false, false);
+//			//			fonts[1].getEffects().add(new ColorEffect());
+//			//			fonts[1].addAsciiGlyphs();
+//			//			fonts[1].loadGlyphs();
+//		} catch (SlickException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
 		valider = rm.getImage("VALIDER");
 		validerOk = rm.getImage("VALIDER_OK");
 
 
 		background[2] = rm.getImage("BACKGROUD_OPTION");
+	}
+
+	public UnicodeFont initFont(String name,int size) throws SlickException{
+		UnicodeFont uf;
+		uf = new UnicodeFont(name, size,false,false);
+		uf.getEffects().add(new ColorEffect());
+		uf.addAsciiGlyphs();
+		uf.loadGlyphs();
+		return uf;
+	}
+	
+	public void initFontS() {
+		try {
+			fonts[0] = initFont("data/coolvetica.ttf",40);
+			fonts[1] = initFont("data/Destroyed Aero.ttf",40);
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void initCharacterSelectScreen(){
@@ -323,17 +359,17 @@ public class Vue {
 
 		selectMusic(7);
 		//System.out.println("Space !! ");
-		try {
-			//font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
-			font = new UnicodeFont("data/coolvetica.ttf", 40,false,false);
-			//uFont = new UnicodeFont(font, 20, false, false);
-			font.getEffects().add(new ColorEffect());
-			font.addAsciiGlyphs();
-			font.loadGlyphs();
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+//		try {
+//			//font = new AngelCodeFont("testdata/demo.fnt", "testdata/demo_00.tga");
+//			font = new UnicodeFont("data/coolvetica.ttf", 40,false,false);
+//			//uFont = new UnicodeFont(font, 20, false, false);
+//			font.getEffects().add(new ColorEffect());
+//			font.addAsciiGlyphs();
+//			font.loadGlyphs();
+//		} catch (SlickException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
 	}
 
 	public void initGame() throws SlickException{
@@ -421,39 +457,39 @@ public class Vue {
 		//startGameOption.draw(optionX, optionY, startGameScale);
 		background[2].draw(0, 0);
 
-		font.drawString(optionX, optionY+height*0.10f, "Music",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(optionX, optionY+height*0.10f, "Music",new Color(1.0f,1.0f,1.0f));
 		if(validerMusic)
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
 		else
 			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
 
-		font.drawString(optionX, optionY+height*0.20f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
-		
-//		font.drawString(optionX, optionY+height*0.20f, "Screen Size",new Color(0.5f,0.5f,0.5f));
-//		buttons[0].draw(optionX+width*0.25f, optionY+height*0.22f);
-//		buttons[1].draw(optionX+width*0.50f, optionY+height*0.22f);
-//		switch (size) {
-//		case 1:
-//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "800x600",new Color(0.5f,0.5f,0.5f));
-//			break;
-//		case 2:
-//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1024x768	",new Color(0.5f,0.5f,0.5f));
-//			break;
-//		case 3:
-//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1280x960",new Color(0.5f,0.5f,0.5f));
-//			break;
-//		case 4:
-//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1366x768",new Color(0.5f,0.5f,0.5f));
-//			break;
-//		case 5:
-//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1920x1080",new Color(0.5f,0.5f,0.5f));
-//			break;
-//
-//		default:
-//			break;
-//		}
+		fonts[0].drawString(optionX, optionY+height*0.20f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
 
-		font.drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
+		//		font.drawString(optionX, optionY+height*0.20f, "Screen Size",new Color(0.5f,0.5f,0.5f));
+		//		buttons[0].draw(optionX+width*0.25f, optionY+height*0.22f);
+		//		buttons[1].draw(optionX+width*0.50f, optionY+height*0.22f);
+		//		switch (size) {
+		//		case 1:
+		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "800x600",new Color(0.5f,0.5f,0.5f));
+		//			break;
+		//		case 2:
+		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1024x768	",new Color(0.5f,0.5f,0.5f));
+		//			break;
+		//		case 3:
+		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1280x960",new Color(0.5f,0.5f,0.5f));
+		//			break;
+		//		case 4:
+		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1366x768",new Color(0.5f,0.5f,0.5f));
+		//			break;
+		//		case 5:
+		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1920x1080",new Color(0.5f,0.5f,0.5f));
+		//			break;
+		//
+		//		default:
+		//			break;
+		//		}
+
+		fonts[0].drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
 		if(validerFullscreen)
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
 		else
@@ -472,27 +508,29 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderMenu(Graphics gr,int menuX, int menuY,int titreX,int titreY, int hSX,HighscoreManager hm) {
+	public int renderMenu(Graphics gr,int menuX, int menuY,int titreX,int titreY, int hSX,String s[],int pos[]) {
 		Rectangle fond = new Rectangle (0, 0, 800, 600);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 		gr.fill(fond);
 		background[1].draw(0, 0);
-		font.drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
 		//font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
 		gr.setColor(new Color (0,0,0));
-		gr.drawString("Beta 4.2", titreX+430, titreY+50);
-		//System.out.println("titreY "+titreY);
+		gr.drawString("Beta "+Main.version, titreX+430, titreY+50);
+
 		//HighScore
-		String s[] = hm.getHighscoreStringTab();
 		gr.setColor(new Color(1.0f,1.0f,1.0f));
-		gr.drawString("HighScores", hSX+50, 200);
-		for(int i=0;i<s.length;i++){	// Il faut faire apparaitre les scores 1 par 1
-			gr.drawString(s[i].substring(4), hSX, 230+25*i);
+		gr.drawString("HighScores", hSX+80, height*0.30f);
+
+		if(s!=null && s.length>0){
+			for(int i=0;i<s.length;i++){	// Il faut faire apparaitre les scores 1 par 1
+				gr.drawString(s[i], pos[i], height*0.35f+25*i);
+			}
 		}
 		//gr.drawString(hm.getHighscoreString(), hSX, 300);
 		//System.out.println(hm.getHighscoreString());
 
-		 
+
 		startGameOption.draw(menuX, menuY, startGameScale);
 		optionOption.draw(menuX+350, menuY, optionScale);
 		exitOption.draw(menuX+600, menuY, exitScale);
@@ -779,7 +817,7 @@ public class Vue {
 		return height;
 	}
 
-	public void renderPause(GameContainer gc, Graphics gr,int pauseX, int pauseY, boolean cheatModOn, ArrayList<Chara> pass) {
+	public void renderPause(GameContainer gc, Graphics gr,int pauseX, int pauseY, boolean cheatModOn, String pass) {
 		//		if (gc.isPaused())
 		//		{
 		Rectangle rect = new Rectangle (0, 0, 801, 601);
@@ -807,13 +845,8 @@ public class Vue {
 			Rectangle textArea= new Rectangle (0, 0, 801, 30);
 			gr.setColor(new Color (0, 0, 0));
 			gr.fill(textArea);
-			String s = "";
-			for(int i=0;i<pass.size();i++){
-				s+=pass.get(i).c;
-				//System.out.println("je passe "+s);
-			}
 			gr.setColor(new Color (1.0f, 1.0f, 1.0f));
-			gr.drawString(s,10f,5f);
+			gr.drawString(pass,10f,5f);
 
 		}
 
@@ -848,27 +881,41 @@ public class Vue {
 
 		gr.setColor(new Color (1.0f,1.0f,1.0f));
 
-		if(param[2] == 1)
-			gr.drawString("Best score !", width*0.45f, height*0.33f); 
-		if(param[1] == 0)
-			gr.drawString("You are not in highscore ", width*0.42f, height*0.36f); 
-		else
-			gr.drawString("You are TOP10 ", width*0.45f, height*0.36f);
+		if(param[4] == 1){
 
-		gr.drawString("Score :  "+param[0], width*0.45f, height*0.40f); 
-		gr.drawString("Time :  "+param[3], width*0.45f, height*0.43f); 
+			if(param[2] == 1)
+				gr.drawString("Best score !", width*0.45f, height*0.33f); 
+			if(param[1] == 0)
+				gr.drawString("You are not in highscore ", width*0.42f, height*0.36f); 
+			else
+				gr.drawString("You are TOP10 ", width*0.45f, height*0.36f);
 
-		if(param[1] ==1){
-			gr.drawString("Type your name here ", width*0.42f, height*0.46f);
-			gr.setColor(new Color (0,0,0));
-			gr.fill(new Rectangle (width*0.415f, height*0.50f, 180,25 ));
-			gr.setColor(new Color (1.0f,1.0f,1.0f));
-			gr.drawString(name, width*0.42f, height*0.50f);
+			gr.drawString("Score :  "+param[0], width*0.45f, height*0.40f); 
+			gr.drawString("Time :  "+param[3], width*0.45f, height*0.43f); 
+
+			if(param[1] ==1){
+				gr.drawString("Type your name here ", width*0.42f, height*0.46f);
+				gr.setColor(new Color (0,0,0));
+				gr.fill(new Rectangle (width*0.415f, height*0.50f, 180,25 ));
+				gr.setColor(new Color (1.0f,1.0f,1.0f));
+				gr.drawString(name, width*0.42f, height*0.50f);
+			}
+			else{
+				if(ok)
+					gr.drawString("Press space", width*0.45f, height*0.56f); 
+			}
+
+		}else{
+
+			fonts[1].drawString(gmOvX-width*0.16f, gmOvY-height*0.06f, "Level "+param[5]+" completed !");
+			//gr.drawString("Level "+param[5]+" completed !", gmOvX-width*0.05f, gmOvY); 
+			gr.drawString("Score :  "+param[0], gmOvX, gmOvY+height*0.03f); 
+			gr.drawString(" Time :  "+param[3], gmOvX, gmOvY+height*0.06f); 
+
+			gr.drawString("Press space to continu", gmOvX-width*0.075f, gmOvY+height*0.12f); 
+			gr.drawString("Press escape to Main Menu", gmOvX-width*0.09f,gmOvY+height*0.16f); 
 		}
-		else{
-			if(ok)
-				gr.drawString("Press space", width*0.45f, 340); 
-		}
+
 	}
 
 
@@ -877,8 +924,8 @@ public class Vue {
 			//			Rectangle rect = new Rectangle (selectX+10, selectY+40*(i-1)+50, getValider().getWidth()*0.45f, getValider().getHeight()*0.45f);
 			//			gr.setColor(new Color (1.0f, 0.2f, 0.2f));
 			//			gr.fill(rect);
-			font.drawString(selectX+10, selectY, "Select your music : ",new Color(1.0f,1.0f,1.0f));
-			font.drawString(selectX+width*0.08f, selectY+height*0.066f*i, rm.getPlaylist("MUSIC_"+i),new Color(1.0f,1.0f,1.0f));
+			fonts[0].drawString(selectX+10, selectY, "Select your music : ",new Color(1.0f,1.0f,1.0f));
+			fonts[0].drawString(selectX+width*0.08f, selectY+height*0.066f*i, rm.getPlaylist("MUSIC_"+i),new Color(1.0f,1.0f,1.0f));
 			if(selectMusic[i])
 				validerOk.draw(selectX, selectY+height*0.066f*i,0.7f);
 			else
@@ -944,8 +991,8 @@ public class Vue {
 				idMusic++;
 			if(selectMusic[idMusic])
 				principale = rm.getMusic("MUSIC_"+idMusic);
-//			else
-//				principale = rm.getMusic("MUSIC_0");
+			//			else
+			//				principale = rm.getMusic("MUSIC_0");
 		}
 
 		//System.out.println("real music is "+principale+" and "+"MUSIC_"+idMusic);
@@ -1025,6 +1072,8 @@ public class Vue {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		fonts= new UnicodeFont[3];
+		initFontS();
 	}
 
 
@@ -1125,16 +1174,16 @@ public class Vue {
 		buttons = new Image[2];
 		buttons[0] = rm.getImage("BOUTON_L");
 		buttons[1] = rm.getImage("BOUTON_R");
-		
+
 	}
-	
+
 	public Image getButton(int id) {
 		if(id <=buttons.length)
 			return buttons[id];
 		else
 			return null;
 	}
-	
+
 
 }
 

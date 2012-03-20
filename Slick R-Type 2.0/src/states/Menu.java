@@ -31,6 +31,7 @@ public class Menu extends BasicGameState{
 	private HighscoreManager hm;
 	private int hSX = 800;
 	private boolean credit = false;
+	private int pos[]; 
 
 
 
@@ -63,6 +64,22 @@ public class Menu extends BasicGameState{
 		//		}
 
 		hm = HighscoreManager.getInstance();
+		//		String scoreTab[] = hm.getHighscoreStringTab();
+		//		System.out.println("je suis entré !! "+scoreTab.length+ "  et "+scoreTab[0]);
+
+		resetMenu();
+		
+		if(vue.isSelectMusic(0)){
+			System.out.println("music !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			vue.selectMusic(0);
+			vue.setMusic(0);
+			if(vue.isValiderMusic()){
+				vue.setMusic(1);
+			}
+		}
+		
+			
+
 	}
 
 	@Override
@@ -73,17 +90,16 @@ public class Menu extends BasicGameState{
 		titreX = (int)(vue.getWidth()*0.20);
 		t = new Transition[2];
 		to = new Transition[2];
-
-
-
+		pos = new int[10];
 
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
+
 		if(!credit){
-			vue.renderMenu(gr, menuX, menuY, titreX, titreY,hSX,hm);
+			vue.renderMenu(gr, menuX, menuY, titreX, titreY,hSX,hm.getHighscoreStringTab(),pos);
 		}
 		else
 		{
@@ -99,11 +115,11 @@ public class Menu extends BasicGameState{
 		//System.out.println("pause delta "+ delta);
 		//System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.etatprecedent);
 		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
-		if(Main.etatprecedent == -1){
-			vue.selectMusic(0);
-			vue.setMusic(1);
-			//Main.etatprecedent = sbg.getCurrentStateID();
-		}
+//		if(Main.etatprecedent == -1){
+//			vue.selectMusic(0);
+//			vue.setMusic(1);
+//			//Main.etatprecedent = sbg.getCurrentStateID();
+//		}
 
 
 		if(Main.etatprecedent != sbg.getCurrentStateID()){
@@ -113,15 +129,23 @@ public class Menu extends BasicGameState{
 			}
 			else{
 				if(hSX==800 && Main.etatprecedent != Main.OPTIONSTATE){
-					//vue.selectMusic(0);
-					vue.setMusic(0);
+					vue.selectMusic(0);
+					//vue.setMusic(0);
 					if(vue.isValiderMusic()){
 						vue.setMusic(1);
 					}
 				}
+				if(hSX>320){
+					hSX-=40;
+				}
 
-				if(hSX>300){
-					hSX-=20;
+				if(pos[9]>300){
+					for (int p=0;p<10;p++) {
+						pos[p]-=40;
+						if(pos[p] <=300)
+							pos[p]=300;
+					}
+
 				}else{
 					Main.etatprecedent = sbg.getCurrentStateID();
 				}
@@ -185,7 +209,7 @@ public class Menu extends BasicGameState{
 					Main.etatprecedent = Main.MENUSTATE;
 					//sbg.enterState(Main.SELECTSTATE,t[0],t[1]);
 					sbg.enterState(Main.SELECTSTATE);
-					resetMenu();
+//					resetMenu();
 				}
 			}else{
 				if(vue.getStartGameScale() > 0.7f)
@@ -205,7 +229,7 @@ public class Menu extends BasicGameState{
 					vue.setOptionScale(0.7f);
 					Main.etatprecedent = Main.MENUSTATE;
 					sbg.enterState(Main.OPTIONSTATE,to[0],to[1]);
-					resetMenu();
+//					resetMenu();
 				}
 			}else{
 				if(vue.getOptionScale() > 0.7f)
@@ -252,6 +276,9 @@ public class Menu extends BasicGameState{
 	public void resetMenu(){
 		titreY = -80;
 		hSX = 800;
+		for (int i=0;i<10;i++){
+			pos[i] = vue.getWidth()+i*200;
+		}
 	}
 
 	@Override

@@ -24,6 +24,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Classe ResourceManager
+ * @author Etienne Grandier-Vazeille
+ * 
+ * Permet de charger automatiquement toutes les ressources a partir d'un fichier xml
+ *
+ */
 public class ResourceManager {
 
 	private static String SPRITE_SHEET_REF = "__SPRITE_SHEET_"; // Préfixe des feuilles de sprite a combiner avec un id
@@ -48,6 +55,10 @@ public class ResourceManager {
 		playlistMap  = new HashMap<String, String>();// On ne peut pas mettre de type primitif 
 	}
 	
+	/**
+	 * DEBUG
+	 * Affichage les tailles des différentes Map
+	 */
 	public void listR(){
 		
 		System.out.println("textMap "+textMap.size());
@@ -65,7 +76,16 @@ public class ResourceManager {
 		loadResources(is, false);
 	}
 
-	public void loadResources(InputStream is, boolean deferred) throws SlickException { // Charge un fichier de ressources
+	/**
+	 * Charge un fichier de ressources
+	 * deferred signifie qu'on pourra les "charger" à n'importe quel moment dans le programme 
+	 * car Slick ne support le chargemenr de ressource que dans les inits
+	 * 
+	 * @param InputStream
+	 * @param deferred
+	 * @throws SlickException
+	 */
+	public void loadResources(InputStream is, boolean deferred) throws SlickException {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = null;
 		try {
@@ -82,10 +102,11 @@ public class ResourceManager {
 			throw new SlickException("Could not load resources", e);
 		}
 
-		// normalize text representation
+		// On normalise le texte
 		doc.getDocumentElement ().normalize ();
 
-		NodeList listResources = doc.getElementsByTagName("resource"); // On récupére la liste des ressources
+		// On récupére la liste des ressources
+		NodeList listResources = doc.getElementsByTagName("resource"); 
 
 		int totalResources = listResources.getLength();
 
@@ -97,8 +118,9 @@ public class ResourceManager {
 		for(int resourceIdx = 0; resourceIdx < totalResources; resourceIdx++){
 
 			Node resourceNode = listResources.item(resourceIdx);
-
-			if(resourceNode.getNodeType() == Node.ELEMENT_NODE){ // Suivant le type de l'objet on appel la bonne methode pour le charger
+			
+			// Suivant le type de l'objet on appel la bonne methode pour le charger
+			if(resourceNode.getNodeType() == Node.ELEMENT_NODE){ 
 				Element resourceElement = (Element)resourceNode;
 
 				String type = resourceElement.getAttribute("type");
@@ -134,18 +156,19 @@ public class ResourceManager {
 		}
 		Document doc = null;
 		try {
-			//doc = docBuilder.parse (new FileInputStream(resourceElement.getTextContent()));
-			doc = docBuilder.parse (getClass().getResourceAsStream("/"+resourceElement.getTextContent())); // Methode compatible avec les jars
+			//doc = docBuilder.parse (new FileInputStream(resourceElement.getTextContent())); // Methode non compatible avec les jars
+			doc = docBuilder.parse (getClass().getResourceAsStream("/"+resourceElement.getTextContent())); // Methode compatible avec les jars mais dans eclipse il faut inclure les "data" dans un package
 		} catch (SAXException e) {
 			throw new SlickException("Could not load resources", e);
 		} catch (IOException e) {
 			throw new SlickException("Could not load resources", e);
 		}
 
-		// normalize text representation
+		// On normalise le texte
 		doc.getDocumentElement ().normalize ();
 
-		NodeList listResourcesPlaylist = doc.getElementsByTagName("resource"); // On récupére la liste des ressources
+		// On récupére la liste des ressources
+		NodeList listResourcesPlaylist = doc.getElementsByTagName("resource"); 
 
 		int totalResources = listResourcesPlaylist.getLength();
 
@@ -158,7 +181,8 @@ public class ResourceManager {
 
 			Node resourceNode = listResourcesPlaylist.item(resourceIdx);
 
-			if(resourceNode.getNodeType() == Node.ELEMENT_NODE){ // Suivant le type de l'objet on appel la bonne methode pour le charger
+			// Suivant le type de l'objet on appel la bonne methode pour le charger
+			if(resourceNode.getNodeType() == Node.ELEMENT_NODE){ 
 				Element resourceElementPlaylist = (Element)resourceNode;
 
 				String type = resourceElementPlaylist.getAttribute("type");
@@ -313,7 +337,13 @@ public class ResourceManager {
 
 
 
-
+	/**
+	 * Classe ResourceAnimationData
+	 * @author Etienne Grandier-Vazeille
+	 * 
+	 * Permet de fabrique une annimation
+	 *
+	 */
 	private class ResourceAnimationData{
 		int duration;
 		int tw;

@@ -2,6 +2,13 @@ package game;
 
 import java.util.Comparator;
 
+/**
+ * Classe ScoreComparator
+ * @author Etienne Grandier-Vazeille
+ * 
+ * Permet de comparer les scores en utilisant l'interface comparator
+ *
+ */
 public class ScoreComparator implements Comparator<Score> {
         public int compare(Score score1, Score score2) {
 
