@@ -8,6 +8,7 @@ public class TimedEvent {
 	private int spawnX;
 	private int spawnY;
 	private int id;
+	private int nextSpawnTime;
 	private boolean enabled;
 	
 	public TimedEvent(int t,  int q, int d,int b, int x, int y,int i)
@@ -20,6 +21,8 @@ public class TimedEvent {
 		setSpawnY(y);
 		setId(i);
 		setEnabled(true);
+		
+		nextSpawnTime=t;
 	}
 
 	public int getTime() {
@@ -84,5 +87,13 @@ public class TimedEvent {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public int getNextSpawnTime() {
+		return nextSpawnTime;
+	}
+
+	public void setNextSpawnTime(int nextSpawnTime) {
+		this.nextSpawnTime = nextSpawnTime;
 	}
 }

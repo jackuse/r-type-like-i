@@ -1,0 +1,15 @@
+<sheet>
+	<sprite name="v1csa1.gif" x="0" y="0" width="176" height="96" />
+	<sprite name="v1csa2.gif" x="176" y="0" width="176" height="96" />
+	<sprite name="v1csa3.gif" x="0" y="96" width="176" height="96" />
+	<sprite name="v1csa4.gif" x="176" y="96" width="176" height="96" />
+	<sprite name="v1csa5.gif" x="0" y="192" width="176" height="96" />
+	<sprite name="v1csa6.gif" x="176" y="192" width="176" height="96" />
+	<sprite name="v1csa7.gif" x="0" y="288" width="176" height="96" />
+	<sprite name="v1csa8.gif" x="176" y="288" width="176" height="96" />
+	<sprite name="v1csa9.gif" x="0" y="384" width="176" height="96" />
+	<sprite name="v1csa10.gif" x="176" y="384" width="176" height="96" />
+	<sprite name="v1csa11.gif" x="0" y="480" width="176" height="96" />
+	<sprite name="v1csa12.gif" x="176" y="480" width="176" height="96" />
+	<sprite name="v1csa13.gif" x="0" y="576" width="176" height="96" />
+</sheet>

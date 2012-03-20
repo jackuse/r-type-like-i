@@ -65,7 +65,7 @@ public class Game extends BasicGameState{
 	private int delayChangeW = 200;
 
 	private int alienSpawnTimer=0;
-
+	
 	public int shotRandomizer;
 	private SelectTransition t;
 	private int timer = 0;
@@ -655,38 +655,13 @@ public class Game extends BasicGameState{
 			{	
 				enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getBehavior()));
 				System.out.println("new alien");
-				/*for(int j=0;j<event.get(i).getQuantity();j++)
+				for (int q=0;q<event.get(i).getQuantity()-1;q++)
 				{
-					alienSpawnTimer+=delta;
-					//System.out.println(j+"");
-					if(alienSpawnTimer>event.get(i).getDelay())
-					{
-						enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getBehavior()));
-						alienSpawnTimer=0;
-					}
-					else j--;*/
-				
-				/*System.out.println(event.get(i).getDelay());
-					int j=0;
-					alienSpawnTimer=0;
-					while(j<event.get(i).getQuantity())
-					{
-						alienSpawnTimer+=delta;
-						//System.out.println(j+"");
-						if(alienSpawnTimer>=event.get(i).getDelay())
-						{
-							System.out.println(alienSpawnTimer+"");System.out.println(delta+"");
-							alienSpawnTimer=0;
-							enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getBehavior()));
-							
-							System.out.println("new alien");
-							j++;
-						}
-					
-					
-				} */
-				alienSpawnTimer = 0;
-				event.get(i).setEnabled(false);}
+					event.get(i).setNextSpawnTime(event.get(i).getNextSpawnTime()+event.get(i).getDelay());
+					event.add(new TimedEvent(event.get(i).getNextSpawnTime(),0,0,event.get(i).getBehavior(),event.get(i).getSpawnX(),event.get(i).getSpawnY(),event.get(i).getId()));
+				}
+				event.get(i).setEnabled(false);
+			}
 		}
 	}
 

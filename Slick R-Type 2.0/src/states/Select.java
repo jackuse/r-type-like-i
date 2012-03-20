@@ -103,11 +103,12 @@ public class Select extends BasicGameState{
 				( mouseY >= menuY && mouseY <= menuY + vue.getOptionOption().getHeight()*0.7) ){
 			insideChar2 = true;
 		}
+		
+		if(!insideChar1 && !insideChar2 && !insideChar3)
+			vue.setAltBouton(0,menuX,menuY);
 
 		if(insideChar1){
-			if(vue.getStartGameScale() < 0.8f)
-				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
-
+			vue.setAltBouton(1, menuX, menuY);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				//vue.setMusic(0);
 				//vue.initGame(); 
@@ -118,17 +119,12 @@ public class Select extends BasicGameState{
 				sbg.enterState(Main.HISTORYSTATE);
 			}
 		}else{
-			if(vue.getStartGameScale() > 0.7f)
-				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delta);
-
 			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
 			//gc.exit();
 		}
 
 		if(insideChar2){
-			if(vue.getStartGameScale() < 0.8f)
-				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
-
+			vue.setAltBouton(2,menuX, menuY);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				//vue.setMusic(0);
 				//vue.initGame(); 
@@ -139,18 +135,15 @@ public class Select extends BasicGameState{
 				sbg.enterState(Main.HISTORYSTATE);
 			}
 		}else{
-			if(vue.getStartGameScale() > 0.7f)
-				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delta);
-
+			
+			
 			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
 			//gc.exit();
 		}
 
 		if(insideChar3)
 		{
-			if(vue.getStartGameScale() < 0.8f)
-				vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delta);
-
+			vue.setAltBouton(3,menuX, menuY);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				//vue.setMusic(0);
 				//vue.initGame(); 
@@ -161,9 +154,7 @@ public class Select extends BasicGameState{
 				sbg.enterState(Main.GAMESTATE);
 			}
 		}else{
-			if(vue.getStartGameScale() > 0.7f)
-				vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delta);
-
+			
 			//if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
 			//gc.exit();
 		}

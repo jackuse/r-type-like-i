@@ -23,6 +23,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.loading.DeferredResource;
 import org.newdawn.slick.loading.LoadingList;
 import org.newdawn.slick.XMLPackedSheet;
+import org.newdawn.slick.Animation;
 
 import states.Game;
 
@@ -68,14 +69,20 @@ public class Vue {
 	private Image[] alien = new Image[2];;
 	private Image laser;
 	private Image missile;
-
+	private int intro=0;
+	//private Image animatedRotatingShip1Frames;
+	
 	private Image nastyProjectile;
 	private Image explosion;
 	private Image sheet;
 	private XMLPackedSheet sheetTest;
 	private XMLPackedSheet nastyProjectileSheet;
+	private XMLPackedSheet animatedRotatingShip1Sheet;
 	private String dossierSkin = "data/skin1";
 	private SpriteSheet skin;
+	private Animation animatedEnergyBall;
+	private Animation animatedRotatingShip1;
+	private Animation ship1CharacterSelectIntro;
 	private int[][] skinDef;
 
 	private Image exitOption = null;
@@ -327,6 +334,7 @@ public class Vue {
 		background[2] = rm.getImage("BACKGROUD_OPTION");
 	}
 
+
 	public UnicodeFont initFont(String name,int size) throws SlickException{
 		UnicodeFont uf;
 		uf = new UnicodeFont(name, size,false,false);
@@ -347,16 +355,24 @@ public class Vue {
 		
 	}
 
-	public void initCharacterSelectScreen(){
+	public void initCharacterSelectScreen() throws SlickException{
+
+		animatedRotatingShip1Sheet = new XMLPackedSheet("data/introVaisseau1.png","data/introVaisseau1.png.xml");
 		principale = rm.getMusic("MUSIC_7");
 		principale.setVolume(volumeMusic);
 		Image menu2 = rm.getImage("BOUTONS_CHARSELECT");
+		Image menu2_alt=rm.getImage("BOUTONS_CHARSELECT_ALT");
 		//System.out.println(menu.getHeight());
 		background[4] = rm.getImage("BACKGROUD_CHARSELECT");
 		ship1 = menu2.getSubImage(0, 28, 445, 70);
 		ship2 = menu2.getSubImage(180, 105, 300, 70);
 		ship3 = menu2.getSubImage(220, 184, 220, 70);
-
+		
+		animatedRotatingShip1 = new Animation();
+		for (int i = 1; i<14; i++)
+			animatedRotatingShip1.addFrame(animatedRotatingShip1Sheet.getSprite("v1csa"+i+".gif"), 50);
+		//for(int i=1;i<animatedRotatingShip1Frames;i++)
+		//	animatedRotatingShip1.addFrame("v1csa"+i+".gif", 15);
 		selectMusic(7);
 		//System.out.println("Space !! ");
 //		try {
@@ -375,6 +391,7 @@ public class Vue {
 	public void initGame() throws SlickException{
 		sheetTest= new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
 		nastyProjectileSheet=new XMLPackedSheet("data/nastyProjectileSheet.png","data/nastyProjectileSheet.png.xml");
+		animatedEnergyBall= new Animation();
 		principale = rm.getMusic("MUSIC_0");
 		principale.setVolume(volumeMusic);
 		background[0] = rm.getImage("BACKGROUD_JEU");	
@@ -395,11 +412,13 @@ public class Vue {
 		//laser = sheet.getSubImage(265,3746,123,196);
 		//laser.setRotation(90.0f);
 
-
+		animatedEnergyBall.addFrame(nastyProjectileSheet.getSprite("nastyProjectile1.gif"), 100);
+		animatedEnergyBall.addFrame(nastyProjectileSheet.getSprite("nastyProjectile2.gif"), 100);
+		
 		alien[0] = rm.getImage("ALIEN_1");
 		alien[0].setRotation(270.0f);	
 		life=rm.getImage("HEART");
-
+		
 		try {
 			pauseBg = new Image(800,600);
 		} catch (SlickException e) {
@@ -516,7 +535,7 @@ public class Vue {
 		fonts[0].drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
 		//font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
 		gr.setColor(new Color (0,0,0));
-		gr.drawString("Beta "+Main.version, titreX+430, titreY+50);
+		//gr.drawString("Beta "+Main.version, titreX+430, titreY+50);
 
 		//HighScore
 		gr.setColor(new Color(1.0f,1.0f,1.0f));
@@ -547,6 +566,8 @@ public class Vue {
 		ship1.draw(menuX, menuY, startGameScale);
 		ship2.draw(menuX+350, menuY, optionScale);
 		ship3.draw(menuX+600, menuY, exitScale);
+		if (intro==1)
+			animatedRotatingShip1.draw(800/2-300/2, 600/2+150, 300, 150);
 		return 0;
 	}
 
@@ -800,7 +821,7 @@ public class Vue {
 				missile.draw(ob.getX(), ob.getY()-ob.getH()/2);
 				break;
 			case 23:
-				nastyProjectile.draw(ob.getX(), ob.getY());
+				animatedEnergyBall.draw(ob.getX(), ob.getY());
 			default:
 				break;
 			}
@@ -1015,6 +1036,40 @@ public class Vue {
 			principale = rm.getMusic("MUSIC_"+id);
 			//System.out.println("load b "+principale);
 		}
+	}
+	
+	public void setAltBouton(int i, int menuX, int menuY){
+		System.out.println("HOY");
+		Image menu2 = rm.getImage("BOUTONS_CHARSELECT");
+		Image menu2_alt=rm.getImage("BOUTONS_CHARSELECT_ALT");
+		if(i==1)
+		{
+			ship1 = menu2_alt.getSubImage(0, 28, 445, 70);
+			intro=1;
+			
+		}
+		if(i==2)
+		{
+			ship2= menu2_alt.getSubImage(180, 105, 300, 70);
+			intro=2;
+		}
+		
+		if(i==3)
+		{
+			ship3 = menu2_alt.getSubImage(220, 184, 220, 70);
+			intro=3;
+		}
+		if(i==0)
+		{
+			ship1 = menu2.getSubImage(0, 28, 445, 70);
+			ship2 = menu2.getSubImage(180, 105, 300, 70);
+			ship3 = menu2.getSubImage(220, 184, 220, 70);
+			intro=0;
+		}
+		ship1.draw(menuX,menuY);
+		ship2.draw(menuX,menuY);
+		ship3.draw(menuX,menuY);
+		
 	}
 
 

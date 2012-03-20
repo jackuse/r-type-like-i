@@ -4,14 +4,13 @@
 <!-- 	<resource type="music" id="MENU_MUSIC">data\musiqueStarWars.ogg</resource> -->
 	<resource type="image" id="BOUTONS">data\menu-.png</resource>
 	<resource type="image" id="BOUTONS_CHARSELECT">data\menu-char.gif</resource>
-	<resource type="image" id="BOUTONS_CHARSELECT_ALT">data\menu-char.gif</resource>
+	<resource type="image" id="BOUTONS_CHARSELECT_ALT">data\menu-charAlt.gif</resource>
 	<resource type="image" id="BACKGROUD_MENU">data\Space_Texture_by_Extince.jpg</resource>
 	<resource type="image" id="BACKGROUD_OPTION">data\texture__space_by_Mjag.jpg</resource>
 	<resource type="image" id="BACKGROUD_JEU">data\land.jpg</resource>
 	<resource type="image" id="BACKGROUD_CHARSELECT">data\charSelectBackground.png</resource>
 	<resource type="image" id="JOUEUR">data\plane.png</resource>
 	<resource type="image" id="EXPLOSION">data\explosion.png</resource>
-	<resource type="image" id="ALIEN_0">data\bite2.1.png</resource>
 	<resource type="image" id="ALIEN_1">data\alien2.png</resource>
 	<resource type="image" id="ROCKET">data\rocket.png</resource>
 	<resource type="image" id="LASER">data\laser.png</resource>
