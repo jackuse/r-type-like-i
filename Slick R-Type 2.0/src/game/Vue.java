@@ -134,6 +134,8 @@ public class Vue {
 
 	private Image[] buttons;
 
+	private boolean[] champ;
+
 
 
 
@@ -332,6 +334,7 @@ public class Vue {
 
 
 		background[2] = rm.getImage("BACKGROUD_OPTION");
+		champ = new boolean[10];
 	}
 
 
@@ -470,19 +473,29 @@ public class Vue {
 	        } */
 	}
 
-	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size) {
+	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size, boolean[] inside) {
 		//System.out.println("rendu d'option");
 
 		//startGameOption.draw(optionX, optionY, startGameScale);
 		background[2].draw(0, 0);
+		
+
+		gr.setColor(new Color (1.0f, 1.0f, 1.0f));
+		
 
 		fonts[0].drawString(optionX, optionY+height*0.10f, "Music",new Color(1.0f,1.0f,1.0f));
 		if(validerMusic)
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
 		else
 			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+		if(inside[0]){
+			gr.fill(new Rectangle (optionX, optionY+height*0.17f, 100, 5));
+		}
 
 		fonts[0].drawString(optionX, optionY+height*0.20f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
+		if(inside[1]){
+			gr.fill(new Rectangle (optionX, optionY+height*0.27f, 220, 5));
+		}
 
 		//		font.drawString(optionX, optionY+height*0.20f, "Screen Size",new Color(0.5f,0.5f,0.5f));
 		//		buttons[0].draw(optionX+width*0.25f, optionY+height*0.22f);
@@ -513,6 +526,9 @@ public class Vue {
 			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
 		else
 			valider.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
+		if(inside[2]){
+			gr.fill(new Rectangle (optionX, optionY+height*0.37f, 180, 5));
+		}
 		//System.out.println("rendu d'option pro ");
 		gr.setColor(new Color(0.5f,0.5f,0.5f));
 		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.325f);
@@ -940,7 +956,7 @@ public class Vue {
 	}
 
 
-	public void renderSelection(GameContainer gc, Graphics gr,int selectX, int selectY) {
+	public void renderSelection(GameContainer gc, Graphics gr,int selectX, int selectY,boolean[] inside) {
 		for(int i=1;i<rm.getNumber("NB_MUSIC");i++){
 			//			Rectangle rect = new Rectangle (selectX+10, selectY+40*(i-1)+50, getValider().getWidth()*0.45f, getValider().getHeight()*0.45f);
 			//			gr.setColor(new Color (1.0f, 0.2f, 0.2f));
@@ -952,13 +968,17 @@ public class Vue {
 			else
 				valider.draw(selectX, selectY+height*0.066f*i,0.7f);
 
-			exitOption.draw(selectX+10, selectY+height*0.80f, exitScale);
-
+			
+			if(inside[i]){
+				gr.setColor(new Color(1.0f,1.0f,1.0f));
+				gr.fill(new Rectangle (selectX+width*0.075f, selectY+height*0.066f*i+10, 5, 30));
+			}
 
 
 			//selectX && mouseX <= selectX + vue.getValider().getWidth()) &&
 			//( mouseY >= selectY+vue.getValider().getHeight()*i && mouseY <= selectY  + vue.getValider().getHeight()*i*0.05f) ){
 		}
+		exitOption.draw(selectX+10, selectY+height*0.80f, exitScale);
 
 	}
 
@@ -1237,6 +1257,17 @@ public class Vue {
 			return buttons[id];
 		else
 			return null;
+	}
+
+	public void inOption(int i) {
+		champ[i]= true;
+	}
+
+	public void resetInOption() {
+		for(int i= 0;i<champ.length;i++){
+			champ[i] = false;
+		}
+		
 	}
 
 

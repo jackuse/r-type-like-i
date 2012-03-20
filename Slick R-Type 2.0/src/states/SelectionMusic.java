@@ -15,6 +15,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.SelectTransition;
 
 /**
  * Class SelectionMusic
@@ -32,6 +33,9 @@ public class SelectionMusic extends BasicGameState{
 	private int selectY=0;
 	private boolean[] selectMusic;
 	private int delayClick=150;
+	private boolean[] inside;
+	private int kB;
+	private int maxItem;
 
 
 
@@ -46,6 +50,14 @@ public class SelectionMusic extends BasicGameState{
 		
 		// On charge tout les titres des musiques du fichier XML
 		selectMusic=vue.initSelectionMusic(selectMusic);
+		maxItem = selectMusic.length;
+		inside = new boolean[maxItem];
+		for(int i=0;i<maxItem;i++)
+			inside[i]=false;
+	}
+	
+	public void enter(GameContainer gc, StateBasedGame sgb) {
+		vue.resetInOption();
 	}
 	
 	/* 
@@ -61,7 +73,7 @@ public class SelectionMusic extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderSelection(gc,gr, selectX, selectY);
+		vue.renderSelection(gc,gr, selectX, selectY,inside);
 	}
 
 	@Override
@@ -83,6 +95,42 @@ public class SelectionMusic extends BasicGameState{
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		boolean insideExit = false;
+		boolean enterPress = false;
+		
+		//vue.resetInOption();
+		
+		// Les commandes de déplacements clavier
+		/*if (input.isKeyPressed(Input.KEY_Z)){
+			inside[kB] = false;
+			kB--;
+			if(kB<0)
+				kB=maxItem-1;
+			inside[kB] = true;
+		}
+
+		if (input.isKeyPressed(Input.KEY_S)){
+			inside[kB] = false;
+			kB++;
+			if(kB>maxItem-1)
+				kB=0;
+			inside[kB] = true;
+			System.out.println("kB = "+kB);
+		}
+		
+		if (input.isKeyPressed(Input.KEY_ENTER)){
+			enterPress = true;
+		}
+		for(int i=0;i<selectMusic.length;i++){
+			if(selectMusic[i]){
+				for(int j=0;j<maxItem;j++)
+					inside[j]=false;
+			}
+		}
+		
+		if(insideExit){
+			for(int i=0;i<maxItem;i++)
+				inside[i]=false;
+		}*/
 
 		// Initialisation du tableau de selection des musiques
 		for(int i=1;i<selectMusic.length;i++){
@@ -100,15 +148,15 @@ public class SelectionMusic extends BasicGameState{
 		
 		// Si on est sur le titre d'une musique et qu'elle n'est pas lancée on la lance
 		for(int i=0;i<selectMusic.length;i++){
-			if( ( mouseX >= selectX+10 && mouseX <= selectX+10+600) &&
-					( mouseY >= selectY+40*(i-1)+50 && mouseY <= selectY +40*(i-1)+50 + 34) ){
+			if( (( mouseX >= selectX+10 && mouseX <= selectX+10+600) &&
+					( mouseY >= selectY+40*(i-1)+50 && mouseY <= selectY +40*(i-1)+50 + 34)) /*|| inside[i]*/ ){
 				if(vue.getIdMusic()!=i){
 				vue.setMusic(0);
 				vue.selectMusic(i);
 				vue.setMusic(1);
-				System.out.println("set music "+i);
+				//System.out.println("set music "+i);
 				}
-				System.out.println("on music "+i);
+				//System.out.println("on music "+i);
 			}
 		}
 		
@@ -120,17 +168,17 @@ public class SelectionMusic extends BasicGameState{
 
 		// Si on clique sur la case on active ou non la musique pour la lecture en playlist
 		for(int i=0;i<selectMusic.length;i++){
-			if(selectMusic[i]){
+			if(selectMusic[i] || inside[i] ){
 				delayClick-= 20;
-				if (delayClick<0){
-					if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+				if (delayClick<0 || inside[i] ){
+					if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
 						if(vue.isSelectMusic(i)){
 							vue.setValiderSelectMusic(i,false);
-							System.out.println("music "+i+" off");							
+							//System.out.println("music "+i+" off");							
 						}
 						else{
 							vue.setValiderSelectMusic(i,true);
-							System.out.println("music "+i+" on");
+							//System.out.println("music "+i+" on");
 						}
 					}
 					delayClick = 100;
@@ -141,11 +189,11 @@ public class SelectionMusic extends BasicGameState{
 		
 
 		// Si on est sur exit on quit le menu
-		if(insideExit)
+		if(insideExit || inside[0])
 		{
 			if(vue.getExitScale() < 0.8f)
 				vue.setExitScale(vue.getExitScale() + 0.00001f * 20);
-			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
 
 				vue.setExitScale(0.7f);
 

@@ -26,6 +26,9 @@ public class Option extends BasicGameState{
 	int delayClick = 150;
 	private Transition[] t;
 	int screenSize = 1;
+	private boolean[] inside;
+	private int kB = 0;
+	private int maxItem = 4;
 	
 
 	public Option(int stateID) {
@@ -43,6 +46,9 @@ public class Option extends BasicGameState{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		vue.resetInOption();
+		for(int i=0;i<maxItem;i++)
+			inside[i]=false;
 	}
 
 	@Override
@@ -64,6 +70,9 @@ public class Option extends BasicGameState{
 		}
 		vue.initOption();
 		
+		inside = new boolean[maxItem];
+		for(int i=0;i<maxItem;i++)
+			inside[i]=false;
 
 	}
 
@@ -71,7 +80,7 @@ public class Option extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		//System.out.println("avant rendu option");
-		vue.renderOption(gc, gr, optionX, optionX,screenSize);
+		vue.renderOption(gc, gr, optionX, optionX,screenSize,inside);
 
 	}
 
@@ -84,29 +93,49 @@ public class Option extends BasicGameState{
 
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
-
-		// Les commandes de déplacements
-		if(input.isKeyDown(Input.KEY_Z))
-		{
-
-		}
-		if(input.isKeyDown(Input.KEY_S))
-		{
-
-		}
-
+		
 		boolean insideMusic = false; // Qui est un slide
 		boolean insideExit = false; // Qui est un bouton
 		boolean insideFullscreen = false; // Qui est un rectangle
 		boolean insideMusicSelection = false;
 		boolean insideBR = false;
 		boolean insideBL = false;
+		boolean enterPress = false;
+
+
+		// Les commandes de déplacements clavier
+		if (input.isKeyPressed(Input.KEY_Z)){
+			inside[kB] = false;
+			kB--;
+			if(kB<0)
+				kB=maxItem-1;
+			inside[kB] = true;
+		}
+
+		if (input.isKeyPressed(Input.KEY_S)){
+			inside[kB] = false;
+			kB++;
+			if(kB>maxItem-1)
+				kB=0;
+			inside[kB] = true;
+			System.out.println("kB = "+kB);
+		}
+		
+		if (input.isKeyPressed(Input.KEY_ENTER)){
+			enterPress = true;
+		}
+		
+		if(insideExit || insideBL || insideBR || insideFullscreen || insideMusic || insideMusicSelection){
+			for(int i=0;i<maxItem;i++)
+				inside[i]=false;
+		}
+
 
 
 		if( ( mouseX >= optionX+vue.getWidth()*0.20f+10 && mouseX <= optionX+vue.getWidth()*0.20f+10 + vue.getValider().getWidth()*0.7) &&
 				( mouseY >= optionY+10+vue.getHeight()*0.10f && mouseY <= optionY+10+vue.getHeight()*0.10f + vue.getValider().getHeight()) ){
 			insideMusic = true;
-			System.out.println("on music");
+			//System.out.println("on music");
 		}else if( ( mouseX >= optionX && mouseX <= optionX+vue.getWidth()*0.32f) &&
 				( mouseY >= optionY+vue.getHeight()*0.20f && mouseY <= optionY+vue.getHeight()*0.10f+vue.getHeight()*0.17f) ){
 			insideMusicSelection = true;
@@ -131,14 +160,16 @@ public class Option extends BasicGameState{
 			//System.out.println("on exit");
 		}
 		
+		vue.resetInOption();
 
-		if(insideMusic){
+		if(insideMusic || inside[0]){
+			vue.inOption(0);
 			//System.out.println("music in "+delayClick+" et delta"+ delta);
 			delayClick-= 20;
-			if (delayClick<0){
+			if (delayClick<0 || inside[0]){
 
 				//System.out.println("music in delay"+delayClick);
-				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress ){
 					if(!vue.isMusic()){
 						vue.setValiderSetMusic(true);
 						vue.setMusic(3);
@@ -154,11 +185,11 @@ public class Option extends BasicGameState{
 			}
 
 		}
-		if(insideMusicSelection){
+		if(insideMusicSelection || inside[1]){
 
 			delayClick-= 20;
-			if (delayClick<0){
-				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+			if (delayClick<0  || inside[1]){
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
 					sbg.enterState(Main.SELECTIONMUSICSTATE);
 				}
 				delayClick = 150;
@@ -223,10 +254,10 @@ public class Option extends BasicGameState{
 
 
 
-		if(insideFullscreen){
+		if(insideFullscreen  || inside[2]){
 			delayClick-= delay;
-			if (delayClick<0){
-				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+			if (delayClick<0  || inside[1]){
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
 					if(!vue.getValiderFullScreen()){
 						vue.setValiderFullScreen(true);
 						//vue.setScreen(1280,720,true);
@@ -242,11 +273,11 @@ public class Option extends BasicGameState{
 
 		}
 
-		if(insideExit)
+		if(insideExit  || inside[3])
 		{
 			if(vue.getExitScale() < 0.8f)
 				vue.setExitScale(vue.getExitScale() + scaleStep * delay);
-			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
 
 				vue.setExitScale(0.7f);
 				

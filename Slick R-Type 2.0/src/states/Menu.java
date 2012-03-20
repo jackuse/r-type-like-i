@@ -1,6 +1,9 @@
 package states;
 
+import javax.jws.Oneway;
+
 import game.HighscoreManager;
+import game.IOManager;
 import game.Main;
 import game.Vue;
 
@@ -18,6 +21,7 @@ import org.newdawn.slick.state.transition.Transition;
 public class Menu extends BasicGameState{
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
+	//private IOManager io = IOManager.getInstance();
 
 	int menuX = 30;
 	int menuY = 500;
@@ -32,6 +36,11 @@ public class Menu extends BasicGameState{
 	private int hSX = 800;
 	private boolean credit = false;
 	private int pos[]; 
+	private int delayK = 100;
+	private boolean[] inside;
+	private int kB = 0;
+	private int maxItemMenu = 3;
+	
 
 
 
@@ -68,7 +77,7 @@ public class Menu extends BasicGameState{
 		//		System.out.println("je suis entré !! "+scoreTab.length+ "  et "+scoreTab[0]);
 
 		resetMenu();
-		
+
 		if(vue.isSelectMusic(0)){
 			System.out.println("music !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			vue.selectMusic(0);
@@ -77,8 +86,8 @@ public class Menu extends BasicGameState{
 				vue.setMusic(1);
 			}
 		}
-		
-			
+
+
 
 	}
 
@@ -91,6 +100,10 @@ public class Menu extends BasicGameState{
 		t = new Transition[2];
 		to = new Transition[2];
 		pos = new int[10];
+		
+		inside = new boolean[maxItemMenu];
+		for(int i=0;i<maxItemMenu;i++)
+			inside[i]=false;
 
 	}
 
@@ -115,11 +128,11 @@ public class Menu extends BasicGameState{
 		//System.out.println("pause delta "+ delta);
 		//System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.etatprecedent);
 		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
-//		if(Main.etatprecedent == -1){
-//			vue.selectMusic(0);
-//			vue.setMusic(1);
-//			//Main.etatprecedent = sbg.getCurrentStateID();
-//		}
+		//		if(Main.etatprecedent == -1){
+		//			vue.selectMusic(0);
+		//			vue.setMusic(1);
+		//			//Main.etatprecedent = sbg.getCurrentStateID();
+		//		}
 
 
 		if(Main.etatprecedent != sbg.getCurrentStateID()){
@@ -177,6 +190,7 @@ public class Menu extends BasicGameState{
 		boolean insideExit = false;
 		boolean insideOption = false;
 		boolean insideCredit = false;
+		boolean enterPress = false;
 
 		if( ( mouseX >= menuX && mouseX <= menuX + vue.getStartGameOption().getWidth()*0.7) &&
 				( mouseY >= menuY && mouseY <= menuY + vue.getStartGameOption().getHeight()*0.7) ){
@@ -193,15 +207,43 @@ public class Menu extends BasicGameState{
 				( mouseY >= vue.getHeight()*0.96f + vue.getHeight()) ){
 			insideCredit = true;
 		}
+		
+		//inside = io.makeControlKey(input,maxItemMenu,kB);
+		
+		if (input.isKeyPressed(Input.KEY_Q)){
+			inside[kB] = false;
+			kB--;
+			if(kB<0)
+				kB=maxItemMenu-1;
+			inside[kB] = true;
+		}
+
+		if (input.isKeyPressed(Input.KEY_D)){
+			inside[kB] = false;
+			kB++;
+			if(kB>maxItemMenu-1)
+				kB=0;
+			inside[kB] = true;
+			System.out.println("kB = "+kB);
+		}
+		
+		if (input.isKeyPressed(Input.KEY_ENTER)){
+			enterPress = true;
+		}
+		
+		if(insideExit || insideCredit || insideOption || insideStartGame){
+			for(int i=0;i<maxItemMenu;i++)
+				inside[i]=false;
+		}
 
 		if(!credit){
 
-			if(insideStartGame){
+			if(insideStartGame || inside[0]){
 				//System.out.println("je suis dans start game");
 				if(vue.getStartGameScale() < 0.8f)
 					vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delay);
 
-				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress ){
 					//vue.setMusic(0);
 					//vue.initGame(); 
 					//vue.setMusicJeu(true);
@@ -209,7 +251,7 @@ public class Menu extends BasicGameState{
 					Main.etatprecedent = Main.MENUSTATE;
 					//sbg.enterState(Main.SELECTSTATE,t[0],t[1]);
 					sbg.enterState(Main.SELECTSTATE);
-//					resetMenu();
+					//					resetMenu();
 				}
 			}else{
 				if(vue.getStartGameScale() > 0.7f)
@@ -219,17 +261,17 @@ public class Menu extends BasicGameState{
 				//gc.exit();
 			}
 
-			if(insideOption){
+			if(insideOption || inside[1]){
 				//vue.triggerAlt();
 				if(vue.getOptionScale() < 0.8f)
 					vue.setOptionScale(vue.getOptionScale()+scaleStep * delay);
 
-				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
 					//vue.setMusic(0);
 					vue.setOptionScale(0.7f);
 					Main.etatprecedent = Main.MENUSTATE;
 					sbg.enterState(Main.OPTIONSTATE,to[0],to[1]);
-//					resetMenu();
+					//					resetMenu();
 				}
 			}else{
 				if(vue.getOptionScale() > 0.7f)
@@ -239,11 +281,11 @@ public class Menu extends BasicGameState{
 				//gc.exit();
 			}
 
-			if(insideExit)
+			if(insideExit || inside[2])
 			{
 				if(vue.getExitScale() < 0.8f)
 					vue.setExitScale(vue.getExitScale() + scaleStep * delay);
-				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) )
+				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress)
 					gc.exit();
 			}else{
 				if(vue.getExitScale() > 0.7f)
@@ -269,20 +311,34 @@ public class Menu extends BasicGameState{
 		if (input.isKeyPressed(Input.KEY_T)){
 			hm.restZ();
 		}
+		
+		
 
-
-	}
-
-	public void resetMenu(){
-		titreY = -80;
-		hSX = 800;
-		for (int i=0;i<10;i++){
-			pos[i] = vue.getWidth()+i*200;
+		if ( input.isKeyPressed(Input.KEY_M) ){
+			if(!vue.isMusic()){
+				vue.setValiderSetMusic(true);
+				vue.setMusic(3);
+			}
+			else{
+				vue.setValiderSetMusic(false);
+				vue.setMusic(2);
+			}
 		}
+
+
+	
 	}
 
-	@Override
-	public int getID() {
-		return stateID;
-	}
-}
+			public void resetMenu(){
+				titreY = -80;
+				hSX = 800;
+				for (int i=0;i<10;i++){
+					pos[i] = vue.getWidth()+i*200;
+				}
+			}
+
+			@Override
+			public int getID() {
+				return stateID;
+			}
+		}

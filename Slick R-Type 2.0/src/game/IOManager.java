@@ -110,4 +110,26 @@ public class IOManager {
 		}
 		return s;
 	}
+	
+//	public boolean[] makeControlKey(Input input, int maxItem,int kB){
+//		boolean[] inside = new boolean[maxItem];	
+//		if (input.isKeyPressed(Input.KEY_Q)){
+//			inside[kB] = false;
+//			kB--;
+//			if(kB<0)
+//				kB=maxItem-1;
+//			inside[kB] = true;
+//		}
+//
+//		if (input.isKeyPressed(Input.KEY_D)){
+//			inside[kB] = false;
+//			kB++;
+//			if(kB>maxItem-1)
+//				kB=0;
+//			inside[kB] = true;
+//			System.out.println("kB = "+kB);
+//		}
+//		return inside;
+//	}
+	
 }
