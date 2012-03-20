@@ -372,8 +372,8 @@ public class Vue {
 		ship3 = menu2.getSubImage(220, 184, 220, 70);
 		
 		animatedRotatingShip1 = new Animation();
-		for (int i = 1; i<14; i++)
-			animatedRotatingShip1.addFrame(animatedRotatingShip1Sheet.getSprite("v1csa"+i+".gif"), 50);
+		for (int i = 1; i<34; i++)
+			animatedRotatingShip1.addFrame(animatedRotatingShip1Sheet.getSprite("v1csa"+i+".gif"), 30);
 		//for(int i=1;i<animatedRotatingShip1Frames;i++)
 		//	animatedRotatingShip1.addFrame("v1csa"+i+".gif", 15);
 		selectMusic(7);
@@ -583,7 +583,7 @@ public class Vue {
 		ship2.draw(menuX+350, menuY, optionScale);
 		ship3.draw(menuX+600, menuY, exitScale);
 		if (intro==1)
-			animatedRotatingShip1.draw(800/2-300/2, 600/2+150, 300, 150);
+			animatedRotatingShip1.draw(800/2-300/2, 600/2, 300, 150);
 		return 0;
 	}
 
