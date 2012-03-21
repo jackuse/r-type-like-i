@@ -29,7 +29,8 @@ public class Main extends StateBasedGame {
     public static final int GAMEOVERSTATE      = 12;
     public static final int SELECTSTATE		   =  2;
     public static final int HISTORYSTATE	   =  13;
-	public static final float  version         = 5.0f;
+    public static final int CONTROLSSTATE	   =  14;
+    public static final float  version         = 5.0f;
     
     public static int WIDTH    = 800;
     public static int HEIGHT   = 600;
@@ -38,11 +39,12 @@ public class Main extends StateBasedGame {
     public static boolean init = true;
     
     
-    public static int etatprecedent = -1;
+    public static int previousState = -1;
     
     private Vue vue = Vue.getInstance();
     
     public static AppGameContainer app;
+	
     
  
     public Main()
@@ -62,6 +64,7 @@ public class Main extends StateBasedGame {
         this.addState(new SelectionMusic(SELECTIONMUSICSTATE));
         this.addState(new Select(SELECTSTATE));
         this.addState(new History(HISTORYSTATE));
+        this.addState(new Controls(CONTROLSSTATE));
         this.enterState(CHARGEMENTSTATE);
         
         
@@ -98,6 +101,7 @@ public class Main extends StateBasedGame {
         this.getState(GAMEOVERSTATE).init(gameContainer, this);
         this.getState(SELECTSTATE).init(gameContainer, this);
         this.getState(HISTORYSTATE).init(gameContainer, this);
+        this.getState(CONTROLSSTATE).init(gameContainer, this);
         
         
         gameContainer.setShowFPS(true);

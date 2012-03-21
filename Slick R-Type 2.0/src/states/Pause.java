@@ -36,6 +36,7 @@ public class Pause extends BasicGameState{
 	private String pass = "";
 	int nbPassword = 3;
 	private int delayClick = 150;
+	float scaleStep = 0.0002f;
 
 	/* Ajouter un curseur pour de déplacer au clavier
 	 * 
@@ -75,8 +76,8 @@ public class Pause extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		//System.out.println("pause delta"+ delta);
-		if(Main.etatprecedent != Main.PAUSESTATE)
-			Main.etatprecedent = Main.PAUSESTATE;
+		if(Main.previousState != Main.PAUSESTATE)
+			Main.previousState = Main.PAUSESTATE;
 
 
 		//System.out.println("etat "+sbg.getCurrentStateID()+" et "+Main.etatprecedent);
@@ -228,6 +229,7 @@ public class Pause extends BasicGameState{
 		boolean insideStartGame = false;	
 		boolean insideOption = false;
 		boolean insideExit = false;
+		boolean insideControls = false;
 
 
 		if( ( mouseX >= pauseX && mouseX <= pauseX + vue.getStartGameOption().getWidth()*0.7) &&
@@ -238,8 +240,12 @@ public class Pause extends BasicGameState{
 				( mouseY >= pauseY+45 && mouseY <= pauseY+45 + vue.getOptionOption().getHeight()*0.7) ){
 			insideOption = true;
 			//System.out.println("on option");
+		}else if( ( mouseX >= pauseX&& mouseX <= pauseX + vue.getControlsOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+90 && mouseY <= pauseY+90 + vue.getControlsOption().getHeight()*0.7) ){
+			insideControls = true;
+			//System.out.println("on Exit");
 		}else if( ( mouseX >= pauseX&& mouseX <= pauseX + vue.getExitOption().getWidth()*0.7) &&
-				( mouseY >= pauseY+90 && mouseY <= pauseY+90 + vue.getExitOption().getHeight()*0.7) ){
+				( mouseY >= pauseY+130 && mouseY <= pauseY+130 + vue.getExitOption().getHeight()*0.7) ){
 			insideExit = true;
 			//System.out.println("on Exit");
 		}
@@ -265,6 +271,31 @@ public class Pause extends BasicGameState{
 				delayClick = 150;
 			}
 		}
+		
+		if(insideControls){
+			if(vue.getControlsScale() < 0.8f)
+				vue.setControlsScale(vue.getStartGameScale()+scaleStep * 20);
+
+			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+				vue.setControlsScale(0.7f);
+				sbg.enterState(Main.CONTROLSSTATE);
+			}
+		}else{
+			if(vue.getControlsScale() > 0.7f)
+				vue.setControlsScale(vue.getControlsScale()-scaleStep * 20);
+		}
+//			delayClick-= 20;
+//			if (delayClick<0){
+//				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
+//					//vue.setMusic(0);
+//					vue.setControlsScale(0.7f);
+//
+//					sbg.enterState(Main.CONTROLSSTATE);
+//					//vue.setMusic(3);
+//				}
+//				delayClick = 150;
+//			}
+//		}
 
 		if(insideExit)
 		{

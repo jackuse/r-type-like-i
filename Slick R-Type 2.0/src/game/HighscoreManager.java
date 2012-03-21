@@ -226,14 +226,14 @@ public class HighscoreManager {
 		ArrayList<Score> scores;
 		scores = getScores();
 
-
-		while (i < x) {
-			
-			highscoreString[i] = " "+(i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
+		
+		while (i < x && i !=9) {
+			highscoreString[i] = " "+(i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName().length(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
 			i++;
 		}
 		if(i == 9)
-		highscoreString[i] = (i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
+		highscoreString[i] = (i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName().length(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
+		
 		return highscoreString;
 	}
 	
@@ -244,9 +244,9 @@ public class HighscoreManager {
 	 * @param score
 	 * @return nombre d'espace
 	 */
-	public String makeMeSpace(String name,int score){
+	public String makeMeSpace(int nameSize,int score){
 		String sp = "";
-		int i = name.length()+String.valueOf(score).length();
+		int i = nameSize+String.valueOf(score).length();
 		for(;i<23;i++){
 			sp += " ";
 		}
@@ -277,6 +277,9 @@ public class HighscoreManager {
 		scores.add(new Score("JavaMachine", 100));
 		scores.add(new Score("Le blond", 20));
 		scores.add(new Score("Sarko", 0));
+//		scores.add(new Score("Sarko", 10));
+//		scores.add(new Score("Sarko", 15));
+//		scores.add(new Score("Sarko", 18));
 	}
 
 	/**

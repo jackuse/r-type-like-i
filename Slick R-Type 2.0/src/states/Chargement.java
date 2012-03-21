@@ -76,7 +76,7 @@ public class Chargement extends BasicGameState{
 			throws SlickException {
 
 
-		if(Main.etatprecedent == -1){
+		if(Main.previousState == -1){
 
 			if(ok){
 				if (vue.nextResource != null) { 

@@ -35,7 +35,8 @@ import states.Game;
  * commenter le code et le rendre propre
  * modifier menu selection pour mettre les vaisseaux qui tourne
  * Ajouter des texte a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
- * Corriger le highscore
+ * Faire un tableau de posTxt pour chaque affichage
+ * Corriger problem de son
  * 
  * EN PLUS 
  * bug dans la gestion de playlist
@@ -89,6 +90,7 @@ public class Vue {
 	private Image startGameOption = null;
 	private Image optionOption = null;
 	private Image highscoreOption = null;
+	private Image controlsOption = null;
 	private Image ship1 = null;
 	private Image ship2 = null;
 	private Image ship3 = null;
@@ -96,7 +98,7 @@ public class Vue {
 	private float startGameScale = 0.7f;
 	private float exitScale = 0.7f;
 	private float optionScale = 0.7f;
-
+	private float controlsScale = 0.7f;
 
 	private ResourceManager rm = ResourceManager.getInstance();
 	public DeferredResource nextResource; 
@@ -135,6 +137,7 @@ public class Vue {
 	private Image[] buttons;
 
 	private boolean[] champ;
+
 
 
 
@@ -206,6 +209,11 @@ public class Vue {
 	public Image getStartGameOption() {
 		return startGameOption;
 	}
+	
+	public Image getControlsOption() {
+		return controlsOption;
+	}
+
 
 	public void setStartGameOption(Image startGameOption) {
 		this.startGameOption = startGameOption;
@@ -236,7 +244,13 @@ public class Vue {
 		this.exitScale = exitScale;
 	}
 
+	public float getControlsScale() {
+		return controlsScale;
+	}
 
+	public void setControlsScale(float controlsScale) {
+		this.controlsScale = controlsScale;
+	}
 
 	//
 	// Other methods
@@ -300,6 +314,7 @@ public class Vue {
 		startGameOption = menu.getSubImage(0, 28, 445, 70);
 		optionOption = menu.getSubImage(180, 105, 300, 70);
 		exitOption = menu.getSubImage(278, 184, 200, 70);
+		controlsOption = menu.getSubImage(90, 330, 355, 74);
 		background[1] = rm.getImage("BACKGROUD_MENU");
 
 		selectMusic(0);
@@ -543,7 +558,7 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderMenu(Graphics gr,int menuX, int menuY,int titreX,int titreY, int hSX,String s[],int pos[]) {
+	public int renderMenu(Graphics gr,int menuX, int menuY,int titreX,int titreY, int hSX,String s[],int pos[],int posTxt[][]) {
 		Rectangle fond = new Rectangle (0, 0, 800, 600);
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 		gr.fill(fond);
@@ -557,18 +572,25 @@ public class Vue {
 		gr.setColor(new Color(1.0f,1.0f,1.0f));
 		gr.drawString("HighScores", hSX+80, height*0.30f);
 
-		if(s!=null && s.length>0){
+		if(s!=null && s.length>0){	
 			for(int i=0;i<s.length;i++){	// Il faut faire apparaitre les scores 1 par 1
 				gr.drawString(s[i], pos[i], height*0.35f+25*i);
 			}
+			if(s.length == 10)
+				gr.drawString(s[9], pos[9], height*0.35f+25*9);
 		}
 		//gr.drawString(hm.getHighscoreString(), hSX, 300);
 		//System.out.println(hm.getHighscoreString());
 
 
-		startGameOption.draw(menuX, menuY, startGameScale);
-		optionOption.draw(menuX+350, menuY, optionScale);
-		exitOption.draw(menuX+600, menuY, exitScale);
+//		startGameOption.draw(menuX, menuY, startGameScale);
+//		optionOption.draw(menuX+350, menuY, optionScale);
+//		controlsOption.draw(menuX+550, menuY, controlsScale);
+//		exitOption.draw(menuX+700, menuY, exitScale);
+		startGameOption.draw(menuX+posTxt[0][0], menuY+posTxt[0][1], startGameScale);
+		optionOption.draw(menuX+posTxt[1][0], menuY+posTxt[1][1], optionScale);
+		controlsOption.draw(menuX+posTxt[2][0], menuY+posTxt[2][1], controlsScale);
+		exitOption.draw(menuX+posTxt[3][0], menuY+posTxt[3][1], exitScale);
 		return 0;
 
 	}
@@ -869,8 +891,9 @@ public class Vue {
 		gr.fill(rect);
 		startGameOption.draw(pauseX, pauseY, startGameScale);
 		optionOption.draw(pauseX, pauseY+45, optionScale);
+		controlsOption.draw(pauseX, pauseY+90, optionScale);
 
-		exitOption.draw(pauseX, pauseY+90, exitScale);
+		exitOption.draw(pauseX, pauseY+135, exitScale);
 		//		}
 		//		else
 		//		{
@@ -1267,6 +1290,24 @@ public class Vue {
 		for(int i= 0;i<champ.length;i++){
 			champ[i] = false;
 		}
+		
+	}
+
+	public void renderControls(GameContainer gc, Graphics gr,int ctrX, int ctrY,int posTxt[][]) {
+		background[2].draw(0, 0);
+		
+		fonts[1].drawString(ctrX, ctrY+posTxt[0][1],  "Up                                     Z", new Color(1.0f,1.0f,1.0f));
+		fonts[1].drawString(ctrX, ctrY+posTxt[1][1],  "Down                              S", new Color(1.0f,1.0f,1.0f));
+		fonts[1].drawString(ctrX, ctrY+posTxt[2][1],  "Right                               D", new Color(1.0f,1.0f,1.0f));
+		fonts[1].drawString(ctrX, ctrY+posTxt[3][1],  "Left                                Q", new Color(1.0f,1.0f,1.0f));
+		fonts[1].drawString(ctrX, ctrY+posTxt[4][1],  "Fire                         SPACE", new Color(1.0f,1.0f,1.0f));	
+		fonts[1].drawString(ctrX, ctrY+posTxt[5][1], "Next Weapon               E", new Color(1.0f,1.0f,1.0f));
+		fonts[1].drawString(ctrX, ctrY+posTxt[6][1], "Previous Weapon     	  A", new Color(1.0f,1.0f,1.0f));
+		fonts[1].drawString(ctrX, ctrY+posTxt[7][1], "SpeedUp                    Ctr", new Color(1.0f,1.0f,1.0f));
+		
+		
+		
+		fonts[1].drawString(50, height-50, "Press Any Key to quit", new Color(1.0f,1.0f,1.0f));
 		
 	}
 

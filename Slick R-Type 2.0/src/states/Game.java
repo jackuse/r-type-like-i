@@ -168,9 +168,9 @@ public class Game extends BasicGameState{
 		// BEGIN MUSIC
 
 
-		if(Main.etatprecedent == Main.SELECTSTATE){
+		if(Main.previousState == Main.SELECTSTATE){
 			reset();
-			Main.etatprecedent = sbg.getCurrentStateID();	
+			Main.previousState = sbg.getCurrentStateID();	
 
 			//vue.setMusic(1);
 			vue.setMusic(0);

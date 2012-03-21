@@ -303,13 +303,13 @@ public class Option extends BasicGameState{
 //					break;
 //				}
 
-				if(Main.etatprecedent == Main.PAUSESTATE){
+				if(Main.previousState == Main.PAUSESTATE){
 					sbg.enterState(Main.PAUSESTATE);
-					Main.etatprecedent = sbg.getCurrentStateID();
+					Main.previousState = sbg.getCurrentStateID();
 				}
-				else if(Main.etatprecedent == Main.MENUSTATE){
+				else if(Main.previousState == Main.MENUSTATE){
 					sbg.enterState(Main.MENUSTATE,t[0],t[1]);
-					Main.etatprecedent = sbg.getCurrentStateID();
+					Main.previousState = sbg.getCurrentStateID();
 				}
 			}
 		}else{
@@ -318,13 +318,13 @@ public class Option extends BasicGameState{
 		}
 		
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){
-			if(Main.etatprecedent == Main.PAUSESTATE){
+			if(Main.previousState == Main.PAUSESTATE){
 				sbg.enterState(Main.PAUSESTATE);
-				Main.etatprecedent = sbg.getCurrentStateID();
+				Main.previousState = sbg.getCurrentStateID();
 			}
-			else if(Main.etatprecedent == Main.MENUSTATE){
+			else if(Main.previousState == Main.MENUSTATE){
 				sbg.enterState(Main.MENUSTATE);
-				Main.etatprecedent = sbg.getCurrentStateID();
+				Main.previousState = sbg.getCurrentStateID();
 			}
 		}
 
