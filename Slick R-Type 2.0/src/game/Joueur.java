@@ -16,7 +16,7 @@ public class Joueur {
   //
 
   private int score;
-  private VaisseauJoueur v = new VaisseauJoueur();
+  private VaisseauJoueur v;
   private int life;
   private int kill;
   private int totalKill;
@@ -28,14 +28,15 @@ public class Joueur {
   //
   // Constructors
   //
-  public Joueur () { 
+  private Joueur (int id) { 
 	  score = 0;
 	  life = 3;
 	  kill = 0;
+	  v = new VaisseauJoueur(id);
 	  
   };
   
-  public static Joueur getInstance(Object key) {
+  public static Joueur getInstance(int key) {
       synchronized (instances) {
 
           // On cherche si le joueur de clé key existe
@@ -44,7 +45,7 @@ public class Joueur {
           if (instance == null) { // Si il n'existe pas on le crée
 
               // Création de l'instance
-              instance = new Joueur();
+              instance = new Joueur(key);
 
               // Ajout a la map  
               instances.put(key, instance);

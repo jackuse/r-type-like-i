@@ -192,7 +192,7 @@ public class Option extends BasicGameState{
 			delayClick-= 20;
 			if (delayClick<0  || inside[1]){
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
-					sbg.enterState(Main.SELECTIONMUSICSTATE);
+					sbg.enterState(Main.SELECTMUSICSTATE);
 				}
 				delayClick = 150;
 			}

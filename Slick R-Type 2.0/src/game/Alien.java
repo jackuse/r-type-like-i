@@ -17,10 +17,10 @@ public class Alien extends Vaisseau {
 	//
 	public Alien () { };
 
-	public Alien (float x, float y, int behav) { 
+	public Alien (float x, float y, int id, int behav) { 
 		super(x,y,64,64);
 		behavior=behav;
-		id = 10;
+		this.id = id;
 	};
 	
 	public void move(){

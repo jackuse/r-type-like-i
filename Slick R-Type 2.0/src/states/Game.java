@@ -1,7 +1,9 @@
 package states;
 
 import game.Alien;
+import game.Boss;
 import game.EnergyBall;
+import game.EventList;
 import game.Explosion;
 import game.Joueur;
 import game.Laser;
@@ -40,11 +42,13 @@ public class Game extends BasicGameState{
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
 
-	private ArrayList<TimedEvent> event;
+//	private ArrayList<TimedEvent> event;
+	private EventList event = EventList.getInstance();
 	private ArrayList<Alien> enemy;
 	private ArrayList<Objet> playerProjectile;
 	private ArrayList<Objet> nastyProjectile;
 	private ArrayList<Bonus> bonus;
+	private ArrayList<Boss> boss;
 	private int param[];
 	public static boolean[] cheat;
 	private Joueur joueur[];
@@ -65,14 +69,13 @@ public class Game extends BasicGameState{
 	private int delayChangeW = 200;
 
 	private int alienSpawnTimer=0;
-	
+
 	public int shotRandomizer;
 	private SelectTransition t;
 	private int timer = 0;
 
 	/* Mettre en place des bonus et le boss et 2 lvl
 	 * Faire des lvl pour les armes
-	 * Faire un echange de variable score avec gameover
 	 * 
 	 * 
 	 */
@@ -80,13 +83,24 @@ public class Game extends BasicGameState{
 		this.stateID = stateID;
 	}
 
+	public void enter(GameContainer gc, StateBasedGame sgb) {
+		if(Main.previousState == Main.SELECTSTATE){
+			// On réinitialise les mots de passe
+			for(int i=0;i<4;i++){
+				Game.cheat[i]=false;
+			}
+		}
+
+	}
+
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
-			 {
+	{
 		vue.initGame();
 		playerProjectile = new ArrayList<Objet>();
 		nastyProjectile = new ArrayList<Objet>();
-		event = new ArrayList<TimedEvent>();
+		boss = new ArrayList<Boss>();
+//		event = new ArrayList<TimedEvent>();
 		enemy = new ArrayList<Alien>();
 		bonus = new ArrayList<Bonus>();		
 
@@ -101,7 +115,7 @@ public class Game extends BasicGameState{
 		explo = new ArrayList<Explosion>();
 
 		debug = true;
-		
+
 		lvl = new Level(1);
 		initLevel();
 		joueur[0].setLevel(levelId);
@@ -126,10 +140,9 @@ public class Game extends BasicGameState{
 		param[11] = timer;
 
 
-
 		for (Iterator<Alien> e = enemy.iterator(); e.hasNext(); ) {
 			Objet obE = (Objet) e.next();
-			vue.render1Vaisseau(gr, obE,0);
+			vue.render1Vaisseau(gr, obE,obE.getId());
 		}
 
 
@@ -137,12 +150,19 @@ public class Game extends BasicGameState{
 			Objet obPp = (Objet) pp.next();
 			vue.render1Tir(gr, obPp,obPp.getId());
 		}
+
+		for (Iterator<Objet> np = nastyProjectile.iterator(); np.hasNext(); ) {
+			Objet obNp = (Objet) np.next();
+			vue.render1Tir(gr, obNp, obNp.getId());
+		}
 		
-		for (Iterator<Objet> pp = nastyProjectile.iterator(); pp.hasNext(); ) {
-			Objet obPp = (Objet) pp.next();
-			vue.render1Tir(gr, obPp, obPp.getId());
+		for (Iterator<Boss> bo = boss.iterator(); bo.hasNext(); ) {
+			Objet obBo = (Objet) bo.next();
+			System.out.println("je blit du boss");
+			vue.render1Vaisseau(gr, obBo, obBo.getId());
 		}
 
+		
 		vue.renderJoueur(gr,joueur[0].getV(),param[0]);
 		vue.renderExplosion(gr, explo);
 		vue.renderHUD(gr,param);
@@ -153,7 +173,7 @@ public class Game extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		
+
 		timer+=delta;
 		//System.out.println("delta "+delta+" timer "+timer );
 		//BEGIN CHEAT CODE
@@ -317,8 +337,8 @@ public class Game extends BasicGameState{
 			delaiTire-=delay;//a modifier
 			if(delaiTire < 0){
 				delaiTire = 100;
-//				ResourceManager rm = ResourceManager.getInstance();
-//				rm.listR();
+				//				ResourceManager rm = ResourceManager.getInstance();
+				//				rm.listR();
 				vue.setMusic(0);
 				vue.nextMusic();
 				if(vue.isValiderMusic()){
@@ -422,7 +442,7 @@ public class Game extends BasicGameState{
 			//test des collisions
 			for (int i=0;i<enemy.size();i++)
 			{
-				
+
 				Objet ob2=((Objet) enemy.get(i));
 				boolean col=t.collision(ob2);
 				if (col){
@@ -456,13 +476,13 @@ public class Game extends BasicGameState{
 				nastyT.setVisible(false);
 				break;
 			}
-			
+
 		}
 
 		for (int i=0;i<enemy.size();i++)
 		{
 			enemy.get(i).move();
-			
+
 			Objet ob2=((Objet) enemy.get(i));
 			boolean col=((Objet)joueur[0].getV()).collision(ob2);
 			if (col){
@@ -479,9 +499,9 @@ public class Game extends BasicGameState{
 				nastyProjectileTimer=0;
 				nastyProjectile.add(new EnergyBall(ob2.getX()+ob2.getW()/2,ob2.getY()+ob2.getH()/2-12));
 			}
-			
+
 			//}
-			
+
 		}
 
 		for (int i=0;i<bonus.size();i++)
@@ -527,15 +547,15 @@ public class Game extends BasicGameState{
 			for(int i=0;i<2;i++)
 				enemy.add(new Alien(800+rand.nextFloat()*(900-800),rand.nextFloat()*(500-0)));
 		}*/
-		
-		
-		
+
+
+
 		//* Test alien
 
 		//if(enemy.size()<10 && debug ){
-			//for(int i=0;i<10;i++)
-				//enemy.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
-			//System.out.println("Un alien arrive");
+		//for(int i=0;i<10;i++)
+		//enemy.add(new Alien(300+rand.nextFloat()*(700-300),rand.nextFloat()*(500-0)));
+		//System.out.println("Un alien arrive");
 		//}//*/
 
 		/* Test missile
@@ -586,10 +606,10 @@ public class Game extends BasicGameState{
 	}
 
 	public void reset(){
-//		joueur[0].getV().rest();
-//		joueur[0].setLife(3);
-//		joueur[0].getV().setInvicible(true);
-//		joueur[0].restTotalKill();
+		//		joueur[0].getV().rest();
+		//		joueur[0].setLife(3);
+		//		joueur[0].getV().setInvicible(true);
+		//		joueur[0].restTotalKill();
 		//joueur[0].rest();
 		enemy.clear();
 		playerProjectile.clear();
@@ -598,7 +618,7 @@ public class Game extends BasicGameState{
 		lvl.set(1);
 		timer =0;
 	}
-	
+
 	public void initLevel(){
 		//LEVEL FILE STRUCTURE : TIME QUANTITY DELAY BEHAVIORID X Y ID*/
 		int id=0;
@@ -613,48 +633,59 @@ public class Game extends BasicGameState{
 			sc2 = new Scanner(new File("data/level"+levelId+".txt"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();  
-			
+
 		}	
 		while (sc2.hasNextLine()) {
-			
+
 			Scanner s2 = new Scanner(sc2.nextLine());
-			boolean b;
+			boolean b,out= false;
 			int i=0;
-			while (b = s2.hasNext()) {
-				
+			while (b = s2.hasNext() && !out) {
+
 				String s = s2.next();
-				if (i==0)
-					time=Integer.parseInt(s);
-				if (i==1)
-					quantity=Integer.parseInt(s);
-				if (i==2)
-					delay=Integer.parseInt(s);
-				if (i==3)
-					behavior=Integer.parseInt(s);
-				if (i==4)
-					spawnX=Integer.parseInt(s);
-				if (i==5)
-					spawnY=Integer.parseInt(s);
-				if (i==6)
-					id=Integer.parseInt(s);
-				//System.out.println(s);
-				i++;
+				if (i==0 && s.substring(0, 1).equalsIgnoreCase("#") ){
+					out = true;
+				}
+				else{
+					if (i==0)
+						time=Integer.parseInt(s);
+					if (i==1)
+						quantity=Integer.parseInt(s);
+					if (i==2)
+						delay=Integer.parseInt(s);
+					if (i==3)
+						behavior=Integer.parseInt(s);
+					if (i==4)
+						spawnX=Integer.parseInt(s);
+					if (i==5)
+						spawnY=Integer.parseInt(s);
+					if (i==6)
+						id=Integer.parseInt(s);
+					//System.out.println(s);
+					i++;
+				}
 			}
 			if(time!=0 && quantity!=0 && delay!=0 && behavior!=0 && spawnX!=0 && spawnY!=0 && id!=0)
 			{	event.add(new TimedEvent(time,quantity,delay,behavior,spawnX,spawnY,id));
-				System.out.println("New Event at time "+time+"ms, quantity "+quantity+",delay "+delay+"ms, behavior "+behavior+"spawn x "+spawnX+" y "+spawnY+"");
+			System.out.println("New Event at time "+time+"ms, quantity "+quantity+",delay "+delay+"ms, behavior "+behavior+"spawn x "+spawnX+" y "+spawnY+" id "+id);
 			}
 		}
 	}
-	
+
 	public void runLevel(int timer,int delta){
-		
+
 		for(int i=0;i<event.size();i++)
 		{
 			if(timer>=event.get(i).getTime() && event.get(i).isEnabled() )
 			{	
-				enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getBehavior()));
-				System.out.println("new alien");
+				if(event.get(i).getId()>100 && event.get(i).getId()<200){
+					enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getId(),event.get(i).getBehavior()));
+					System.out.println("new alien");
+				}else if(event.get(i).getId()>200 && event.get(i).getId()<300){
+					boss.add(new Boss(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getId()));
+					System.out.println("new boss");
+				}
+				
 				for (int q=0;q<event.get(i).getQuantity()-1;q++)
 				{
 					event.get(i).setNextSpawnTime(event.get(i).getNextSpawnTime()+event.get(i).getDelay());

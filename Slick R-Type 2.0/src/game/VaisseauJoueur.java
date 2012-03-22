@@ -6,6 +6,14 @@ package game;
  * @author Etienne Grandier-Vazeille
  *
  */
+/**
+ * @author Into the Wild
+ *
+ */
+/**
+ * @author Into the Wild
+ *
+ */
 public class VaisseauJoueur extends Vaisseau {
 
 	//
@@ -27,8 +35,9 @@ public class VaisseauJoueur extends Vaisseau {
 	//
 	// Constructors
 	//
-	public VaisseauJoueur () { 
-		speed = 10;// Rapidité de tire ? dans un tableau
+	public VaisseauJoueur (int id) { 
+		this.id = id;
+		speed = 10;
 		pdv = 100;
 		w=30;
 		h=30;
@@ -82,6 +91,9 @@ public class VaisseauJoueur extends Vaisseau {
 		this.invicible = invicible;
 	}
 
+	/** 
+	 * @param pdv
+	 */
 	public void setPdv ( int pdv ) {
 		if(!invicible){
 			this.pdv = pdv;
@@ -117,6 +129,9 @@ public class VaisseauJoueur extends Vaisseau {
 	public boolean setBorn(boolean b) {
 		return born = b;
 	}
+	/**
+	 * @return
+	 */
 	public int getDecalageX() {
 		return decalageX;
 	}

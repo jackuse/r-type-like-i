@@ -67,9 +67,11 @@ public class Vue {
 
 	private Image[] background = new Image[5];
 	private Image joueur;
-	private Image[] alien = new Image[2];;
+	private Image[] alien = new Image[2];
 	private Image laser;
 	private Image missile;
+	private Image[] boss = new Image[2];;
+	
 	private int intro=0;
 	//private Image animatedRotatingShip1Frames;
 	
@@ -137,6 +139,9 @@ public class Vue {
 	private Image[] buttons;
 
 	private boolean[] champ;
+	
+	// En milliseconde
+	private int timer;
 
 
 
@@ -418,6 +423,7 @@ public class Vue {
 		missile.setRotation(90.0f);
 		laser = rm.getImage("LASER");
 		laser.setRotation(90.0f);
+		boss[0] = rm.getImage("BOSS_1");
 		nastyProjectile = nastyProjectileSheet.getSprite("nastyProjectile1.gif");
 		//nastyProjectile.setRotation(270.0f);
 
@@ -591,6 +597,8 @@ public class Vue {
 		optionOption.draw(menuX+posTxt[1][0], menuY+posTxt[1][1], optionScale);
 		controlsOption.draw(menuX+posTxt[2][0], menuY+posTxt[2][1], controlsScale);
 		exitOption.draw(menuX+posTxt[3][0], menuY+posTxt[3][1], exitScale);
+		
+		fonts[1].drawString(width*0.84f, 0, "Credit",new Color(1.0f,1.0f,1.0f));
 		return 0;
 
 	}
@@ -620,33 +628,33 @@ public class Vue {
 		return false;
 	}
 
-
-	/**
-	 * @return       int
-	 * @param        g
-	 */
-	public int renderVaisseau( String sh  )
-	{
-		return 0;
-	}
-
-
-	/**
-	 * @return       int
-	 * @param        g
-	 */
-	public int renderTire( Graphics g, ArrayList<Tir> tirs )
-	{
-		if(!tirs.isEmpty()){
-			Iterator<Tir> it = tirs.iterator();
-			while(it.hasNext()){
-				Tir t =((Tir) it.next());
-				//if(t.estVisible())
-				//t.getImage().draw(t.getX()+10,t.getY()+38);
-			}
-		}
-		return 0;
-	}
+//
+//	/**
+//	 * @return       int
+//	 * @param        g
+//	 */
+//	public int renderVaisseau( String sh  )
+//	{
+//		return 0;
+//	}
+//
+//
+//	/**
+//	 * @return       int
+//	 * @param        g
+//	 */
+//	public int renderTire( Graphics g, ArrayList<Tir> tirs )
+//	{
+//		if(!tirs.isEmpty()){
+//			Iterator<Tir> it = tirs.iterator();
+//			while(it.hasNext()){
+//				Tir t =((Tir) it.next());
+//				//if(t.estVisible())
+//				//t.getImage().draw(t.getX()+10,t.getY()+38);
+//			}
+//		}
+//		return 0;
+//	}
 
 
 	/**
@@ -708,59 +716,9 @@ public class Vue {
 	}
 
 	public int renderHUD(Graphics gr, int[] param) {
-
-		//Tableaux de bord 1
-		/*
-		Rectangle board1 = new Rectangle (0, height*0.955f, (width+1), 30);
-		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
-		gr.fill(board1);
-		gr.setColor(org.newdawn.slick.Color.white);
-		if(debug ){
-			gr.drawString("Explosion :"+param[1], 10,height*0.96f);
-			gr.drawString("Alien :"+param[2], 150,height*0.96f);
-			gr.drawString("Missile :"+param[3], width*0.31f,height*0.96f);
-		}
-		gr.drawString("Score:"+param[4], width*0.85f,height*0.96f);
-		gr.drawString("Life:"+param[7], width*0.15f,height*0.96f);
-		gr.drawString("Level :"+param[8]+" Objectif : "+param[9]+"/"+param[10], width*0.15f,height*0.96f);
-
-		gr.drawString("Weapon:", 10,height*0.96f);
-		if(param[6] == 21){
-			laser.draw(width*0.11f,height*0.95f, 1f);
-		}else if(param[6] == 22){
-			missile.draw(width*0.09f,height*0.945f, 0.7f);
-		}
-
-		//Lifebar
-		Rectangle lifeBack = new Rectangle (width*0.50f, height*0.96f, width*0.20f, height*0.04f);
-		gr.setColor(new Color (0,0,0));
-		gr.fill(lifeBack);
-
-		if(param[5]<=10){
-			clignotementVie = true;
-		}
-		else
-			clignotementVie = false;
-
-
-		if(clignotementVie && param[0] == 1){}	
-		else{
-			Rectangle lifebar = new Rectangle (width*0.50f, height*0.96f, (width*0.20f)*(param[5]/100f), height*0.04f);
-
-			if(param[5]>30){
-				gr.setColor(new Color (0,1.0f,0));
-			}
-			else 
-				gr.setColor(new Color (1f,0,0));
-
-
-			gr.fill(lifebar);
-
-		}
-		gr.setColor(new Color (1f,0,1f));
-		gr.drawString(""+param[5], width*0.58f,height*0.965f);
-
-		 */
+		
+		// Pour le timer interne de la vue
+		timer = param[11];
 
 		// HUD
 		if(debug ){
@@ -769,13 +727,14 @@ public class Vue {
 			gr.drawString("Missile :"+param[3], width*0.31f,height*0.96f);
 		}
 
-		//back
+		//black
 		gr.setColor(org.newdawn.slick.Color.black);
 		gr.drawString("P1 - "+param[4], width*0.0125f+1,height*0.04f+1);
 		gr.drawString(param[7]+" x ", width*0.0125f+1,height*0.08f+1);
 		life.draw(width*0.050f+1,height*0.08f+1);
 		gr.drawString("Level 1-"+param[8], width*0.875f+1,height*0.0125f+1);
 		gr.drawString("Timer "+param[11]/1000, width*0.89f+1,height*0.04f+1);
+		
 
 		gr.drawString("Weapon:", width*0.0125f+1,height*0.92f+1);
 		if(param[6] == 21){
@@ -837,8 +796,15 @@ public class Vue {
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 			gr.fill(rect);
 		}
+		System.out.println("type = "+type+"  timer = "+timer);
+		if(type>100 && type<200){
+			alien[type-101].draw(ob.getX(),ob.getY());
+		}
+		else if(type>200 && type<300)
+			boss[type-201].draw(ob.getX(),ob.getY());
 
-		alien[type].draw(ob.getX(),ob.getY());
+			
+		
 		return 0;
 	}
 
@@ -876,7 +842,7 @@ public class Vue {
 		return height;
 	}
 
-	public void renderPause(GameContainer gc, Graphics gr,int pauseX, int pauseY, boolean cheatModOn, String pass) {
+	public void renderPause(GameContainer gc, Graphics gr,int pauseX, int pauseY, boolean cheatModOn, String pass, int posTxt[][]) {
 		//		if (gc.isPaused())
 		//		{
 		Rectangle rect = new Rectangle (0, 0, 801, 601);
@@ -889,11 +855,11 @@ public class Vue {
 			alpha += 0.05f;
 		pauseBg.draw(0, 0);
 		gr.fill(rect);
-		startGameOption.draw(pauseX, pauseY, startGameScale);
-		optionOption.draw(pauseX, pauseY+45, optionScale);
-		controlsOption.draw(pauseX, pauseY+90, optionScale);
-
-		exitOption.draw(pauseX, pauseY+135, exitScale);
+		startGameOption.draw(pauseX+posTxt[0][0], pauseY+posTxt[0][1], startGameScale);
+		optionOption.draw(pauseX+posTxt[1][0], pauseY+posTxt[1][1], optionScale);
+		controlsOption.draw(pauseX+posTxt[2][0], pauseY+posTxt[2][1], optionScale);
+		exitOption.draw(pauseX+posTxt[3][0], pauseY+posTxt[3][1], exitScale);
+		
 		//		}
 		//		else
 		//		{
@@ -1309,6 +1275,10 @@ public class Vue {
 		
 		fonts[1].drawString(50, height-50, "Press Any Key to quit", new Color(1.0f,1.0f,1.0f));
 		
+	}
+
+	public int getTimer() {
+		return timer;
 	}
 
 

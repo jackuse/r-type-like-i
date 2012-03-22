@@ -14,7 +14,7 @@ import states.Menu;
 import states.Option;
 import states.Pause;
 import states.Select;
-import states.SelectionMusic;
+import states.SelectMusic;
 
 public class Main extends StateBasedGame {
  
@@ -22,7 +22,7 @@ public class Main extends StateBasedGame {
     public static final int OPTIONSTATE        = 1;
     //public static final int SELECTIONSTATE     = 2;
     public static final int HIGHSCORESTATE     = 3;
-    public static final int SELECTIONMUSICSTATE = 5;
+    public static final int SELECTMUSICSTATE = 5;
     public static final int GAMESTATE          = 10;
     public static final int PAUSESTATE         = 11;
     public static final int CHARGEMENTSTATE    = 20;
@@ -61,7 +61,7 @@ public class Main extends StateBasedGame {
         this.addState(new Highscore(HIGHSCORESTATE));
         this.addState(new Chargement(CHARGEMENTSTATE));
         this.addState(new GameOver(GAMEOVERSTATE));
-        this.addState(new SelectionMusic(SELECTIONMUSICSTATE));
+        this.addState(new SelectMusic(SELECTMUSICSTATE));
         this.addState(new Select(SELECTSTATE));
         this.addState(new History(HISTORYSTATE));
         this.addState(new Controls(CONTROLSSTATE));
@@ -89,7 +89,7 @@ public class Main extends StateBasedGame {
     public void initStatesList(GameContainer gameContainer) throws SlickException {
     	
     	this.getState(CHARGEMENTSTATE).init(gameContainer, this);
-    	this.getState(SELECTIONMUSICSTATE).init(gameContainer, this);
+    	this.getState(SELECTMUSICSTATE).init(gameContainer, this);
     	this.getState(HIGHSCORESTATE).init(gameContainer, this);
     	this.getState(GAMESTATE).init(gameContainer, this);
         this.getState(MENUSTATE).init(gameContainer, this);

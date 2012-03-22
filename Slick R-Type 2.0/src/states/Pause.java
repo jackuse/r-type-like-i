@@ -33,19 +33,12 @@ public class Pause extends BasicGameState{
 	int pauseY = 230;
 	private boolean cheatModOn = false; 
 	String cheatCodeString[];
-	//private ArrayList<Chara> pass;
 	private String pass = "";
 	int nbPassword = 3;
 	private int delayClick = 150;
 	float scaleStep = 0.0002f;
 	private int posTxt[][];
 
-	/* Ajouter un curseur pour de déplacer au clavier
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 
 
 	public Pause(int stateID) {
@@ -67,28 +60,28 @@ public class Pause extends BasicGameState{
 		cheatCodeString[1]= "allyourbasearebelongtous";
 		cheatCodeString[2]= "dnsduff";
 		
-		posTxt = new int[4][2];
-		posTxt[0][0] = 180;
+		posTxt = new int[4][2];// position du text en x et y
+		posTxt[0][0] = 0;
 		posTxt[0][1] = 0;
 		posTxt[1][0] = 0;
-		posTxt[1][1] = 70;
-		posTxt[2][0] = 210;
-		posTxt[2][1] = 73;
-		posTxt[3][0] = 500;
-		posTxt[3][1] = 70;
+		posTxt[1][1] = 45;
+		posTxt[2][0] = 0;
+		posTxt[2][1] = 90;
+		posTxt[3][0] = 0;
+		posTxt[3][1] = 130;
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		
-		vue.renderPause(gc,gr,pauseX,pauseY,cheatModOn,pass);
+		vue.renderPause(gc,gr,pauseX,pauseY,cheatModOn,pass,posTxt);
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		//System.out.println("pause delta"+ delta);
+
 		if(Main.previousState != Main.PAUSESTATE)
 			Main.previousState = Main.PAUSESTATE;
 
@@ -102,7 +95,7 @@ public class Pause extends BasicGameState{
 			sbg.enterState(Main.GAMESTATE);
 		}
 
-		if(vue.isValiderMusic()){
+		if(vue.isValiderMusic()){ // Si il n'y a pas de musique on la lance
 			if(!vue.isMusic()){
 				vue.setMusic(0);
 				vue.nextMusic();
@@ -183,37 +176,34 @@ public class Pause extends BasicGameState{
 		boolean insideControls = false;
 
 
-		if( ( mouseX >= pauseX && mouseX <= pauseX + vue.getStartGameOption().getWidth()*0.7) &&
-				( mouseY >= pauseY && mouseY <= pauseY + vue.getStartGameOption().getHeight()*0.7) ){
+		if( ( mouseX >= pauseX+posTxt[0][0] && mouseX <= pauseX+posTxt[0][0] + vue.getStartGameOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+posTxt[0][1] && mouseY <= pauseY+posTxt[0][1] + vue.getStartGameOption().getHeight()*0.7) ){
 			insideStartGame = true;
-		}else if( ( mouseX >= pauseX && mouseX <= pauseX + vue.getOptionOption().getWidth()*0.7) &&
-				( mouseY >= pauseY+45 && mouseY <= pauseY+45 + vue.getOptionOption().getHeight()*0.7) ){
+		}else if( ( mouseX >= pauseX+posTxt[1][0] && mouseX <= pauseX+posTxt[1][0] + vue.getOptionOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+posTxt[1][1] && mouseY <= pauseY+posTxt[1][1] + vue.getOptionOption().getHeight()*0.7) ){
 			insideOption = true;
-		}else if( ( mouseX >= pauseX&& mouseX <= pauseX + vue.getControlsOption().getWidth()*0.7) &&
-				( mouseY >= pauseY+90 && mouseY <= pauseY+90 + vue.getControlsOption().getHeight()*0.7) ){
+		}else if( ( mouseX >= pauseX+posTxt[2][0] && mouseX <= pauseX+posTxt[2][0] + vue.getControlsOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+posTxt[2][1] && mouseY <= pauseY+posTxt[2][1] + vue.getControlsOption().getHeight()*0.7) ){
 			insideControls = true;
-		}else if( ( mouseX >= pauseX&& mouseX <= pauseX + vue.getExitOption().getWidth()*0.7) &&
-				( mouseY >= pauseY+130 && mouseY <= pauseY+130 + vue.getExitOption().getHeight()*0.7) ){
+		}else if( ( mouseX >= pauseX+posTxt[3][0] && mouseX <= pauseX+posTxt[3][0] + vue.getExitOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+posTxt[3][1] && mouseY <= pauseY+posTxt[3][1] + vue.getExitOption().getHeight()*0.7) ){
 			insideExit = true;
 		}
 
-		if(insideStartGame){
+		if(insideStartGame){ // Retour au jeu
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 				sbg.enterState(Main.GAMESTATE);
 				gc.setPaused(!gc.isPaused());
-				//vue.setMusic(3);
 			}
 		}
 
 		if(insideOption){
+			// Le delay Click permet de corriger l'appuis prolonger sur le boutton de la souris
 			delayClick-= 20;
 			if (delayClick<0){
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-					//vue.setMusic(0);
 					vue.setOptionScale(0.7f);
-
 					sbg.enterState(Main.OPTIONSTATE);
-					//vue.setMusic(3);
 				}
 				delayClick = 150;
 			}
@@ -236,11 +226,9 @@ public class Pause extends BasicGameState{
 		{
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				//restCheat(); //  BUG !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! mettre cheat dans joueur ?
 				vue.setMusic(0);
 				vue.setExitScale(0.7f);
 				vue.selectMusic(0);
-				//Joueur.getInstance(1).rest();
 				sbg.enterState(Main.MENUSTATE);
 			}
 		}
@@ -248,11 +236,6 @@ public class Pause extends BasicGameState{
 
 	}
 	
-	public void restCheat(){
-		for(int i=0;i<4;i++){
-			Game.cheat[i]=false;
-		}
-	}
 
 	@Override
 	public int getID() {

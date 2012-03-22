@@ -7,6 +7,20 @@ import java.util.*;
  * Class Objet
  * 
  */
+
+/* Table de référence des IDs:
+ * 0    : id de base
+ * 1-10 : vaisseaux joueur
+ * 
+ * 101  : alien 1
+ * 
+ * 201  : boss 1
+ * 
+ * 300   : arme
+ * 301   : laser
+ * 302   : missile
+ * 
+ */
 public class Objet {
 
   //

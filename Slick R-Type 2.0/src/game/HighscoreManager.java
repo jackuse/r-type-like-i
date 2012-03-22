@@ -96,7 +96,7 @@ public class HighscoreManager {
 		}
 		else{
 			if(scores.size()>0){
-				System.out.println("hm score j1 : "+score+"max score : "+scores.get(scores.size()-1).getScore() );
+				//System.out.println("hm score j1 : "+score+"max score : "+scores.get(scores.size()-1).getScore() );
 				if(score > scores.get(scores.size()-1).getScore()){
 					return true;
 				}
@@ -217,7 +217,7 @@ public class HighscoreManager {
 		if (x > max) {
 			x = max;
 		}
-
+		//System.out.println("size "+x);
 		String highscoreString[] = new String[x];
 		for (String s : highscoreString) {
 			s = "";
@@ -229,11 +229,14 @@ public class HighscoreManager {
 		
 		while (i < x && i !=9) {
 			highscoreString[i] = " "+(i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName().length(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
+			//System.out.println("add "+i);
 			i++;
 		}
-		if(i == 9)
+		System.out.println("size i "+i);
+		if(i == 9){
+			//System.out.println("add i "+i);
 		highscoreString[i] = (i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName().length(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
-		
+		}
 		return highscoreString;
 	}
 	

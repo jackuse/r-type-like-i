@@ -24,7 +24,7 @@ import org.newdawn.slick.state.transition.SelectTransition;
  * Idée amélioration : faire des pages de musique quand il y en a trop à afficher 
  *
  */
-public class SelectionMusic extends BasicGameState{
+public class SelectMusic extends BasicGameState{
 	int stateID = -1;
 	private Vue vue = Vue.getInstance();
 
@@ -40,7 +40,7 @@ public class SelectionMusic extends BasicGameState{
 
 
 
-	public SelectionMusic(int stateID) {
+	public SelectMusic(int stateID) {
 		this.stateID = stateID;
 	}
 

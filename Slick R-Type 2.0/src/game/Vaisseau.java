@@ -21,7 +21,7 @@ public class Vaisseau extends Objet {
   
   public Vaisseau (float x, float y,float w, float h) { 
 	  super(x,y,w,h);
-	  id = 1;
+	  id = 0;
   };
   
   //
