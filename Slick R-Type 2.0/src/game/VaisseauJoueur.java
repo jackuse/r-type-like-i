@@ -60,36 +60,39 @@ public class VaisseauJoueur extends Vaisseau {
 	}
 
 	/**
-	 * Get the value of armeSelect
-	 * @return the value of armeSelect
+	 * Retourne l'identifiant de l'arme selectionné
+	 * @return armeSelect
 	 */
 	public int getArme ( ) {
 		return armeSelect;
 	}
 
 
+	/**
+	 * @return
+	 */
 	public boolean isInvicible() {
 		return invicible;
 	}
 
+	/**
+	 * @param invicible
+	 */
 	public void setInvicible(boolean invicible) {
 		this.invicible = invicible;
-		//System.out.println("invincible " + invicible);
 	}
 
 	public void setPdv ( int pdv ) {
 		if(!invicible){
 			this.pdv = pdv;
-			//System.out.println("aie "+pdv);
 		}
-		//System.out.println("invincible " + invicible);
 	}
 
 	/**
-	 * Permeet de selectionner l'arme suivante si next=true
+	 * Permet de selectionner l'arme suivante si next=true
 	 * sinon on selectionne l'arme précédente
 	 * 
-	 * @param next
+	 * @param next - l'id de la nouvelle arme
 	 */
 	public void setNArme(boolean next) {
 		if(next){
@@ -104,6 +107,30 @@ public class VaisseauJoueur extends Vaisseau {
 				armeSelect = 22;
 		}
 
+	}
+	
+
+	public boolean isBorn() {
+		return born;
+	}
+	
+	public boolean setBorn(boolean b) {
+		return born = b;
+	}
+	public int getDecalageX() {
+		return decalageX;
+	}
+
+	public void setDecalageX(int decalageX) {
+		this.decalageX = decalageX;
+	}
+
+	public int getDecalageY() {
+		return decalageY;
+	}
+
+	public void setDecalageY(int decalageY) {
+		this.decalageY = decalageY;
 	}
 
 
@@ -128,32 +155,4 @@ public class VaisseauJoueur extends Vaisseau {
 
 
 
-	public boolean isBorn() {
-		return born;
-	}
-	
-	public boolean setBorn(boolean b) {
-		return born = b;
-	}
-	public int getDecalageX() {
-		return decalageX;
-	}
-
-
-
-	public void setDecalageX(int decalageX) {
-		this.decalageX = decalageX;
-	}
-
-
-
-	public int getDecalageY() {
-		return decalageY;
-	}
-
-
-
-	public void setDecalageY(int decalageY) {
-		this.decalageY = decalageY;
-	}
 }

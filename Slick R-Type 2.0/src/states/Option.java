@@ -49,6 +49,8 @@ public class Option extends BasicGameState{
 		vue.resetInOption();
 		for(int i=0;i<maxItem;i++)
 			inside[i]=false;
+		
+		System.out.println("je suis entre");
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class Option extends BasicGameState{
 		inside = new boolean[maxItem];
 		for(int i=0;i<maxItem;i++)
 			inside[i]=false;
-
+		
 	}
 
 	@Override
@@ -87,7 +89,7 @@ public class Option extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		//System.out.println("etat "+sbg.getCurrentStateID()+" et "+Main.etatprecedent);
+		System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.previousState);
 
 		Input input = gc.getInput(); // On récupére les input
 
@@ -308,7 +310,8 @@ public class Option extends BasicGameState{
 					Main.previousState = sbg.getCurrentStateID();
 				}
 				else if(Main.previousState == Main.MENUSTATE){
-					sbg.enterState(Main.MENUSTATE,t[0],t[1]);
+					//sbg.enterState(Main.MENUSTATE,t[0],t[1]);// Bug de transition si on quit dans le jeu
+					sbg.enterState(Main.MENUSTATE);// Bug de transition si on quit dans le jeu
 					Main.previousState = sbg.getCurrentStateID();
 				}
 			}

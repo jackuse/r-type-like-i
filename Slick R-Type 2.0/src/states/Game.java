@@ -235,7 +235,7 @@ public class Game extends BasicGameState{
 		}
 		if(input.isKeyDown(Input.KEY_Q))
 		{
-			System.out.println("1: "+joueur[0].getV().getX()+"  2: "+((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
+			//System.out.println("1: "+joueur[0].getV().getX()+"  2: "+((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
 			joueur[0].getV().setX(joueur[0].getV().getX()-joueur[0].getV().getSpeed());
 			if(joueur[0].getV().getX()<((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2))
 				joueur[0].getV().setX(((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
@@ -243,7 +243,7 @@ public class Game extends BasicGameState{
 		}
 		if(input.isKeyDown(Input.KEY_D))
 		{
-			System.out.println("1: "+joueur[0].getV().getX()+"  2: "+((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
+			//System.out.println("1: "+joueur[0].getV().getX()+"  2: "+((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
 			joueur[0].getV().setX(joueur[0].getV().getX()+joueur[0].getV().getSpeed());
 			if(joueur[0].getV().getX()+joueur[0].getV().getW()>(vue.getWidth()-((vue.getIJoueur().getWidth()+joueur[0].getV().getW())/2)))
 				joueur[0].getV().setX((vue.getWidth()-((vue.getIJoueur().getWidth()+joueur[0].getV().getW())/2)));

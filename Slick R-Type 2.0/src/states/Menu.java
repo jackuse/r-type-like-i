@@ -41,6 +41,7 @@ public class Menu extends BasicGameState{
 	private int kB = 0;
 	private int maxItemMenu = 4;
 	private int posTxt[][];
+	int val = 0;
 	
 
 
@@ -63,6 +64,8 @@ public class Menu extends BasicGameState{
 			e.printStackTrace();
 		}
 		gc.getInput().clearKeyPressedRecord();
+		gc.getInput().clearMousePressedRecord();
+		
 
 		//		System.out.println("debut initall");
 		//		try { Thread.sleep(2000); } catch (Exception e) {}
@@ -88,7 +91,9 @@ public class Menu extends BasicGameState{
 			}
 		}
 		vue.selectMusic(0);
-
+		
+		for(int i=0;i<maxItemMenu;i++)
+			inside[i]=false;
 
 	}
 
@@ -136,7 +141,8 @@ public class Menu extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		//System.out.println("pause delta "+ delta);
-		//System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.etatprecedent);
+		System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.previousState);
+		System.out.println("debut val = "+val);
 		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
 		//		if(Main.etatprecedent == -1){
 		//			vue.selectMusic(0);
@@ -285,7 +291,9 @@ public class Menu extends BasicGameState{
 					//vue.setMusic(0);
 					vue.setOptionScale(0.7f);
 					Main.previousState = Main.MENUSTATE;
-					sbg.enterState(Main.OPTIONSTATE,to[0],to[1]);
+					//sbg.enterState(Main.OPTIONSTATE,to[0],to[1]); // Bug de transition si on quit dans le jeu
+					sbg.enterState(Main.OPTIONSTATE);
+					val++;
 					//					resetMenu();
 				}
 			}else{
@@ -356,7 +364,7 @@ public class Menu extends BasicGameState{
 		}
 
 
-	
+		System.out.println("fin val = "+val);
 	}
 
 			public void resetMenu(){

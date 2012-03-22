@@ -5,6 +5,7 @@ import game.Chara;
 import java.util.ArrayList;
 
 import game.IOManager;
+import game.Joueur;
 import game.Main;
 import game.Objet;
 import game.Vue;
@@ -37,6 +38,7 @@ public class Pause extends BasicGameState{
 	int nbPassword = 3;
 	private int delayClick = 150;
 	float scaleStep = 0.0002f;
+	private int posTxt[][];
 
 	/* Ajouter un curseur pour de déplacer au clavier
 	 * 
@@ -61,8 +63,19 @@ public class Pause extends BasicGameState{
 		
 		vue.initPause();
 		cheatCodeString = new String[nbPassword];
+		cheatCodeString[0]= "dnkrow";
+		cheatCodeString[1]= "allyourbasearebelongtous";
+		cheatCodeString[2]= "dnsduff";
 		
-
+		posTxt = new int[4][2];
+		posTxt[0][0] = 180;
+		posTxt[0][1] = 0;
+		posTxt[1][0] = 0;
+		posTxt[1][1] = 70;
+		posTxt[2][0] = 210;
+		posTxt[2][1] = 73;
+		posTxt[3][0] = 500;
+		posTxt[3][1] = 70;
 	}
 
 	@Override
@@ -101,9 +114,7 @@ public class Pause extends BasicGameState{
 		if (input.isKeyPressed(42)){
 			if(!cheatModOn){
 				cheatModOn = true;
-				//pass.clear();
 				pass = "";
-				//System.out.println("mot de passe a l'écoute");
 			}
 			else
 				cheatModOn = false;
@@ -111,27 +122,9 @@ public class Pause extends BasicGameState{
 		}
 
 		if(cheatModOn){
-//			if (input.isKeyPressed(input.KEY_BACK)){
-//				if(pass.length()>0)
-////					pass.remove(pass.length()-1);	
-//					pass
-//			}
-//			char c = io.getChar(input);
-//			if(c != '\0' && pass.length() < 42){
-////				Chara ch = new Chara(c);
-////				pass.add(ch);
-//				pass+=c;
-//			}
 			pass = io.getKeyString(input, pass,42);
 
 			if (input.isKeyPressed(input.KEY_ENTER)){
-
-				
-
-				cheatCodeString[0]= "dnkrow";
-				cheatCodeString[1]= "allyourbasearebelongtous";
-				cheatCodeString[2]= "dnsduff";
-				
 				for(int i=0;i<nbPassword;i++){
 					if(pass.contentEquals(cheatCodeString[i]) ){
 						if(Game.cheat[i]){
@@ -176,49 +169,7 @@ public class Pause extends BasicGameState{
 						pass = "";	
 					}
 				}
-				
-
-				
-//				char[][] charArr= new char[nbPassword][42];
-//				for(int i=0;i<nbPassword;i++){
-//					char[] ca = cheatCodeString[i].toCharArray();
-//					for(int j=0;j<cheatCodeString[i].length();j++)
-//						charArr[i][j] = ca[j];
-//				}	
-//				int mdp[] = new int[nbPassword];
-//				for(int i=0;i<nbPassword;i++){
-//					mdp[i] = 0;
-//				}
-//				for(int i=0;i<pass.length();i++){
-//					if(pass.charAt(i) == charArr[0][i])
-//						mdp[0]+=1;
-//				}
-//				for(int i=0;i<nbPassword;i++){
-//					if(mdp[i] == cheatCodeString[i].length()){
-//						if(!Game.cheat[i])
-//							Game.cheat[i] = true;
-//						else
-//							Game.cheat[i] = false;
-//						//System.out.println("Password accepted");
-//						if(i==0){
-//							if(Game.cheat[i]){
-//								vue.setMessage("GodMod : ON",1000);
-//								vue.nextMusic();
-//							}
-//							else{
-//								vue.setMessage("GodMod : OFF",1000);
-//								vue.nextMusic();
-//							}
-//						}
-//						pass = "";
-//					}
-//				}
-
-				System.out.println("valider");
-
 			}
-
-
 		}
 
 		///////////////////////////////////////// END CHEAT CODE  //////////////////////////////////////////////////////////////
@@ -235,19 +186,15 @@ public class Pause extends BasicGameState{
 		if( ( mouseX >= pauseX && mouseX <= pauseX + vue.getStartGameOption().getWidth()*0.7) &&
 				( mouseY >= pauseY && mouseY <= pauseY + vue.getStartGameOption().getHeight()*0.7) ){
 			insideStartGame = true;
-			//System.out.println("on StartGame");
 		}else if( ( mouseX >= pauseX && mouseX <= pauseX + vue.getOptionOption().getWidth()*0.7) &&
 				( mouseY >= pauseY+45 && mouseY <= pauseY+45 + vue.getOptionOption().getHeight()*0.7) ){
 			insideOption = true;
-			//System.out.println("on option");
 		}else if( ( mouseX >= pauseX&& mouseX <= pauseX + vue.getControlsOption().getWidth()*0.7) &&
 				( mouseY >= pauseY+90 && mouseY <= pauseY+90 + vue.getControlsOption().getHeight()*0.7) ){
 			insideControls = true;
-			//System.out.println("on Exit");
 		}else if( ( mouseX >= pauseX&& mouseX <= pauseX + vue.getExitOption().getWidth()*0.7) &&
 				( mouseY >= pauseY+130 && mouseY <= pauseY+130 + vue.getExitOption().getHeight()*0.7) ){
 			insideExit = true;
-			//System.out.println("on Exit");
 		}
 
 		if(insideStartGame){
@@ -284,18 +231,6 @@ public class Pause extends BasicGameState{
 			if(vue.getControlsScale() > 0.7f)
 				vue.setControlsScale(vue.getControlsScale()-scaleStep * 20);
 		}
-//			delayClick-= 20;
-//			if (delayClick<0){
-//				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-//					//vue.setMusic(0);
-//					vue.setControlsScale(0.7f);
-//
-//					sbg.enterState(Main.CONTROLSSTATE);
-//					//vue.setMusic(3);
-//				}
-//				delayClick = 150;
-//			}
-//		}
 
 		if(insideExit)
 		{
@@ -305,6 +240,7 @@ public class Pause extends BasicGameState{
 				vue.setMusic(0);
 				vue.setExitScale(0.7f);
 				vue.selectMusic(0);
+				//Joueur.getInstance(1).rest();
 				sbg.enterState(Main.MENUSTATE);
 			}
 		}
@@ -312,7 +248,6 @@ public class Pause extends BasicGameState{
 
 	}
 	
-	// pas trés propre
 	public void restCheat(){
 		for(int i=0;i<4;i++){
 			Game.cheat[i]=false;
