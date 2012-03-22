@@ -23,17 +23,17 @@ public class Bonus extends Objet {
 			  type = 2;
 	  }
 
-	public void doEffect(Joueur joueur) {
+	public void doEffect(Player joueur) {
 		switch (type) {
 		case 1:
 			joueur.setLife(joueur.getLife()+1);
 			break;
 		case 2:
-			int life = joueur.getV().getPdv()+30;
+			int life = joueur.getShip().getPdv()+30;
 			if(life >= 100)
-				joueur.getV().setPdv(100);
+				joueur.getShip().setPdv(100);
 			else
-				joueur.getV().setPdv(life);
+				joueur.getShip().setPdv(life);
 			break;
 		case 3:
 			

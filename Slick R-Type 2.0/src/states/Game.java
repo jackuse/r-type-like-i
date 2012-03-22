@@ -5,7 +5,7 @@ import game.Boss;
 import game.EnergyBall;
 import game.EventList;
 import game.Explosion;
-import game.Joueur;
+import game.Player;
 import game.Laser;
 import game.Level;
 import game.Main;
@@ -13,7 +13,7 @@ import game.Missile;
 import game.Objet;
 import game.ResourceManager;
 import game.TimedEvent;
-import game.Tir;
+import game.Shot;
 import game.Vue;
 import game.Bonus;
 
@@ -51,7 +51,7 @@ public class Game extends BasicGameState{
 	private ArrayList<Boss> boss;
 	private int param[];
 	public static boolean[] cheat;
-	private Joueur joueur[];
+	private Player player[];
 	private float bgSpeed = 1;
 	private float posXBg1 = 0;
 	private float posXBg2 = 3000;
@@ -105,8 +105,8 @@ public class Game extends BasicGameState{
 		bonus = new ArrayList<Bonus>();		
 
 
-		joueur = new Joueur[1];
-		joueur[0] = Joueur.getInstance(1);
+		player = new Player[1];
+		player[0] = Player.getInstance(1);
 		cheat = new boolean[4];
 		for(int i=0;i<4;i++)
 			cheat[i] = false;
@@ -118,7 +118,7 @@ public class Game extends BasicGameState{
 
 		lvl = new Level(1);
 		initLevel();
-		joueur[0].setLevel(levelId);
+		player[0].setLevel(levelId);
 	}
 
 	@Override
@@ -130,12 +130,12 @@ public class Game extends BasicGameState{
 		param[1] = explo.size();
 		param[2] = enemy.size();
 		param[3] = playerProjectile.size();
-		param[4] = joueur[0].getScore();
-		param[5] = joueur[0].getV().getPdv();
-		param[6] = joueur[0].getV().getArme();
-		param[7] = joueur[0].getLife();
+		param[4] = player[0].getScore();
+		param[5] = player[0].getShip().getPdv();
+		param[6] = player[0].getShip().getArme();
+		param[7] = player[0].getLife();
 		param[8] = lvl.getLvl();
-		param[9] = joueur[0].getKill();
+		param[9] = player[0].getKill();
 		param[10] = lvl.getKill();
 		param[11] = timer;
 
@@ -163,7 +163,7 @@ public class Game extends BasicGameState{
 		}
 
 		
-		vue.renderJoueur(gr,joueur[0].getV(),param[0]);
+		vue.renderPlayer(gr,player[0].getShip(),param[0]);
 		vue.renderExplosion(gr, explo);
 		vue.renderHUD(gr,param);
 		//vue.renderTest(g);
@@ -177,10 +177,10 @@ public class Game extends BasicGameState{
 		timer+=delta;
 		//System.out.println("delta "+delta+" timer "+timer );
 		//BEGIN CHEAT CODE
-		if(cheat[0] ||joueur[0].getV().isBorn())
-			joueur[0].getV().setInvicible(true);
+		if(cheat[0] ||player[0].getShip().isBorn())
+			player[0].getShip().setInvicible(true);
 		else
-			joueur[0].getV().setInvicible(false);
+			player[0].getShip().setInvicible(false);
 
 		//END CHEAT CODE
 
@@ -233,40 +233,40 @@ public class Game extends BasicGameState{
 		////////////////////////////////////////LES COMMANDES /////////////////////////////////////////
 		Input input = gc.getInput(); // On récupére les input
 
-		//System.out.println("1: "+vue.getIJoueur().getHeight()+"  1: "+vue.getIJoueur().getWidth());
+		//System.out.println("1: "+vue.getIplayer().getHeight()+"  1: "+vue.getIplayer().getWidth());
 		// Les commandes de déplacements
 		if(input.isKeyDown(Input.KEY_Z))
 		{		
 			if(speedUp)
-				joueur[0].getV().setY(joueur[0].getV().getY()-joueur[0].getV().getSpeed()*2);
+				player[0].getShip().setY(player[0].getShip().getY()-player[0].getShip().getSpeed()*2);
 			else
-				joueur[0].getV().setY(joueur[0].getV().getY()-joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getY()<((vue.getIJoueur().getHeight()-joueur[0].getV().getH())/2))
-				joueur[0].getV().setY(((vue.getIJoueur().getHeight()-joueur[0].getV().getH())/2));
+				player[0].getShip().setY(player[0].getShip().getY()-player[0].getShip().getSpeed());
+			if(player[0].getShip().getY()<((vue.getIPlayer().getHeight()-player[0].getShip().getH())/2))
+				player[0].getShip().setY(((vue.getIPlayer().getHeight()-player[0].getShip().getH())/2));
 		}
 		if(input.isKeyDown(Input.KEY_S))
 		{
 			if(speedUp)
-				joueur[0].getV().setY(joueur[0].getV().getY()+joueur[0].getV().getSpeed()*2);
+				player[0].getShip().setY(player[0].getShip().getY()+player[0].getShip().getSpeed()*2);
 			else
-				joueur[0].getV().setY(joueur[0].getV().getY()+joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getY()+joueur[0].getV().getH()>(vue.getHeight()-((vue.getIJoueur().getHeight()+joueur[0].getV().getH())/2)))
-				joueur[0].getV().setY(vue.getHeight()-((vue.getIJoueur().getHeight()+joueur[0].getV().getH())/2));
+				player[0].getShip().setY(player[0].getShip().getY()+player[0].getShip().getSpeed());
+			if(player[0].getShip().getY()+player[0].getShip().getH()>(vue.getHeight()-((vue.getIPlayer().getHeight()+player[0].getShip().getH())/2)))
+				player[0].getShip().setY(vue.getHeight()-((vue.getIPlayer().getHeight()+player[0].getShip().getH())/2));
 		}
 		if(input.isKeyDown(Input.KEY_Q))
 		{
-			//System.out.println("1: "+joueur[0].getV().getX()+"  2: "+((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
-			joueur[0].getV().setX(joueur[0].getV().getX()-joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getX()<((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2))
-				joueur[0].getV().setX(((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
+			//System.out.println("1: "+player[0].getShip().getX()+"  2: "+((vue.getIplayer().getWidth()-player[0].getShip().getW())/2));
+			player[0].getShip().setX(player[0].getShip().getX()-player[0].getShip().getSpeed());
+			if(player[0].getShip().getX()<((vue.getIPlayer().getWidth()-player[0].getShip().getW())/2))
+				player[0].getShip().setX(((vue.getIPlayer().getWidth()-player[0].getShip().getW())/2));
 
 		}
 		if(input.isKeyDown(Input.KEY_D))
 		{
-			//System.out.println("1: "+joueur[0].getV().getX()+"  2: "+((vue.getIJoueur().getWidth()-joueur[0].getV().getW())/2));
-			joueur[0].getV().setX(joueur[0].getV().getX()+joueur[0].getV().getSpeed());
-			if(joueur[0].getV().getX()+joueur[0].getV().getW()>(vue.getWidth()-((vue.getIJoueur().getWidth()+joueur[0].getV().getW())/2)))
-				joueur[0].getV().setX((vue.getWidth()-((vue.getIJoueur().getWidth()+joueur[0].getV().getW())/2)));
+			//System.out.println("1: "+player[0].getShip().getX()+"  2: "+((vue.getIplayer().getWidth()-player[0].getShip().getW())/2));
+			player[0].getShip().setX(player[0].getShip().getX()+player[0].getShip().getSpeed());
+			if(player[0].getShip().getX()+player[0].getShip().getW()>(vue.getWidth()-((vue.getIPlayer().getWidth()+player[0].getShip().getW())/2)))
+				player[0].getShip().setX((vue.getWidth()-((vue.getIPlayer().getWidth()+player[0].getShip().getW())/2)));
 		}
 
 		//Commande laser
@@ -293,7 +293,7 @@ public class Game extends BasicGameState{
 		{
 			delayChangeW -=20;//a modifier
 			if(delayChangeW < 0){
-				joueur[0].getV().setNArme(true);
+				player[0].getShip().setNArme(true);
 				delayChangeW = 150;
 			}
 		}
@@ -303,7 +303,7 @@ public class Game extends BasicGameState{
 		{
 			delayChangeW-=20;//a modifier
 			if(delayChangeW < 0){
-				joueur[0].getV().setNArme(false);
+				player[0].getShip().setNArme(false);
 				delayChangeW = 150;
 			}
 		}
@@ -315,8 +315,8 @@ public class Game extends BasicGameState{
 		{
 			delaiTire-=delay;//a modifier
 			if(delaiTire < 0){
-				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
-				//System.out.println(joueur[0].getV().getPdv());
+				player[0].getShip().setPdv(player[0].getShip().getPdv()-10);
+				//System.out.println(player[0].getShip().getPdv());
 				delaiTire = 100;
 			}
 		}
@@ -325,8 +325,8 @@ public class Game extends BasicGameState{
 		{
 			delaiTire-=delay;//a modifier
 			if(delaiTire < 0){
-				joueur[0].getV().setPdv(joueur[0].getV().getPdv()+10);
-				//System.out.println(joueur[0].getV().getPdv());
+				player[0].getShip().setPdv(player[0].getShip().getPdv()+10);
+				//System.out.println(player[0].getShip().getPdv());
 				delaiTire = 100;
 			}
 		}
@@ -358,12 +358,12 @@ public class Game extends BasicGameState{
 		// Commande du tire
 		if(input.isKeyDown(Input.KEY_SPACE))
 		{
-			switch (joueur[0].getV().getArme()) {
+			switch (player[0].getShip().getArme()) {
 			case 21:
 				delaiTire-=40;//a modifier
 				if(delaiTire < 0){
 
-					playerProjectile.add(new Laser(joueur[0].getV().getX()+joueur[0].getV().getW()/2,joueur[0].getV().getY()+joueur[0].getV().getH()/2));
+					playerProjectile.add(new Laser(player[0].getShip().getX()+player[0].getShip().getW()/2,player[0].getShip().getY()+player[0].getShip().getH()/2));
 
 					delaiTire = 100;
 				}
@@ -372,7 +372,7 @@ public class Game extends BasicGameState{
 				delaiTire-=10;
 				if(delaiTire < 0){
 
-					playerProjectile.add(new Missile(joueur[0].getV().getX()+joueur[0].getV().getW()/2,joueur[0].getV().getY()+joueur[0].getV().getH()/2-12));
+					playerProjectile.add(new Missile(player[0].getShip().getX()+player[0].getShip().getW()/2,player[0].getShip().getY()+player[0].getShip().getH()/2-12));
 
 					delaiTire = 100;
 					break;
@@ -430,7 +430,7 @@ public class Game extends BasicGameState{
 		while (itMovProj.hasNext()){
 			// Iterator<Objet> itMovEnemy = enemy.iterator();
 			Objet ob=((Objet) itMovProj.next());
-			Tir t = (Tir) ob;
+			Shot t = (Shot) ob;
 			t.go();
 			if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
 				t.setVisible(false);
@@ -448,8 +448,8 @@ public class Game extends BasicGameState{
 				if (col){
 					explo.add(new Explosion(ob2.getX(), ob2.getY()));
 					enemy.remove(i);
-					joueur[0].setScore(joueur[0].getScore()+1);
-					joueur[0].incKill();
+					player[0].setScore(player[0].getScore()+1);
+					player[0].incKill();
 					if(t.estVisible()){
 						itMovProj.remove();
 					}
@@ -462,17 +462,17 @@ public class Game extends BasicGameState{
 		while (itMovNastyProj.hasNext()){
 			// Iterator<Objet> itMovEnemy = enemy.iterator();
 			Objet nastyOb=((Objet) itMovNastyProj.next());
-			Tir nastyT = (Tir) nastyOb;
+			Shot nastyT = (Shot) nastyOb;
 			nastyT.nastyGo();
 			if(nastyT.getX()<-20) // Il il depasse de l'écran on dit qu'il sont invisible
 				nastyT.setVisible(false);
 			if(!nastyT.estVisible())
 				itMovNastyProj.remove();
 
-			boolean col=nastyT.collision((Objet)joueur[0].getV());
+			boolean col=nastyT.collision((Objet)player[0].getShip());
 			if (col){
-				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-5);
-				explo.add(new Explosion(joueur[0].getV().getX(), joueur[0].getV().getY()));
+				player[0].getShip().setPdv(player[0].getShip().getPdv()-5);
+				explo.add(new Explosion(player[0].getShip().getX(), player[0].getShip().getY()));
 				nastyT.setVisible(false);
 				break;
 			}
@@ -484,12 +484,12 @@ public class Game extends BasicGameState{
 			enemy.get(i).move();
 
 			Objet ob2=((Objet) enemy.get(i));
-			boolean col=((Objet)joueur[0].getV()).collision(ob2);
+			boolean col=((Objet)player[0].getShip()).collision(ob2);
 			if (col){
-				joueur[0].getV().setPdv(joueur[0].getV().getPdv()-10);
+				player[0].getShip().setPdv(player[0].getShip().getPdv()-10);
 				explo.add(new Explosion(ob2.getX(), ob2.getY()));
 				enemy.remove(i);
-				joueur[0].incKill();
+				player[0].incKill();
 				break;
 			}
 			//shotRandomizer=(int) (rand.nextFloat()*(500-0));
@@ -507,30 +507,30 @@ public class Game extends BasicGameState{
 		for (int i=0;i<bonus.size();i++)
 		{
 			Objet ob2=((Objet) bonus.get(i));
-			boolean col=((Objet)joueur[0].getV()).collision(ob2);
+			boolean col=((Objet)player[0].getShip()).collision(ob2);
 			if (col){
-				bonus.get(i).doEffect(joueur[0]);
+				bonus.get(i).doEffect(player[0]);
 				bonus.remove(i);
 				break;
 			}
 		}
 
 
-		if(joueur[0].getV().getPdv()<=0){
-			joueur[0].setLife(joueur[0].getLife()-1);
+		if(player[0].getShip().getPdv()<=0){
+			player[0].setLife(player[0].getLife()-1);
 			boolean fin =lvl.next(); // c'est la fin on applaudi
-			joueur[0].restKill();
-			if(joueur[0].getLife() < 1){
+			player[0].restKill();
+			if(player[0].getLife() < 1){
 				vue.setPauseBg(gc.getGraphics());
 				vue.setMusic(0);
 				for(int i=0;i<4;i++)
 					cheat[i]=false;
 				//GameOversetParam(int i, int p)
-				joueur[0].setTime(timer/1000);
+				player[0].setTime(timer/1000);
 				sbg.enterState(Main.GAMEOVERSTATE);
 			}
 			else{
-				joueur[0].getV().rest();
+				player[0].getShip().rest();
 			}
 		}
 
@@ -606,11 +606,11 @@ public class Game extends BasicGameState{
 	}
 
 	public void reset(){
-		//		joueur[0].getV().rest();
-		//		joueur[0].setLife(3);
-		//		joueur[0].getV().setInvicible(true);
-		//		joueur[0].restTotalKill();
-		//joueur[0].rest();
+		//		player[0].getShip().rest();
+		//		player[0].setLife(3);
+		//		player[0].getShip().setInvicible(true);
+		//		player[0].restTotalKill();
+		//player[0].rest();
 		enemy.clear();
 		playerProjectile.clear();
 		explo.clear();

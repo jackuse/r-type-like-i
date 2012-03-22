@@ -66,7 +66,7 @@ public class Vue {
 
 
 	private Image[] background = new Image[5];
-	private Image joueur;
+	private Image player;
 	private Image[] alien = new Image[2];
 	private Image laser;
 	private Image missile;
@@ -167,8 +167,8 @@ public class Vue {
 	public Vue () {
 		/*
 		background[0] = new Image("data/land.jpg");
-		joueur = new Image("data/plane.png");
-		joueur.setRotation(90.0f);
+		player = new Image("data/plane.png");
+		player.setRotation(90.0f);
 		explosion = new Image("data/explosion.png");
 		missile = new Image("data/rocket.png");
 		missile.setRotation(90.0f);
@@ -427,12 +427,12 @@ public class Vue {
 		nastyProjectile = nastyProjectileSheet.getSprite("nastyProjectile1.gif");
 		//nastyProjectile.setRotation(270.0f);
 
-		//joueur = rm.getImage("JOUEUR");
+		//player = rm.getImage("JOUEUR");
 		sheet = rm.getImage("VAISSEAU_1");
-		//joueur = sheet.getSubImage(265,3746,123,196);
-		//joueur = sheet.getSubImage(97,45,30,30);
-		joueur=sheetTest.getSprite("VAISSEAU_1.gif");
-		joueur.setRotation(90.0f);
+		//player = sheet.getSubImage(265,3746,123,196);
+		//player = sheet.getSubImage(97,45,30,30);
+		player=sheetTest.getSprite("VAISSEAU_1.gif");
+		player.setRotation(90.0f);
 		//laser = sheet.getSubImage(265,3746,123,196);
 		//laser.setRotation(90.0f);
 
@@ -677,10 +677,10 @@ public class Vue {
 		return 0;
 	}
 
-	public int renderJoueur(Graphics gr, VaisseauJoueur v,int clig) {
+	public int renderPlayer(Graphics gr, PlayerShip v,int clig) {
 
-		joueur=sheetTest.getSprite(shipname); // Whats the fuck !!!!!!!!
-		joueur.setRotation(90.0f);
+		player=sheetTest.getSprite(shipname); // Whats the fuck !!!!!!!!
+		player.setRotation(90.0f);
 
 
 
@@ -688,7 +688,7 @@ public class Vue {
 		if(v.isBorn()){
 			if(clig == 1){
 				nbCligne++;
-				joueur.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+				player.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
 				//System.out.println("je clignote "+nbCligne);
 			}else{
 
@@ -700,7 +700,7 @@ public class Vue {
 
 		}else{
 
-			joueur.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+			player.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
 		}
 		if(debugCol){
 			Rectangle rect = new Rectangle (v.getX(), v.getY(), v.getW(), v.getH());
@@ -709,7 +709,7 @@ public class Vue {
 		}
 
 
-		//joueur.draw(v.getX(), v.getY(), v.getW(), v.getH());
+		//player.draw(v.getX(), v.getY(), v.getW(), v.getH());
 
 
 		return 0;
@@ -809,7 +809,7 @@ public class Vue {
 	}
 
 	public int render1Tir(Graphics gr, Objet ob, int type) {
-		if(((Tir)ob).estVisible()){
+		if(((Shot)ob).estVisible()){
 			if(debugCol){
 				Rectangle rect = new Rectangle (ob.getX(), ob.getY(), ob.getW(), ob.getH());
 				gr.setColor(new Color (0.2f, 0.2f, 0.2f));
@@ -821,7 +821,7 @@ public class Vue {
 				break;
 
 			case 22:
-				//missile.draw(ob.getX()+joueur.getWidth()/2,ob.getY()-joueur.getHeight()/2);
+				//missile.draw(ob.getX()+player.getWidth()/2,ob.getY()-player.getHeight()/2);
 				missile.draw(ob.getX(), ob.getY()-ob.getH()/2);
 				break;
 			case 23:
@@ -1213,8 +1213,8 @@ public class Vue {
 
 	}
 
-	public Image getIJoueur() {
-		return joueur;
+	public Image getIPlayer() {
+		return player;
 	}
 
 	//	public void initRes() throws SlickException {

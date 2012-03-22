@@ -3,7 +3,7 @@ package game;
 /**
  * Class Laser
  */
-public class Laser extends Tir {
+public class Laser extends Shot {
 
   //
   // Fields

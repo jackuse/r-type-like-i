@@ -3,7 +3,7 @@ package game;
 /**
  * Class Alien
  */
-public class Alien extends Vaisseau {
+public class Alien extends Ship {
 
 	//
 	// Fields

@@ -1,6 +1,6 @@
 package states;
 
-import game.LoadThread;
+//import game.LoadThread;
 import game.Main;
 import game.ResourceManager;
 import game.Vue;
@@ -168,15 +168,15 @@ public class Chargement extends BasicGameState{
 
 	}
 
-	private void nextRessource() throws InterruptedException{
-		System.out.println("nbproc "+nbProc);
-		//for(int i=0;i<nbProc;i++){
-		Runnable tache = new LoadThread ();
-		Thread monThread = new Thread (tache);
-		monThread.start();
-		monThread.isAlive();
-		//}
-	}
+//	private void nextRessource() throws InterruptedException{
+//		System.out.println("nbproc "+nbProc);
+//		//for(int i=0;i<nbProc;i++){
+//		Runnable tache = new LoadThread ();
+//		Thread monThread = new Thread (tache);
+//		monThread.start();
+//		monThread.isAlive();
+//		//}
+//	}
 
 	@Override
 	public int getID() {

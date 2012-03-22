@@ -4,48 +4,48 @@ import java.util.*;
 
 
 /**
- * Class Joueur
+ * Class Player
  * Multiton
  * @author Etienne Grandier-Vazeille
  *
  */
-public class Joueur {
+public class Player {
 
   //
   // Fields
   //
 
   private int score;
-  private VaisseauJoueur v;
+  private PlayerShip ship;
   private int life;
   private int kill;
   private int totalKill;
   private int time;
   private int totalTime;
   private int level;
-  private static final Map<Object, Joueur> instances = new HashMap<Object, Joueur>();
+  private static final Map<Object, Player> instances = new HashMap<Object, Player>();
   
   //
   // Constructors
   //
-  private Joueur (int id) { 
+  private Player (int id) { 
 	  score = 0;
 	  life = 3;
 	  kill = 0;
-	  v = new VaisseauJoueur(id);
+	  ship = new PlayerShip(id);
 	  
   };
   
-  public static Joueur getInstance(int key) {
+  public static Player getInstance(int key) {
       synchronized (instances) {
 
           // On cherche si le joueur de clé key existe
-    	  Joueur instance = instances.get(key);
+    	  Player instance = instances.get(key);
 
           if (instance == null) { // Si il n'existe pas on le crée
 
               // Création de l'instance
-              instance = new Joueur(key);
+              instance = new Player(key);
 
               // Ajout a la map  
               instances.put(key, instance);
@@ -84,8 +84,8 @@ public class Joueur {
    * Get the value of score
    * @return the value of score
    */
-  public VaisseauJoueur getV ( ) {
-	  return v;
+  public PlayerShip getShip ( ) {
+	  return ship;
   }
 
 /**
@@ -150,7 +150,7 @@ public void rest() {
 	life = 3;
 	restKill();
 	restTotalKill();
-	v.rest();
+	ship.rest();
 	time = 0;
 }
 
@@ -160,7 +160,7 @@ public void rest() {
  */
 public void prepare() {
 	restKill();
-	v.rest();
+	ship.rest();
 	time = 0;
 	//setLife(100); A voire
 }

@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import game.Chara;
 import game.HighscoreManager;
 import game.IOManager;
-import game.Joueur;
+import game.Player;
 import game.Main;
 import game.Vue;
 
@@ -34,7 +34,7 @@ public class GameOver extends BasicGameState{
 	boolean ok = true;
 	int delay = 200;
 	private int[] param;
-	Joueur j1;
+	Player j1;
 	String chaine;
 	HighscoreManager hm = HighscoreManager.getInstance();
 	private int top;
@@ -47,7 +47,7 @@ public class GameOver extends BasicGameState{
 
 	public void enter(GameContainer gc, StateBasedGame sgb) {
 		gc.getInput().clearKeyPressedRecord();
-		j1 = Joueur.getInstance(1);
+		j1 = Player.getInstance(1);
 		//chaine="";
 		/*lecture du fichier texte	
 				try{

@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * Class Tir
  */
-public class Tir extends Objet {
+public class Shot extends Objet {
 
   //
   // Fields
@@ -20,9 +20,9 @@ public class Tir extends Objet {
   //
   // Constructors
   //
-  public Tir () { };
+  public Shot () { };
   
-  public Tir (float x, float y, float w, float h) { 
+  public Shot (float x, float y, float w, float h) { 
 	  super(x,y,w,h);
 	  id = 20;
 	  speed=13;

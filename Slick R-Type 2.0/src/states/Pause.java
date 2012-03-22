@@ -5,7 +5,7 @@ import game.Chara;
 import java.util.ArrayList;
 
 import game.IOManager;
-import game.Joueur;
+import game.Player;
 import game.Main;
 import game.Objet;
 import game.Vue;

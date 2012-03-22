@@ -4,7 +4,7 @@ package game;
 /**
  * Class Vaisseau
  */
-public class Vaisseau extends Objet {
+public class Ship extends Objet {
 
   //
   // Fields
@@ -17,9 +17,9 @@ public class Vaisseau extends Objet {
   //
   // Constructors
   //
-  public Vaisseau () { };
+  public Ship () { };
   
-  public Vaisseau (float x, float y,float w, float h) { 
+  public Ship (float x, float y,float w, float h) { 
 	  super(x,y,w,h);
 	  id = 0;
   };

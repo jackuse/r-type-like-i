@@ -1,6 +1,6 @@
 package game;
 
-public class EnergyBall extends Tir {
+public class EnergyBall extends Shot {
 	
 	public EnergyBall () { }
 

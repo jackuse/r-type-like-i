@@ -3,7 +3,7 @@ package game;
 /**
  * Class Missile
  */
-public class Missile extends Tir {
+public class Missile extends Shot {
 
   //
   // Fields

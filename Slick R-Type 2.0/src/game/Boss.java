@@ -7,7 +7,7 @@ import java.util.Scanner;
 /**
  * Class Boss
  */
-public class Boss extends Vaisseau {
+public class Boss extends Ship {
 
 	//
 	// Fields

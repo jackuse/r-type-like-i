@@ -2,19 +2,11 @@ package game;
 
 
 /**
- * Class VaisseauJoueur
+ * Class PlayerShip
  * @author Etienne Grandier-Vazeille
  *
  */
-/**
- * @author Into the Wild
- *
- */
-/**
- * @author Into the Wild
- *
- */
-public class VaisseauJoueur extends Vaisseau {
+public class PlayerShip extends Ship {
 
 	//
 	// Fields
@@ -35,7 +27,7 @@ public class VaisseauJoueur extends Vaisseau {
 	//
 	// Constructors
 	//
-	public VaisseauJoueur (int id) { 
+	public PlayerShip (int id) { 
 		this.id = id;
 		speed = 10;
 		pdv = 100;
