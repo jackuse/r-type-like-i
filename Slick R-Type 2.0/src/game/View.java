@@ -27,31 +27,27 @@ import org.newdawn.slick.Animation;
 
 import states.Game;
 
-//test
+
 // Contient toutes les valeurs partagées des etats
 
 /* URGENT 
- * mettre en place les niveaux
  * commenter le code et le rendre propre
- * modifier menu selection pour mettre les vaisseaux qui tourne
- * Ajouter des texte a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
- * Faire un tableau de posTxt pour chaque affichage
- * Corriger problem de son
+ * Ajouter des textes a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
  * 
  * EN PLUS 
  * bug dans la gestion de playlist
  * implementer keyconfig ou pas
  * renommer les XML
- * Changer 2 3 polices
  * mettre en mode francais/anglais
  * Option résolution ecran // mort trop difficile
  * credit
+ * faire une fonction qui decoupe de texte avec de /n pour le mode history
  * 
  * Faire le rapport / l'affiche / le diapo
  */
 
 /**
- * Class Vue
+ * Class View
  * Singleton
  * @author Etienne Grandier-Vazeille
  *
@@ -91,10 +87,9 @@ public class View {
 	private Animation animatedRotatingShip2;
 	private Animation animatedRotatingShip3;
 	private Animation ship1CharacterSelectIntro;
-	
+	private int[][] skinDef;
 	private Animation ship1MoveDown;
 	private Animation ship1MoveUp;
-	private int[][] skinDef;
 
 	private Image exitOption = null;
 	private Image startGameOption = null;
@@ -112,6 +107,7 @@ public class View {
 
 	private ResourceManager rm = ResourceManager.getInstance();
 	public DeferredResource nextResource; 
+	public String shipname = "VAISSEAU_1";
 
 	float alpha = 0;
 
@@ -151,7 +147,6 @@ public class View {
 	private int timer;
 
 	private XMLPackedSheet alienSheet;
-
 
 
 
@@ -392,7 +387,6 @@ public class View {
 		animatedRotatingShip1Sheet = new XMLPackedSheet("data/introVaisseau1.png","data/introVaisseau1.png.xml");
 		animatedRotatingShip2Sheet = new XMLPackedSheet("data/introVaisseau2.png","data/introVaisseau2.png.xml");
 		animatedRotatingShip3Sheet = new XMLPackedSheet("data/introVaisseau3.png","data/introVaisseau3.png.xml");
-
 		principale = rm.getMusic("MUSIC_7");
 		principale.setVolume(volumeMusic);
 		Image menu2 = rm.getImage("BOUTONS_CHARSELECT");
@@ -430,15 +424,11 @@ public class View {
 	}
 
 	public void initGame() throws SlickException{
-		//ship = new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
+		//ship= new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
 		nastyProjectileSheet=new XMLPackedSheet("data/nastyProjectileSheet.png","data/nastyProjectileSheet.png.xml");
 		alienSheet=new XMLPackedSheet("data/alienSheet.png","data/alienSheet.png.xml");
 		animatedEnergyBall= new Animation();
 		alien[0]=new Animation();
-		
-		
-		
-
 		principale = rm.getMusic("MUSIC_0");
 		principale.setVolume(volumeMusic);
 		background[0] = rm.getImage("BACKGROUD_JEU");	
@@ -451,11 +441,11 @@ public class View {
 		nastyProjectile = nastyProjectileSheet.getSprite("nastyProjectile1.gif");
 		//nastyProjectile.setRotation(270.0f);
 
-		//player = rm.getImage("player");
+		//player = rm.getImage("JOUEUR");
 		//sheet = rm.getImage("VAISSEAU_1");
 		//player = sheet.getSubImage(265,3746,123,196);
 		//player = sheet.getSubImage(97,45,30,30);
-		//player=ship.getSprite("VAISSEAU_1.gif");
+		//player=sheetTest.getSprite("VAISSEAU_1.gif");
 		//player.setRotation(90.0f);
 		//laser = sheet.getSubImage(265,3746,123,196);
 		//laser.setRotation(90.0f);
@@ -465,7 +455,6 @@ public class View {
 		
 		alien[0].addFrame(alienSheet.getSprite("e1csa1.gif"), 10);
 		alien[0].addFrame(alienSheet.getSprite("e1csa2.gif"), 10);
-		
 		life=rm.getImage("HEART");
 		
 		try {
@@ -519,43 +508,40 @@ public class View {
 	        } */
 	}
 
-	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size, boolean[] inside) {
-		//System.out.println("rendu d'option");
-
-		//startGameOption.draw(optionX, optionY, startGameScale);
+	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size, boolean[] inside,int posTxt[][]) {
 		background[2].draw(0, 0);
 		
 
 		gr.setColor(new Color (1.0f, 1.0f, 1.0f));
 		
 
-		fonts[0].drawString(optionX, optionY+height*0.10f, "Music",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(optionX, optionY+posTxt[0][1], "Music",new Color(1.0f,1.0f,1.0f));
 		if(validerMusic)
-			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+			validerOk.draw(optionX+posTxt[0][0], optionY+posTxt[0][1],0.7f);
 		else
-			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+			valider.draw(optionX+posTxt[0][0], optionY+posTxt[0][1],0.7f);
 		if(inside[0]){
-			gr.fill(new Rectangle (optionX, optionY+height*0.17f, 100, 5));
+			gr.fill(new Rectangle (optionX, optionY+42+posTxt[0][1], 100, 5));
 		}
 
-		fonts[0].drawString(optionX, optionY+height*0.20f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(optionX+posTxt[1][0], optionY+posTxt[1][1], "Music Playlist",new Color(1.0f,1.0f,1.0f));
 		if(inside[1]){
-			gr.fill(new Rectangle (optionX, optionY+height*0.27f, 220, 5));
+			gr.fill(new Rectangle (optionX+posTxt[1][0], optionY+42+posTxt[1][1], 220, 5));
 		}
 
-		fonts[0].drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
-		if(validerFullscreen)
-			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
-		else
-			valider.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
-		if(inside[2]){
-			gr.fill(new Rectangle (optionX, optionY+height*0.37f, 180, 5));
-		}
+//		fonts[0].drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
+//		if(validerFullscreen)
+//			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
+//		else
+//			valider.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
+//		if(inside[2]){
+//			gr.fill(new Rectangle (optionX, optionY+height*0.37f, 180, 5));
+//		}
 		//System.out.println("rendu d'option pro ");
-		gr.setColor(new Color(0.5f,0.5f,0.5f));
-		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.325f);
+//		gr.setColor(new Color(0.5f,0.5f,0.5f));
+//		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.325f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
-		exitOption.draw(optionX, optionY+height*0.40f, exitScale);
+		exitOption.draw(optionX+posTxt[2][0], optionY+posTxt[2][1], exitScale);
 
 	}
 
@@ -586,7 +572,14 @@ public class View {
 			if(s.length == 10)
 				gr.drawString(s[9], pos[9], height*0.35f+25*9);
 		}
-		
+		//gr.drawString(hm.getHighscoreString(), hSX, 300);
+		//System.out.println(hm.getHighscoreString());
+
+
+//		startGameOption.draw(menuX, menuY, startGameScale);
+//		optionOption.draw(menuX+350, menuY, optionScale);
+//		controlsOption.draw(menuX+550, menuY, controlsScale);
+//		exitOption.draw(menuX+700, menuY, exitScale);
 		startGameOption.draw(menuX+posTxt[0][0], menuY+posTxt[0][1], startGameScale);
 		optionOption.draw(menuX+posTxt[1][0], menuY+posTxt[1][1], optionScale);
 		controlsOption.draw(menuX+posTxt[2][0], menuY+posTxt[2][1], controlsScale);
@@ -641,35 +634,18 @@ public class View {
 //	 * @return       int
 //	 * @param        g
 //	 */
-//	public int renderTire( Graphics g, ArrayList<Shot> tirs )
+//	public int renderShot( Graphics g, ArrayList<Shot> tirs )
 //	{
 //		if(!tirs.isEmpty()){
 //			Iterator<Shot> it = tirs.iterator();
 //			while(it.hasNext()){
-//				Shot t =((Shot) it.next());
+//				Tir t =((Tir) it.next());
 //				//if(t.estVisible())
 //				//t.getImage().draw(t.getX()+10,t.getY()+38);
 //			}
 //		}
 //		return 0;
 //	}
-
-
-	/**
-	 * @return       int
-	 * @param        g
-	 */
-	public int renderTire( Graphics g, ArrayList<Shot> tirs )
-	{
-		if(!tirs.isEmpty()){
-			Iterator<Shot> it = tirs.iterator();
-			while(it.hasNext()){
-				Shot t =((Shot) it.next());
-				
-			}
-		}
-		return 0;
-	}
 
 
 	/**
@@ -704,6 +680,9 @@ public class View {
 		else if (intro ==3)
 			player=ship.getSprite("v2idle.gif");
 				
+
+
+
 
 		if(v.isBorn()){
 			if(clig == 1){
@@ -750,6 +729,9 @@ public class View {
 		}
 
 
+		//player.draw(v.getX(), v.getY(), v.getW(), v.getH());
+
+
 		return 0;
 	}
 
@@ -757,6 +739,14 @@ public class View {
 		
 		// Pour le timer interne de la vue
 		timer = param[11];
+		int tempTimer = param[11]/1000;
+		int min = tempTimer/60;
+		int sec = tempTimer-min*60;
+		String secS;
+		if(sec <10)
+			secS="0"+sec;
+		else
+			secS=""+sec;
 
 		// HUD
 		if(debug ){
@@ -787,7 +777,7 @@ public class View {
 		gr.drawString("P1 - "+param[4], width*0.0125f,height*0.04f);
 		gr.drawString(param[7]+" x ", width*0.0125f,height*0.08f);
 		gr.drawString("Level 1-"+param[8], width*0.875f,height*0.0125f);
-		gr.drawString("Timer "+param[11]/1000, width*0.89f,height*0.04f);			
+		gr.drawString("Timer "+min+"'"+secS+"''", width*0.88f,height*0.04f);			
 		gr.drawString("Weapon:", width*0.0125f,height*0.92f);
 
 
@@ -1164,7 +1154,7 @@ public class View {
 		}
 	}
 
-	public void chargemementGame(){
+	public void loadGame(){
 		try {
 			//rm.loadResources(new FileInputStream("data/jeu.xml"),true);
 			rm.loadResources(getClass().getResourceAsStream("/data/ressources.xml"),true); // Methode compatible avec les jars
@@ -1314,7 +1304,7 @@ public class View {
 		fonts[1].drawString(50, height-50, "Press Any Key to quit", new Color(1.0f,1.0f,1.0f));
 		
 	}
-
+	
 	public XMLPackedSheet getShip() {
 		return ship;
 	}
@@ -1358,6 +1348,7 @@ public class View {
 
 	
 
+	
 	public int getTimer() {
 		return timer;
 	}
