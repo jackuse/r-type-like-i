@@ -9,8 +9,8 @@ public class Alien extends Ship {
 	// Fields
 	//
 	//protected boolean move = true;
-	protected int pdv = 2;
-	protected float speed = 2;
+	protected int pdv = 1;
+	protected float speed = 5;
 	protected int behavior;
 	//
 	// Constructors

@@ -830,7 +830,7 @@ public class View {
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 			gr.fill(rect);
 		}
-		System.out.println("type = "+type+"  timer = "+timer);
+		//System.out.println("type = "+type+"  timer = "+timer);
 		if(type>100 && type<200){
 			alien[type-101].draw(ob.getX(),ob.getY());
 		}

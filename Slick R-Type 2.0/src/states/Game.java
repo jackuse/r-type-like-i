@@ -550,7 +550,7 @@ public class Game extends BasicGameState{
 
 
 
-		runLevel(timer,delta);
+		runLevel(timer,delta,sbg);
 
 
 		//////////////////////////////////////FIN DES TRAITEMENTS //////////////////////////////////////
@@ -631,6 +631,7 @@ public class Game extends BasicGameState{
 		nastyProjectile.clear();
 		lvl.set(1);
 		timer =0;
+		
 	}
 
 	public void initLevel(){
@@ -643,6 +644,7 @@ public class Game extends BasicGameState{
 		int spawnX=0;
 		int spawnY=0;
 		Scanner sc2 = null;
+		event.reset();
 		try {
 			sc2 = new Scanner(new File("data/level"+levelId+".txt"));
 		} catch (FileNotFoundException e) {
@@ -686,28 +688,49 @@ public class Game extends BasicGameState{
 		}
 	}
 
-	public void runLevel(int timer,int delta){
+	public void runLevel(int timer,int delta, StateBasedGame sbg){
 
 		for(int i=0;i<event.size();i++)
 		{
 			if(timer>=event.get(i).getTime() && event.get(i).isEnabled() )
 			{	
-				if(event.get(i).getId()>100 && event.get(i).getId()<200){
+				System.out.println("le i: "+i);
+				if(event.get(i).getId()>100 && event.get(i).getId()<200 && event.get(i).isEnabled()){
+					System.out.println("timer"+timer+" "+event.get(i).isEnabled());
+					System.out.println(event.get(i).getTime()+"");
+					
 					enemy.add(new Alien(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getId(),event.get(i).getBehavior()));
+					
 					System.out.println("new alien");
 				}else if(event.get(i).getId()>200 && event.get(i).getId()<300){
 					boss.add(new Boss(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getId()));
 					System.out.println("new boss");
 				}
-				
+				else if(event.get(i).getId()==999)
+				{
+					
+				}
 				for (int q=0;q<event.get(i).getQuantity()-1;q++)
 				{
 					event.get(i).setNextSpawnTime(event.get(i).getNextSpawnTime()+event.get(i).getDelay());
 					event.add(new TimedEvent(event.get(i).getNextSpawnTime(),0,0,event.get(i).getBehavior(),event.get(i).getSpawnX(),event.get(i).getSpawnY(),event.get(i).getId()));
+					
 				}
 				event.get(i).setEnabled(false);
 			}
 		}
+	}
+	
+	public void nextLevel(StateBasedGame sbg)
+	{
+		if(levelId<5)
+			levelId++;
+		
+		reset();
+		//event.reset();
+
+		lvl.set(levelId);
+		sbg.enterState(Main.GAMEOVERSTATE);
 	}
 
 }
