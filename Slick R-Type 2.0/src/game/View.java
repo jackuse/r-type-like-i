@@ -27,7 +27,7 @@ import org.newdawn.slick.Animation;
 
 import states.Game;
 
-
+//test
 // Contient toutes les valeurs partagées des etats
 
 /* URGENT 
