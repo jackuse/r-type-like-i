@@ -12,6 +12,8 @@ import game.Main;
 import game.Missile;
 import game.Objet;
 import game.ResourceManager;
+import game.Ship;
+import game.Spagettie;
 import game.TimedEvent;
 import game.Shot;
 import game.View;
@@ -65,6 +67,7 @@ public class Game extends BasicGameState{
 	private int delayClig = 200;
 	private int delay = 20;
 	private Level lvl;
+	private boolean win = false;
 
 	private int delayChangeW = 200;
 
@@ -158,7 +161,7 @@ public class Game extends BasicGameState{
 		
 		for (Iterator<Boss> bo = boss.iterator(); bo.hasNext(); ) {
 			Objet obBo = (Objet) bo.next();
-			System.out.println("je blit du boss");
+			//System.out.println("je blit du boss"+obBo.getId());
 			view.render1Boss(gr, obBo, obBo.getId());
 		}
 
@@ -443,12 +446,11 @@ public class Game extends BasicGameState{
 		Iterator<Objet> itMovProj = playerProjectile.iterator();
 		while (itMovProj.hasNext()){
 			// Iterator<Objet> itMovEnemy = enemy.iterator();
-			Objet ob=((Objet) itMovProj.next());
-			Shot t = (Shot) ob;
-			t.go();
-			if(t.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
-				t.setVisible(false);
-			if(!t.estVisible())
+			Shot sh=((Shot) itMovProj.next());
+			sh.go();
+			if(sh.getX()>800) // Il il depasse de l'écran on dit qu'il sont invisible
+				sh.setVisible(false);
+			if(!sh.estVisible())
 				itMovProj.remove();
 
 
@@ -457,14 +459,35 @@ public class Game extends BasicGameState{
 			for (int i=0;i<enemy.size();i++)
 			{
 
-				Objet ob2=((Objet) enemy.get(i));
-				boolean col=t.collision(ob2);
+				Ship ob2= ((Ship)enemy.get(i));
+				boolean col=sh.collision(ob2);
 				if (col){
 					explo.add(new Explosion(ob2.getX(), ob2.getY()));
 					enemy.remove(i);
 					player[0].setScore(player[0].getScore()+1);
 					player[0].incKill();
-					if(t.estVisible()){
+					if(sh.estVisible()){
+						itMovProj.remove();
+					}
+					break;
+				}
+			}
+			
+			for (int i=0;i<boss.size();i++)
+			{
+
+				Boss bo= ((Boss)boss.get(i));
+				boolean col=sh.collision(bo);
+				if (col){
+					explo.add(new Explosion(bo.getX(), bo.getY()));
+					bo.reciveDamage(sh.getDegat());
+					System.out.println("PDV : "+bo.getPdv());
+					if(bo.getPdv()<=0){
+						enemy.remove(i);
+						player[0].setScore(player[0].getScore()+1);
+						player[0].incKill();
+					}
+					if(sh.estVisible()){
 						itMovProj.remove();
 					}
 					break;
@@ -493,8 +516,15 @@ public class Game extends BasicGameState{
 
 		}
 		
-		for (int i=0;i<boss.size();i++)
+		int timerTmp = timer/100;
+		for (int i=0;i<boss.size();i++){
 			boss.get(i).move();
+			
+			if(boss.get(i).isFire() && timer%2 == 1){
+				System.out.println("time "+timerTmp+ "time%2 "+timerTmp%2);
+				nastyProjectile.add(new Spagettie(boss.get(i).getX()+boss.get(i).getW()/2,boss.get(i).getY()+boss.get(i).getH()/2-12));
+			}
+		}
 		
 		for (int i=0;i<enemy.size();i++)
 		{
@@ -519,6 +549,16 @@ public class Game extends BasicGameState{
 
 			//}
 
+		}
+		
+		for (int i=0;i<boss.size();i++)
+		{
+			Objet ob2=((Objet) boss.get(i));
+			boolean col=((Objet)player[0].getShip()).collision(ob2);
+			if (col){
+				player[0].getShip().setPdv(0);
+				break;
+			}
 		}
 
 		for (int i=0;i<bonus.size();i++)
@@ -647,13 +687,9 @@ public class Game extends BasicGameState{
 		int spawnX=0;
 		int spawnY=0;
 		Scanner sc2 = null;
-		event.reset();
-		try {
-			sc2 = new Scanner(new File("data/level"+levelId+".txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();  
+		sc2 = new Scanner(getClass().getResourceAsStream("/data/level"+levelId+".txt"));
 
-		}	
+
 		while (sc2.hasNextLine()) {
 
 			Scanner s2 = new Scanner(sc2.nextLine());
@@ -697,7 +733,7 @@ public class Game extends BasicGameState{
 		{
 			if(timer>=event.get(i).getTime() && event.get(i).isEnabled() )
 			{	
-				System.out.println("le i: "+i);
+				//System.out.println("le i: "+i);
 				if(event.get(i).getId()>100 && event.get(i).getId()<200 && event.get(i).isEnabled()){
 					System.out.println("timer"+timer+" "+event.get(i).isEnabled());
 					System.out.println(event.get(i).getTime()+"");

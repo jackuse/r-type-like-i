@@ -128,7 +128,6 @@ public class Option extends BasicGameState{
 			if(kB>maxItem-1)
 				kB=0;
 			inside[kB] = true;
-			System.out.println("kB = "+kB);
 		}
 		
 		if (input.isKeyPressed(Input.KEY_ENTER)){
@@ -142,11 +141,11 @@ public class Option extends BasicGameState{
 		if( ( mouseX >= optionX+posTxt[0][0] && mouseX <= optionX+posTxt[0][0] + view.getValider().getWidth()*0.7) &&
 				( mouseY >= optionY+posTxt[0][1]&& mouseY <= optionY+posTxt[0][1] + view.getValider().getHeight()) ){
 			insideMusic = true;
-			System.out.println("on music");
+			//System.out.println("on music");
 		}else if( ( mouseX >= optionX+posTxt[1][0] && mouseX <= optionX+posTxt[1][0]+256) &&
 				( mouseY >= optionY+posTxt[1][1] && mouseY <= optionY+posTxt[1][1]+42) ){
 			insideMusicSelection = true;
-			System.out.println("on selection");
+			//System.out.println("on selection");
 //		}else if( ( mouseX >= optionX+view.getWidth()*0.25f && mouseX <= optionX+view.getWidth()*0.25f+view.getButton(0).getWidth()) &&
 //				( mouseY >= optionY+view.getHeight()*0.22f && mouseY <= optionY+view.getHeight()*0.22f + view.getButton(0).getHeight()) ){
 //			insideBL = true;
@@ -164,7 +163,7 @@ public class Option extends BasicGameState{
 		else if( ( mouseX >= optionX+posTxt[2][0] && mouseX <= optionX+posTxt[2][0] + view.getOptionOption().getWidth()*0.7) &&
 				( mouseY >= optionY+posTxt[2][1] && mouseY <= optionY+posTxt[2][1] + view.getOptionOption().getHeight()*0.7) ){
 			insideExit = true;
-			System.out.println("on exit");
+			//System.out.println("on exit");
 		}
 		
 		if(insideExit || insideBL || insideBR || insideFullscreen || insideMusic || insideMusicSelection){

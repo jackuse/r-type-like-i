@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-import game.Chara;
 import game.HighscoreManager;
 import game.IOManager;
 import game.Player;
@@ -51,12 +50,12 @@ public class GameOver extends BasicGameState{
 		j1=Player.getInstance(1);
 		top = 0;
 		best = 0;
-		System.out.println("score "+j1.getScore());
+		//System.out.println("score "+j1.getScore());
 		if(hm.inTopTen(j1.getScore())){
 			top = 1;
 		}
 		if(j1.getScore()>hm.getMaxScore()){
-			System.out.println("score j : "+j1.getScore()+"max score : "+hm.getMaxScore() );
+			//System.out.println("score j : "+j1.getScore()+"max score : "+hm.getMaxScore() );
 			best = 1;
 		}
 

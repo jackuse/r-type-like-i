@@ -15,7 +15,7 @@ public class Shot extends Objet {
   protected boolean visible = true;
   protected float speed;
   protected int degat;
-  protected int delaiTir;
+  protected int delayFire;
   
   //
   // Constructors
@@ -86,19 +86,19 @@ public class Shot extends Objet {
   }
 
   /**
-   * Set the value of delaiTir
-   * @param newVar the new value of delaiTir
+   * Set the value of delayFire
+   * @param newVar the new value of delayFire
    */
-  public void setDelaiTir ( int newVar ) {
-    delaiTir = newVar;
+  public void setDelayFire ( int newVar ) {
+	  delayFire = newVar;
   }
 
   /**
-   * Get the value of delaiTir
-   * @return the value of delaiTir
+   * Get the value of delayFire
+   * @return the value of delayFire
    */
-  public int getDelaiTir ( ) {
-    return delaiTir;
+  public int getDelayFire ( ) {
+    return delayFire;
   }
 
   //

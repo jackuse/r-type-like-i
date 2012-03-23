@@ -105,6 +105,7 @@ public class Main extends StateBasedGame {
         
         
         gameContainer.setShowFPS(false);
+//        gameContainer.setShowFPS(true);
         gameContainer.setTargetFrameRate(60);
         gameContainer.setMaximumLogicUpdateInterval(20);
         gameContainer.setMinimumLogicUpdateInterval(20);

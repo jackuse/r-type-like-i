@@ -1,2 +1,8 @@
+# Table de référence des IDs:
+# 101  : alien 1
+# 
+# 201  : boss 1
+#
+
 #TIME QUANTITY DELAY BEHAVIORID X Y ID
-3000 1 1000 1 600 50 201
+3000 1 1000 1 800 50 201

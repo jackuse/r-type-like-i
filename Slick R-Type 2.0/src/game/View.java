@@ -89,6 +89,7 @@ public class View {
 	private Animation animatedRotatingShip2;
 	private Animation animatedRotatingShip3;
 	private Animation ship1CharacterSelectIntro;
+	private Animation animatedSpagettie;
 	private int[][] skinDef;
 	private Animation ship1MoveDown;
 	private Animation ship1MoveUp;
@@ -151,6 +152,8 @@ public class View {
 	private XMLPackedSheet alienSheet;
 
 	private int maxLevel;
+
+	private String edition;
 
 
 
@@ -363,6 +366,10 @@ public class View {
 
 		background[2] = rm.getImage("BACKGROUD_OPTION");
 		champ = new boolean[10];
+		
+		edition = rm.getText("EDITION");
+		if(edition.length()>10)
+			edition =edition.substring(0, 10);
 	}
 
 
@@ -445,6 +452,14 @@ public class View {
 		boss[0] = rm.getImage("BOSS_1");
 		nastyProjectile = nastyProjectileSheet.getSprite("nastyProjectile1.gif");
 		//nastyProjectile.setRotation(270.0f);
+		
+//		Image spag = rm.getImage("SPAG");
+		Image spagt[] = new Image[3];
+		spagt[0] = rm.getImage("BOSS_W_1").getSubImage(0, 0, 60, 20);
+		spagt[1] = rm.getImage("BOSS_W_1").getSubImage(0, 20, 60, 20);
+		spagt[2] = rm.getImage("BOSS_W_1").getSubImage(0, 20, 60, 20);
+		animatedSpagettie= new Animation(spagt,3,true);
+		
 
 		//player = rm.getImage("JOUEUR");
 		//sheet = rm.getImage("VAISSEAU_1");
@@ -561,7 +576,7 @@ public class View {
 		gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 		gr.fill(fond);
 		background[1].draw(0, 0);
-		fonts[0].drawString(titreX, titreY, "R-Type Mania Nightcore Edition",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(titreX, titreY, "R-Type Mania "+edition+" Edition",new Color(1.0f,1.0f,1.0f));
 		//font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
 		gr.setColor(new Color (0,0,0));
 		//gr.drawString("Beta "+Main.version, titreX+430, titreY+50);
@@ -862,6 +877,10 @@ public class View {
 				break;
 			case 23:
 				animatedEnergyBall.draw(ob.getX(), ob.getY());
+				break;
+			case 24:
+				animatedSpagettie.draw(ob.getX(), ob.getY());
+				break;
 			default:
 				break;
 			}
@@ -893,7 +912,7 @@ public class View {
 		gr.fill(rect);
 		startGameOption.draw(pauseX+posTxt[0][0], pauseY+posTxt[0][1], startGameScale);
 		optionOption.draw(pauseX+posTxt[1][0], pauseY+posTxt[1][1], optionScale);
-		controlsOption.draw(pauseX+posTxt[2][0], pauseY+posTxt[2][1], optionScale);
+		controlsOption.draw(pauseX+posTxt[2][0], pauseY+posTxt[2][1], controlsScale);
 		exitOption.draw(pauseX+posTxt[3][0], pauseY+posTxt[3][1], exitScale);
 		
 		//		}
@@ -1081,6 +1100,9 @@ public class View {
 			principale = rm.getMusic("MUSIC_"+id);
 			//System.out.println("load b "+principale);
 		}
+		else if(id == 42){
+			principale = rm.getMusic("MUSIC_BOSS_1");
+		}
 	}
 	
 	public void setAltBouton(boolean insideChar1,boolean insideChar2, boolean insideChar3, int menuX, int menuY){
@@ -1114,7 +1136,6 @@ public class View {
 		ship1.draw(menuX,menuY);
 		ship2.draw(menuX,menuY);
 		ship3.draw(menuX,menuY);
-		System.out.println("HOY "+intro+"  "+insideChar1 + insideChar2 + insideChar3);
 	}
 
 

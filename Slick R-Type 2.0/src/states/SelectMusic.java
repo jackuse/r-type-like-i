@@ -1,6 +1,6 @@
 package states;
 
-import game.Chara;
+
 import game.Main;
 import game.ResourceManager;
 import game.View;

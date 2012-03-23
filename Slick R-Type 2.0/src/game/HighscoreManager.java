@@ -232,7 +232,7 @@ public class HighscoreManager {
 			//System.out.println("add "+i);
 			i++;
 		}
-		System.out.println("size i "+i);
+		//System.out.println("size i "+i);
 		if(i == 10){
 			//System.out.println("add i "+i);
 			i--;

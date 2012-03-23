@@ -22,6 +22,7 @@ public class Boss extends Ship {
 	private boolean fireOn = false;
 	private boolean upMove = false;
 	private boolean downMove= false;
+	private boolean pauseMove= false;
 	protected int behavior;
 	
 	// Oui le vaisseau mére peut appeler ses sbires !
@@ -37,6 +38,7 @@ public class Boss extends Ship {
 //		this.h = view.getIBoss(1);
 		this.x = view.getWidth()+20;
 		this.y = view.getHeight()-h/2;
+		
 	};
 
 	//
@@ -44,59 +46,82 @@ public class Boss extends Ship {
 	//
 	
 	public Boss (float x, float y, int id, int behav){
-		super(x,y,200,200);
+		super(x-200,y,200,400);
 		this.id=id;
 		behavior=behav;
+		this.pdv=400;
+		view.setMusic(0);
+		view.selectMusic(42);
+		view.setMusic(1);
 		
+	}
+	
+	public boolean isFire(){
+		return fireOn;
 	}
 	
 	
 	public void move(){
 		if (comming){
 			makeCome();
-		}else{
+		}
+		else{
 			//il monte / il descent / il tire vers le joueur
 			
-			
 			// attaque standard
-			if(y>50 && upMove && !downMove)
+			if(y>0 && upMove && !downMove ){
 				y--;
+				fireOn = true;
+			}
 			else {
 				upMove = false;
 				downMove = true;
 			}
 				
-			if (y<view.getHeight()*0.80f && downMove)
+			if (y+h<view.getHeight() && downMove ){
 				y++;
+			}
 			else {
 				downMove = false;
+				pauseMove = true;
+				upMove = true;
+				fireOn = false;
 			}
-			if(!(upMove && downMove) && y>view.getHeight()-h/2){
-				y--;
-			}
-			
-			
-			fireOn =true;
+//			if(upMove && pauseMove && y>view.getHeight()-h/2){
+//				y--;
+//				System.out.println("etat  3");
+//			}else{
+//				upMove = false;
+//				specialAttak(1,view.getTimer());
+//			}
+//				
+//			if(!upMove && pauseMove ){
+//				
+//				
+//			}else{
+//				upMove =true;
+//				pauseMove =false;
+//			}
 			
 			// Pellemele
 			
-			specialAttak(1,view.getTimer());
+			
 			
 			
 		}
 	}
 	
 	private void makeCome() { // arrivé au coup par coup
-		if(flip){
-			x--;
-			flip = false;
-		}else{
-			cptA++;
-			if(cptA >4)
-				flip = true;
-		}
+//		if(flip){
+			x-=1;
+//			flip = false;
+//		}else{
+//			cptA++;
+//			if(cptA >4)
+//				flip = true;
+//		}
 		
-		if(x<view.getWidth()-w){
+		if(x<view.getWidth()-w-200){
 			comming = false;
 		}
 		
@@ -160,6 +185,9 @@ public class Boss extends Ship {
 			System.out.println("New Event at time "+time+"ms, quantity "+quantity+",delay "+delay+"ms, behavior "+behavior+"spawn x "+spawnX+" y "+spawnY+"");
 			}
 		}
+	}
+	public void reciveDamage(int degat) {
+		this.pdv-= degat;		
 	}
 
 }

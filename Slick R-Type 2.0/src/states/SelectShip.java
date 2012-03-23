@@ -42,7 +42,6 @@ public class SelectShip extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		vue.initCharacterSelectScreen();
-		System.out.println("je suis character select screen");
 
 	}
 
@@ -60,7 +59,7 @@ public class SelectShip extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.previousState);
+		//System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.previousState);
 		if(Main.previousState == Main.MENUSTATE){
 			//reset();
 			Main.previousState = sbg.getCurrentStateID();	
@@ -132,7 +131,6 @@ public class SelectShip extends BasicGameState{
 			posCur++;
 			if(posCur>maxItemMenu)
 				posCur=1;
-			System.out.println("kB = "+posCur);
 		}
 
 
@@ -160,7 +158,6 @@ public class SelectShip extends BasicGameState{
 				break;
 			}
 		}
-		System.out.println("paté "+insideChar1+insideChar2+insideChar3);
 		vue.setAltBouton(insideChar1,insideChar2,insideChar3,menuX, menuY);
 
 

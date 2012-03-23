@@ -244,7 +244,6 @@ public class Menu extends BasicGameState{
 			if(kB>maxItemMenu-1)
 				kB=0;
 			inside[kB] = true;
-			System.out.println("kB = "+kB);
 		}
 		
 		if (input.isKeyPressed(Input.KEY_ENTER)){
@@ -253,7 +252,7 @@ public class Menu extends BasicGameState{
 		}
 		
 		// On réinitilalise le déplacement clavier si on utilise la souris
-		if(insideExit || insideCredit || insideOption || insideStartGame){
+		if(insideExit || insideCredit || insideControls || insideOption || insideStartGame){
 			for(int i=0;i<maxItemMenu;i++)
 				inside[i]=false;
 		}
@@ -348,9 +347,6 @@ public class Menu extends BasicGameState{
 				view.setMusic(2);
 			}
 		}
-
-
-		System.out.println("fin val = "+val);
 	}
 
 			public void resetMenu(){
