@@ -22,16 +22,16 @@ public class Controls extends BasicGameState {
 
 
 
-	@Override
+
 	public int getID() {
 		return stateID;
 	}
 
-	@Override
+
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 
-		posTxt = new int[8][2];
+		posTxt = new int[9][2];
 		posTxt[0][0] = 0;
 		posTxt[0][1] = 0;
 		posTxt[1][0] = 0;
@@ -48,24 +48,25 @@ public class Controls extends BasicGameState {
 		posTxt[6][1] = 240;
 		posTxt[7][0] = 0;
 		posTxt[7][1] = 280;
+		posTxt[8][0] = 0;
+		posTxt[8][1] = 320;
 
 	}
 
-	@Override
+
 	public void leave(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		anyKeyPressed = false;
 
 	}
 
-	@Override
+
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		vue.renderControls(gc,gr,ctrX,ctrY,posTxt);
 
 	}
 
-	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 

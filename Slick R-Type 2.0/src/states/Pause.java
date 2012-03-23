@@ -90,9 +90,14 @@ public class Pause extends BasicGameState{
 
 		Input input = gc.getInput(); // On récupére les input
 
-		if (input.isKeyPressed(Input.KEY_P) || input.isKeyPressed(Input.KEY_ESCAPE)){
+		if (input.isKeyPressed(Input.KEY_P) || input.isKeyPressed(Input.KEY_SPACE)){
 			gc.setPaused(!gc.isPaused());
 			sbg.enterState(Main.GAMESTATE);
+		}
+		
+		if (input.isKeyPressed(Input.KEY_ESCAPE)){
+			sbg.enterState(Main.MENUSTATE); // ou
+			//sbg.enterState(Main.GAMEOVERSTATE);
 		}
 
 		if(view.isValiderMusic()){ // Si il n'y a pas de musique on la lance

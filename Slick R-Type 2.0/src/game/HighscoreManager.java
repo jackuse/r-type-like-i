@@ -227,14 +227,15 @@ public class HighscoreManager {
 		scores = getScores();
 
 		
-		while (i < x && i !=9) {
+		while (i < x ) {
 			highscoreString[i] = " "+(i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName().length(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
 			//System.out.println("add "+i);
 			i++;
 		}
 		System.out.println("size i "+i);
-		if(i == 9){
+		if(i == 10){
 			//System.out.println("add i "+i);
+			i--;
 		highscoreString[i] = (i + 1) + ". " + scores.get(i).getName() + makeMeSpace(scores.get(i).getName().length(),scores.get(i).getScore()) + scores.get(i).getScore() + "\n";
 		}
 		return highscoreString;

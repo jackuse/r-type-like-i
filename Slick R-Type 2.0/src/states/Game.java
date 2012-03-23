@@ -173,7 +173,11 @@ public class Game extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-
+		
+		if(delta <1){ // Correction du bug "DELTA"
+			delta =20;
+		}
+		
 		timer+=delta;
 		//System.out.println("delta "+delta+" timer "+timer );
 		//BEGIN CHEAT CODE

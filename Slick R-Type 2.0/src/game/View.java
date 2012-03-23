@@ -33,6 +33,8 @@ import states.Game;
 /* URGENT 
  * commenter le code et le rendre propre
  * Ajouter des textes a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
+ * Verifier qu'on peut aller partotu sans planter
+ * 
  * 
  * EN PLUS 
  * bug dans la gestion de playlist
@@ -147,6 +149,8 @@ public class View {
 	private int timer;
 
 	private XMLPackedSheet alienSheet;
+
+	private int maxLevel;
 
 
 
@@ -424,6 +428,7 @@ public class View {
 	}
 
 	public void initGame() throws SlickException{
+		maxLevel = Integer.parseInt(rm.getText("MAX_LEVEL"));
 		//ship= new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
 		nastyProjectileSheet=new XMLPackedSheet("data/nastyProjectileSheet.png","data/nastyProjectileSheet.png.xml");
 		alienSheet=new XMLPackedSheet("data/alienSheet.png","data/alienSheet.png.xml");
@@ -757,11 +762,12 @@ public class View {
 
 		//black
 		gr.setColor(org.newdawn.slick.Color.black);
-		gr.drawString("P1 - "+param[4], width*0.0125f+1,height*0.04f+1);
-		gr.drawString(param[7]+" x ", width*0.0125f+1,height*0.08f+1);
-		life.draw(width*0.050f+1,height*0.08f+1);
-		gr.drawString("Level 1-"+param[8], width*0.875f+1,height*0.0125f+1);
-		gr.drawString("Timer "+param[11]/1000, width*0.89f+1,height*0.04f+1);
+		//gr.drawString("P1 - "+param[4], width*0.0125f+2,height*0.04f+2);
+		gr.drawString("P1 - "+param[4], width*0.0125f+2,height*0.0125f+2);
+		gr.drawString(param[7]+" x ", width*0.0125f+2,height*0.04f+2);
+		life.draw(width*0.050f+1,height*0.04f+2);
+		gr.drawString("Level 1-"+param[8], width*0.875f+2,height*0.0125f+2);
+		gr.drawString("Timer "+min+"'"+secS+"''", width*0.87f+2,height*0.04f+2);	
 		
 
 		gr.drawString("Weapon:", width*0.0125f+1,height*0.92f+1);
@@ -774,10 +780,10 @@ public class View {
 		//white
 		gr.setColor(org.newdawn.slick.Color.white);
 		//				gr.drawString("P1 - "+param[4], width*0.0125f,height*0.0125f);
-		gr.drawString("P1 - "+param[4], width*0.0125f,height*0.04f);
-		gr.drawString(param[7]+" x ", width*0.0125f,height*0.08f);
+		gr.drawString("P1 - "+param[4], width*0.0125f,height*0.0125f);
+		gr.drawString(param[7]+" x ", width*0.0125f,height*0.04f);
 		gr.drawString("Level 1-"+param[8], width*0.875f,height*0.0125f);
-		gr.drawString("Timer "+min+"'"+secS+"''", width*0.88f,height*0.04f);			
+		gr.drawString("Timer "+min+"'"+secS+"''", width*0.87f,height*0.04f);			
 		gr.drawString("Weapon:", width*0.0125f,height*0.92f);
 
 
@@ -1076,7 +1082,7 @@ public class View {
 	}
 	
 	public void setAltBouton(boolean insideChar1,boolean insideChar2, boolean insideChar3, int menuX, int menuY){
-		System.out.println("HOY");
+		
 		Image menu2 = rm.getImage("BOUTONS_CHARSELECT");
 		Image menu2_alt=rm.getImage("BOUTONS_CHARSELECT_ALT");
 		if(insideChar1 && !insideChar2 && !insideChar3)
@@ -1106,7 +1112,7 @@ public class View {
 		ship1.draw(menuX,menuY);
 		ship2.draw(menuX,menuY);
 		ship3.draw(menuX,menuY);
-		
+		System.out.println("HOY "+intro+"  "+insideChar1 + insideChar2 + insideChar3);
 	}
 
 
@@ -1298,6 +1304,7 @@ public class View {
 		fonts[1].drawString(ctrX, ctrY+posTxt[5][1], "Next Weapon               E", new Color(1.0f,1.0f,1.0f));
 		fonts[1].drawString(ctrX, ctrY+posTxt[6][1], "Previous Weapon     	  A", new Color(1.0f,1.0f,1.0f));
 		fonts[1].drawString(ctrX, ctrY+posTxt[7][1], "SpeedUp                    Ctr", new Color(1.0f,1.0f,1.0f));
+		fonts[1].drawString(ctrX, ctrY+posTxt[8][1], "Pause                              P", new Color(1.0f,1.0f,1.0f));
 		
 		
 		
@@ -1351,6 +1358,10 @@ public class View {
 	
 	public int getTimer() {
 		return timer;
+	}
+
+	public int getMaxLevel() {
+		return maxLevel;
 	}
 
 

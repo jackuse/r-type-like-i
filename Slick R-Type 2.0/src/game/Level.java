@@ -8,6 +8,7 @@ public class Level {
 	
 	public Level(int id){
 		set(id);
+		maxLvl = View.getInstance().getMaxLevel();
 	}
 
 	private void initLvl() {

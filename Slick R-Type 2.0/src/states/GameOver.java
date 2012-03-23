@@ -40,6 +40,7 @@ public class GameOver extends BasicGameState{
 	private int top;
 	private int best;
 	private String name = "";
+	private int maxLevel = view.getMaxLevel();
 
 	public GameOver(int stateID) {
 		this.stateID = stateID;
@@ -47,26 +48,10 @@ public class GameOver extends BasicGameState{
 
 	public void enter(GameContainer gc, StateBasedGame sgb) {
 		gc.getInput().clearKeyPressedRecord();
-		j1 = Player.getInstance(1);
-		//chaine="";
-		/*lecture du fichier texte	
-				try{
-					InputStream ips=new FileInputStream("/score.txt"); 
-					InputStreamReader ipsr=new InputStreamReader(ips);
-					BufferedReader br=new BufferedReader(ipsr);
-					String ligne;
-					while ((ligne=br.readLine())!=null){
-						System.out.println(ligne);
-						chaine+=ligne+"\n";
-					}
-					br.close(); 
-				}		
-				catch (Exception e){
-					System.out.println(e.toString());
-				}
-		// */
+		j1=Player.getInstance(1);
 		top = 0;
 		best = 0;
+		System.out.println("score "+j1.getScore());
 		if(hm.inTopTen(j1.getScore())){
 			top = 1;
 		}
@@ -79,9 +64,9 @@ public class GameOver extends BasicGameState{
 		param[1]=top;
 		param[2]=best;
 		param[3]=j1.getTime();
-//		if(j1.getLife()<1)
-//			param[4]=1;
-//		else
+		if(j1.getLife()<1)
+			param[4]=1;
+		else
 			param[4]=0;
 		param[5]=j1.getLevel();
 
@@ -112,7 +97,8 @@ public class GameOver extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-
+		if (delta ==0) // corection de la disparition de delta
+			delta = 20;
 		delay-=delta;//a modifier
 		if(delay < 0){
 			if(ok)
@@ -131,14 +117,6 @@ public class GameOver extends BasicGameState{
 		if(param[4] == 1){ // si le jeu est fini
 			if(top==1){
 
-//				if (input.isKeyPressed(input.KEY_BACK)){
-//					if(name.length()>0)
-//						name =name.substring(0, name.length()-1);
-//				}
-//				char c = io.getChar(input);
-//				if(c != '\0' && name.length() < 19){;
-//				name+=c;
-//				}
 				name = io.getKeyString(input, name,19);
 
 				if (input.isKeyPressed(input.KEY_ENTER)){
@@ -147,21 +125,6 @@ public class GameOver extends BasicGameState{
 					j1.rest();
 				}
 			}else if (input.isKeyPressed(Input.KEY_SPACE)){
-
-				/*PrintWriter ecrivain = null;
-		    int n = 5;
-
-		    try {
-				ecrivain =  new PrintWriter(new BufferedWriter
-				   (new FileWriter("score.txt")));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		   // ecrivain.println (chaine);
-		    ecrivain.println("Score");
-		    ecrivain.println("name : "+j1.getScore());
-		    ecrivain.close();*/
 				sbg.enterState(Main.MENUSTATE);
 				j1.rest();
 			}
