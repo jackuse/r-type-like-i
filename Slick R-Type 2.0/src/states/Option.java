@@ -90,7 +90,7 @@ public class Option extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		//System.out.println("avant rendu option");
-		view.renderOption(gc, gr, optionX, optionX,screenSize,inside,posTxt);
+		view.renderOption(gc, gr, optionX, optionX,screenSize,inside);
 
 	}
 

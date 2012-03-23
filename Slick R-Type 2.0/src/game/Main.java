@@ -13,7 +13,7 @@ import states.History;
 import states.Menu;
 import states.Option;
 import states.Pause;
-import states.Select;
+import states.SelectShip;
 import states.SelectMusic;
 
 public class Main extends StateBasedGame {
@@ -62,7 +62,7 @@ public class Main extends StateBasedGame {
         this.addState(new Loading(CHARGEMENTSTATE));
         this.addState(new GameOver(GAMEOVERSTATE));
         this.addState(new SelectMusic(SELECTMUSICSTATE));
-        this.addState(new Select(SELECTSTATE));
+        this.addState(new SelectShip(SELECTSTATE));
         this.addState(new History(HISTORYSTATE));
         this.addState(new Controls(CONTROLSSTATE));
         this.enterState(CHARGEMENTSTATE);

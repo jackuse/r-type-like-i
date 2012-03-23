@@ -31,23 +31,27 @@ import states.Game;
 // Contient toutes les valeurs partagées des etats
 
 /* URGENT 
+ * mettre en place les niveaux
  * commenter le code et le rendre propre
- * Ajouter des textes a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
+ * modifier menu selection pour mettre les vaisseaux qui tourne
+ * Ajouter des texte a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
+ * Faire un tableau de posTxt pour chaque affichage
+ * Corriger problem de son
  * 
  * EN PLUS 
  * bug dans la gestion de playlist
  * implementer keyconfig ou pas
  * renommer les XML
+ * Changer 2 3 polices
  * mettre en mode francais/anglais
  * Option résolution ecran // mort trop difficile
  * credit
- * faire une fonction qui decoupe de texte avec de /n pour le mode history
  * 
  * Faire le rapport / l'affiche / le diapo
  */
 
 /**
- * Class View
+ * Class Vue
  * Singleton
  * @author Etienne Grandier-Vazeille
  *
@@ -63,25 +67,33 @@ public class View {
 
 	private Image[] background = new Image[5];
 	private Image player;
-	private Image[] alien = new Image[2];
+	private Animation[] alien = new Animation[2];
 	private Image laser;
 	private Image missile;
 	private Image[] boss = new Image[2];;
 	
 	private int intro=0;
+	private boolean movingUp,movingDown;
 	//private Image animatedRotatingShip1Frames;
 	
 	private Image nastyProjectile;
 	private Image explosion;
 	private Image sheet;
-	private XMLPackedSheet sheetTest;
+	private XMLPackedSheet ship;
 	private XMLPackedSheet nastyProjectileSheet;
 	private XMLPackedSheet animatedRotatingShip1Sheet;
+	private XMLPackedSheet animatedRotatingShip2Sheet;
+	private XMLPackedSheet animatedRotatingShip3Sheet;
 	private String dossierSkin = "data/skin1";
 	private SpriteSheet skin;
 	private Animation animatedEnergyBall;
 	private Animation animatedRotatingShip1;
+	private Animation animatedRotatingShip2;
+	private Animation animatedRotatingShip3;
 	private Animation ship1CharacterSelectIntro;
+	
+	private Animation ship1MoveDown;
+	private Animation ship1MoveUp;
 	private int[][] skinDef;
 
 	private Image exitOption = null;
@@ -100,7 +112,6 @@ public class View {
 
 	private ResourceManager rm = ResourceManager.getInstance();
 	public DeferredResource nextResource; 
-	public String shipname = "VAISSEAU_1";
 
 	float alpha = 0;
 
@@ -138,6 +149,8 @@ public class View {
 	
 	// En milliseconde
 	private int timer;
+
+	private XMLPackedSheet alienSheet;
 
 
 
@@ -377,6 +390,9 @@ public class View {
 	public void initCharacterSelectScreen() throws SlickException{
 
 		animatedRotatingShip1Sheet = new XMLPackedSheet("data/introVaisseau1.png","data/introVaisseau1.png.xml");
+		animatedRotatingShip2Sheet = new XMLPackedSheet("data/introVaisseau2.png","data/introVaisseau2.png.xml");
+		animatedRotatingShip3Sheet = new XMLPackedSheet("data/introVaisseau3.png","data/introVaisseau3.png.xml");
+
 		principale = rm.getMusic("MUSIC_7");
 		principale.setVolume(volumeMusic);
 		Image menu2 = rm.getImage("BOUTONS_CHARSELECT");
@@ -388,8 +404,14 @@ public class View {
 		ship3 = menu2.getSubImage(220, 184, 220, 70);
 		
 		animatedRotatingShip1 = new Animation();
-		for (int i = 1; i<34; i++)
-			animatedRotatingShip1.addFrame(animatedRotatingShip1Sheet.getSprite("v1csa"+i+".gif"), 30);
+		animatedRotatingShip2 = new Animation();
+		animatedRotatingShip3 = new Animation();
+		for (int i = 1; i<45; i++)
+			animatedRotatingShip1.addFrame(animatedRotatingShip1Sheet.getSprite("v1csa"+i+".gif"), 35);
+		for (int i = 1; i<45; i++)
+			animatedRotatingShip2.addFrame(animatedRotatingShip2Sheet.getSprite("v2csa"+i+".gif"), 35);
+		for (int i = 1; i<45; i++)
+			animatedRotatingShip3.addFrame(animatedRotatingShip3Sheet.getSprite("v3csa"+i+".gif"), 35);
 		//for(int i=1;i<animatedRotatingShip1Frames;i++)
 		//	animatedRotatingShip1.addFrame("v1csa"+i+".gif", 15);
 		selectMusic(7);
@@ -408,9 +430,15 @@ public class View {
 	}
 
 	public void initGame() throws SlickException{
-		sheetTest= new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
+		//ship = new XMLPackedSheet ("data/pack1.png","data/pack1.png.xml");
 		nastyProjectileSheet=new XMLPackedSheet("data/nastyProjectileSheet.png","data/nastyProjectileSheet.png.xml");
+		alienSheet=new XMLPackedSheet("data/alienSheet.png","data/alienSheet.png.xml");
 		animatedEnergyBall= new Animation();
+		alien[0]=new Animation();
+		
+		
+		
+
 		principale = rm.getMusic("MUSIC_0");
 		principale.setVolume(volumeMusic);
 		background[0] = rm.getImage("BACKGROUD_JEU");	
@@ -423,20 +451,21 @@ public class View {
 		nastyProjectile = nastyProjectileSheet.getSprite("nastyProjectile1.gif");
 		//nastyProjectile.setRotation(270.0f);
 
-		//player = rm.getImage("JOUEUR");
-		sheet = rm.getImage("VAISSEAU_1");
+		//player = rm.getImage("player");
+		//sheet = rm.getImage("VAISSEAU_1");
 		//player = sheet.getSubImage(265,3746,123,196);
 		//player = sheet.getSubImage(97,45,30,30);
-		player=sheetTest.getSprite("VAISSEAU_1.gif");
-		player.setRotation(90.0f);
+		//player=ship.getSprite("VAISSEAU_1.gif");
+		//player.setRotation(90.0f);
 		//laser = sheet.getSubImage(265,3746,123,196);
 		//laser.setRotation(90.0f);
 
 		animatedEnergyBall.addFrame(nastyProjectileSheet.getSprite("nastyProjectile1.gif"), 100);
 		animatedEnergyBall.addFrame(nastyProjectileSheet.getSprite("nastyProjectile2.gif"), 100);
 		
-		alien[0] = rm.getImage("ALIEN_1");
-		alien[0].setRotation(270.0f);	
+		alien[0].addFrame(alienSheet.getSprite("e1csa1.gif"), 10);
+		alien[0].addFrame(alienSheet.getSprite("e1csa2.gif"), 10);
+		
 		life=rm.getImage("HEART");
 		
 		try {
@@ -490,40 +519,43 @@ public class View {
 	        } */
 	}
 
-	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size, boolean[] inside,int posTxt[][]) {
+	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size, boolean[] inside) {
+		//System.out.println("rendu d'option");
+
+		//startGameOption.draw(optionX, optionY, startGameScale);
 		background[2].draw(0, 0);
 		
 
 		gr.setColor(new Color (1.0f, 1.0f, 1.0f));
 		
 
-		fonts[0].drawString(optionX, optionY+posTxt[0][1], "Music",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(optionX, optionY+height*0.10f, "Music",new Color(1.0f,1.0f,1.0f));
 		if(validerMusic)
-			validerOk.draw(optionX+posTxt[0][0], optionY+posTxt[0][1],0.7f);
+			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
 		else
-			valider.draw(optionX+posTxt[0][0], optionY+posTxt[0][1],0.7f);
+			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
 		if(inside[0]){
-			gr.fill(new Rectangle (optionX, optionY+42+posTxt[0][1], 100, 5));
+			gr.fill(new Rectangle (optionX, optionY+height*0.17f, 100, 5));
 		}
 
-		fonts[0].drawString(optionX+posTxt[1][0], optionY+posTxt[1][1], "Music Playlist",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(optionX, optionY+height*0.20f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
 		if(inside[1]){
-			gr.fill(new Rectangle (optionX+posTxt[1][0], optionY+42+posTxt[1][1], 220, 5));
+			gr.fill(new Rectangle (optionX, optionY+height*0.27f, 220, 5));
 		}
 
-//		fonts[0].drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
-//		if(validerFullscreen)
-//			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
-//		else
-//			valider.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
-//		if(inside[2]){
-//			gr.fill(new Rectangle (optionX, optionY+height*0.37f, 180, 5));
-//		}
+		fonts[0].drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
+		if(validerFullscreen)
+			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
+		else
+			valider.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
+		if(inside[2]){
+			gr.fill(new Rectangle (optionX, optionY+height*0.37f, 180, 5));
+		}
 		//System.out.println("rendu d'option pro ");
-//		gr.setColor(new Color(0.5f,0.5f,0.5f));
-//		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.325f);
+		gr.setColor(new Color(0.5f,0.5f,0.5f));
+		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.325f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
-		exitOption.draw(optionX+posTxt[2][0], optionY+posTxt[2][1], exitScale);
+		exitOption.draw(optionX, optionY+height*0.40f, exitScale);
 
 	}
 
@@ -554,14 +586,7 @@ public class View {
 			if(s.length == 10)
 				gr.drawString(s[9], pos[9], height*0.35f+25*9);
 		}
-		//gr.drawString(hm.getHighscoreString(), hSX, 300);
-		//System.out.println(hm.getHighscoreString());
-
-
-//		startGameOption.draw(menuX, menuY, startGameScale);
-//		optionOption.draw(menuX+350, menuY, optionScale);
-//		controlsOption.draw(menuX+550, menuY, controlsScale);
-//		exitOption.draw(menuX+700, menuY, exitScale);
+		
 		startGameOption.draw(menuX+posTxt[0][0], menuY+posTxt[0][1], startGameScale);
 		optionOption.draw(menuX+posTxt[1][0], menuY+posTxt[1][1], optionScale);
 		controlsOption.draw(menuX+posTxt[2][0], menuY+posTxt[2][1], controlsScale);
@@ -583,6 +608,10 @@ public class View {
 		ship3.draw(menuX+600, menuY, exitScale);
 		if (intro==1)
 			animatedRotatingShip1.draw(800/2-300/2, 600/2, 300, 150);
+		if (intro==2)
+			animatedRotatingShip2.draw(800/2-300/2, 600/2, 300, 150);
+		if (intro==3)
+			animatedRotatingShip3.draw(800/2-300/2, 600/2, 300, 150);
 		return 0;
 	}
 
@@ -612,18 +641,35 @@ public class View {
 //	 * @return       int
 //	 * @param        g
 //	 */
-//	public int renderTire( Graphics g, ArrayList<Tir> tirs )
+//	public int renderTire( Graphics g, ArrayList<Shot> tirs )
 //	{
 //		if(!tirs.isEmpty()){
-//			Iterator<Tir> it = tirs.iterator();
+//			Iterator<Shot> it = tirs.iterator();
 //			while(it.hasNext()){
-//				Tir t =((Tir) it.next());
+//				Shot t =((Shot) it.next());
 //				//if(t.estVisible())
 //				//t.getImage().draw(t.getX()+10,t.getY()+38);
 //			}
 //		}
 //		return 0;
 //	}
+
+
+	/**
+	 * @return       int
+	 * @param        g
+	 */
+	public int renderTire( Graphics g, ArrayList<Shot> tirs )
+	{
+		if(!tirs.isEmpty()){
+			Iterator<Shot> it = tirs.iterator();
+			while(it.hasNext()){
+				Shot t =((Shot) it.next());
+				
+			}
+		}
+		return 0;
+	}
 
 
 	/**
@@ -648,17 +694,32 @@ public class View {
 
 	public int renderPlayer(Graphics gr, PlayerShip v,int clig) {
 
-		player=sheetTest.getSprite(shipname); // Whats the fuck !!!!!!!!
-		player.setRotation(90.0f);
-
-
-
+		if(intro==1)
+		{
+			player=ship.getSprite("v1idle.gif");
+			player.setRotation(90.0f);
+		}
+		else if (intro ==2)
+			player=ship.getSprite("v3idle.gif");
+		else if (intro ==3)
+			player=ship.getSprite("v2idle.gif");
+				
 
 		if(v.isBorn()){
 			if(clig == 1){
 				nbCligne++;
-				player.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
-				//System.out.println("je clignote "+nbCligne);
+				if(!movingDown && !movingUp){
+					player.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+					ship1MoveDown.restart();
+					ship1MoveUp.restart();
+					
+				}
+				else if(movingDown)
+					getShip1MoveDown().draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+				else if(movingUp)
+				{
+					getShip1MoveUp().draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+				}
 			}else{
 
 			}
@@ -669,16 +730,24 @@ public class View {
 
 		}else{
 
-			player.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+			if(!movingDown && !movingUp){
+				player.draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+				ship1MoveDown.restart();
+				ship1MoveUp.restart();
+				
+			}
+			else if(movingDown)
+				getShip1MoveDown().draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+			else if(movingUp)
+			{
+				getShip1MoveUp().draw(v.getX()-v.getDecalageX(), v.getY()-v.getDecalageY());
+			}
 		}
 		if(debugCol){
 			Rectangle rect = new Rectangle (v.getX(), v.getY(), v.getW(), v.getH());
 			gr.setColor(new Color (0.2f, 0.2f, 0.2f));
 			gr.fill(rect);
 		}
-
-
-		//player.draw(v.getX(), v.getY(), v.getW(), v.getH());
 
 
 		return 0;
@@ -1016,28 +1085,28 @@ public class View {
 		}
 	}
 	
-	public void setAltBouton(int i, int menuX, int menuY){
+	public void setAltBouton(boolean insideChar1,boolean insideChar2, boolean insideChar3, int menuX, int menuY){
 		System.out.println("HOY");
 		Image menu2 = rm.getImage("BOUTONS_CHARSELECT");
 		Image menu2_alt=rm.getImage("BOUTONS_CHARSELECT_ALT");
-		if(i==1)
+		if(insideChar1 && !insideChar2 && !insideChar3)
 		{
 			ship1 = menu2_alt.getSubImage(0, 28, 445, 70);
 			intro=1;
 			
 		}
-		if(i==2)
+		else if(!insideChar1 && insideChar2 && !insideChar3)
 		{
 			ship2= menu2_alt.getSubImage(180, 105, 300, 70);
 			intro=2;
 		}
 		
-		if(i==3)
+		else if(!insideChar1 && !insideChar2 && insideChar3)
 		{
 			ship3 = menu2_alt.getSubImage(220, 184, 220, 70);
 			intro=3;
 		}
-		if(i==0)
+		else
 		{
 			ship1 = menu2.getSubImage(0, 28, 445, 70);
 			ship2 = menu2.getSubImage(180, 105, 300, 70);
@@ -1095,7 +1164,7 @@ public class View {
 		}
 	}
 
-	public void loadGame(){
+	public void chargemementGame(){
 		try {
 			//rm.loadResources(new FileInputStream("data/jeu.xml"),true);
 			rm.loadResources(getClass().getResourceAsStream("/data/ressources.xml"),true); // Methode compatible avec les jars
@@ -1245,6 +1314,49 @@ public class View {
 		fonts[1].drawString(50, height-50, "Press Any Key to quit", new Color(1.0f,1.0f,1.0f));
 		
 	}
+
+	public XMLPackedSheet getShip() {
+		return ship;
+	}
+
+	public void setShip(XMLPackedSheet ship) {
+		this.ship = ship;
+	}
+
+
+	public boolean isMovingUp() {
+		return movingUp;
+	}
+
+	public void setMovingUp(boolean movingUp) {
+		this.movingUp = movingUp;
+	}
+
+	public boolean isMovingDown() {
+		return movingDown;
+	}
+
+	public void setMovingDown(boolean movingDown) {
+		this.movingDown = movingDown;
+	}
+
+	public Animation getShip1MoveDown() {
+		return ship1MoveDown;
+	}
+
+	public void setShip1MoveDown(Animation ship1MoveDown) {
+		this.ship1MoveDown = ship1MoveDown;
+	}
+
+	public Animation getShip1MoveUp() {
+		return ship1MoveUp;
+	}
+
+	public void setShip1MoveUp(Animation ship1MoveUp) {
+		this.ship1MoveUp = ship1MoveUp;
+	}
+
+	
 
 	public int getTimer() {
 		return timer;

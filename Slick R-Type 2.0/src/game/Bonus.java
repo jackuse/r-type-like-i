@@ -6,8 +6,8 @@ public class Bonus extends Objet {
 	  protected float speed;
 	  protected int type;
 	  /* 1 : life
-	   * 2 : medickit
-	   * 3 : lvl up wearpon
+	   * 2 : medikit
+	   * 3 : lvl up weapon
 	   * 
 	   */
 	  

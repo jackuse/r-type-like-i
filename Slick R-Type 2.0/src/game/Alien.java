@@ -31,6 +31,11 @@ public class Alien extends Ship {
 			x-=speed;
 			y-=speed;
 		}
+		else if (behavior==3)
+		{
+			x-=speed;
+			y+=speed;
+		}
 	}
 
 	//

@@ -235,8 +235,15 @@ public class Game extends BasicGameState{
 
 		//System.out.println("1: "+view.getIplayer().getHeight()+"  1: "+view.getIplayer().getWidth());
 		// Les commandes de déplacements
+		if(!input.isKeyDown(Input.KEY_Z) && !input.isKeyDown(Input.KEY_S))
+		{
+			view.setMovingUp(false);
+			view.setMovingDown(false);
+		}
 		if(input.isKeyDown(Input.KEY_Z))
-		{		
+		{
+			view.setMovingUp(true);
+			view.setMovingDown(false);
 			if(speedUp)
 				player[0].getShip().setY(player[0].getShip().getY()-player[0].getShip().getSpeed()*2);
 			else
@@ -244,8 +251,10 @@ public class Game extends BasicGameState{
 			if(player[0].getShip().getY()<((view.getIPlayer().getHeight()-player[0].getShip().getH())/2))
 				player[0].getShip().setY(((view.getIPlayer().getHeight()-player[0].getShip().getH())/2));
 		}
-		if(input.isKeyDown(Input.KEY_S))
+		else if(input.isKeyDown(Input.KEY_S))
 		{
+			view.setMovingDown(true);
+			view.setMovingUp(false);
 			if(speedUp)
 				player[0].getShip().setY(player[0].getShip().getY()+player[0].getShip().getSpeed()*2);
 			else
@@ -263,7 +272,7 @@ public class Game extends BasicGameState{
 		}
 		if(input.isKeyDown(Input.KEY_D))
 		{
-			//System.out.println("1: "+player[0].getShip().getX()+"  2: "+((view.getIplayer().getWidth()-player[0].getShip().getW())/2));
+
 			player[0].getShip().setX(player[0].getShip().getX()+player[0].getShip().getSpeed());
 			if(player[0].getShip().getX()+player[0].getShip().getW()>(view.getWidth()-((view.getIPlayer().getWidth()+player[0].getShip().getW())/2)))
 				player[0].getShip().setX((view.getWidth()-((view.getIPlayer().getWidth()+player[0].getShip().getW())/2)));
@@ -286,6 +295,7 @@ public class Game extends BasicGameState{
 		{
 			bgSpeed = 10;
 			speedUp= true;
+			
 		}
 
 		// Commande next Weapon
