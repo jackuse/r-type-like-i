@@ -5,7 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import states.Chargement;
+import states.Loading;
 import states.Game;
 import states.GameOver;
 import states.Highscore;
@@ -41,7 +41,7 @@ public class Main extends StateBasedGame {
     
     public static int previousState = -1;
     
-    private Vue vue = Vue.getInstance();
+    private View vue = View.getInstance();
     
     public static AppGameContainer app;
 	
@@ -59,7 +59,7 @@ public class Main extends StateBasedGame {
         this.addState(new Option(OPTIONSTATE));
         //this.addState(new Selection(SELECTIONSTATE ));
         this.addState(new Highscore(HIGHSCORESTATE));
-        this.addState(new Chargement(CHARGEMENTSTATE));
+        this.addState(new Loading(CHARGEMENTSTATE));
         this.addState(new GameOver(GAMEOVERSTATE));
         this.addState(new SelectMusic(SELECTMUSICSTATE));
         this.addState(new Select(SELECTSTATE));

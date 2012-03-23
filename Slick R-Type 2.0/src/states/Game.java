@@ -14,7 +14,7 @@ import game.Objet;
 import game.ResourceManager;
 import game.TimedEvent;
 import game.Shot;
-import game.Vue;
+import game.View;
 import game.Bonus;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class Game extends BasicGameState{
 	int levelId=1;
 	int nastyProjectileTimer = 0;
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View view = View.getInstance();
 
 //	private ArrayList<TimedEvent> event;
 	private EventList event = EventList.getInstance();
@@ -96,7 +96,7 @@ public class Game extends BasicGameState{
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{
-		vue.initGame();
+		view.initGame();
 		playerProjectile = new ArrayList<Objet>();
 		nastyProjectile = new ArrayList<Objet>();
 		boss = new ArrayList<Boss>();
@@ -124,7 +124,7 @@ public class Game extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderBg(gr, posXBg1, posXBg2);
+		view.renderBg(gr, posXBg1, posXBg2);
 
 		//sbg.enterState(Main.GAMEOVERSTATE);
 		param[1] = explo.size();
@@ -142,31 +142,31 @@ public class Game extends BasicGameState{
 
 		for (Iterator<Alien> e = enemy.iterator(); e.hasNext(); ) {
 			Objet obE = (Objet) e.next();
-			vue.render1Vaisseau(gr, obE,obE.getId());
+			view.render1Vaisseau(gr, obE,obE.getId());
 		}
 
 
 		for (Iterator<Objet> pp = playerProjectile.iterator(); pp.hasNext(); ) {
 			Objet obPp = (Objet) pp.next();
-			vue.render1Tir(gr, obPp,obPp.getId());
+			view.render1Tir(gr, obPp,obPp.getId());
 		}
 
 		for (Iterator<Objet> np = nastyProjectile.iterator(); np.hasNext(); ) {
 			Objet obNp = (Objet) np.next();
-			vue.render1Tir(gr, obNp, obNp.getId());
+			view.render1Tir(gr, obNp, obNp.getId());
 		}
 		
 		for (Iterator<Boss> bo = boss.iterator(); bo.hasNext(); ) {
 			Objet obBo = (Objet) bo.next();
 			System.out.println("je blit du boss");
-			vue.render1Vaisseau(gr, obBo, obBo.getId());
+			view.render1Vaisseau(gr, obBo, obBo.getId());
 		}
 
 		
-		vue.renderPlayer(gr,player[0].getShip(),param[0]);
-		vue.renderExplosion(gr, explo);
-		vue.renderHUD(gr,param);
-		//vue.renderTest(g);
+		view.renderPlayer(gr,player[0].getShip(),param[0]);
+		view.renderExplosion(gr, explo);
+		view.renderHUD(gr,param);
+		//view.renderTest(g);
 
 	}
 
@@ -192,30 +192,30 @@ public class Game extends BasicGameState{
 			reset();
 			Main.previousState = sbg.getCurrentStateID();	
 
-			//vue.setMusic(1);
-			vue.setMusic(0);
-			vue.selectMusic(1);
-			//vue.principale.setPosition(120.0f);
-			if(vue.isValiderMusic()){	
-				vue.setMusic(4);
+			//view.setMusic(1);
+			view.setMusic(0);
+			view.selectMusic(1);
+			//view.principale.setPosition(120.0f);
+			if(view.isValiderMusic()){	
+				view.setMusic(4);
 			}
-			vue.principale.setVolume(0.4f);
+			view.principale.setVolume(0.4f);
 
 
 		}
 
-		if(vue.isValiderMusic()){
-			if(!vue.isMusic()){
-				vue.setMusic(0);
-				vue.nextMusic();
-				vue.setMusic(4);		
+		if(view.isValiderMusic()){
+			if(!view.isMusic()){
+				view.setMusic(0);
+				view.nextMusic();
+				view.setMusic(4);		
 			}
 		}
 
-		//		if(!vue.isMusic()){
-		//			vue.setMusic(0);
+		//		if(!view.isMusic()){
+		//			view.setMusic(0);
 		//		}
-		///System.out.println("music is "+vue.isMusic()+" and pos="+vue.principale.getPosition()+" and vol="+vue.principale.getVolume()  ); 
+		///System.out.println("music is "+view.isMusic()+" and pos="+view.principale.getPosition()+" and vol="+view.principale.getVolume()  ); 
 		// END MUSIC
 
 		delayClig -=delay;//a modifier
@@ -233,7 +233,7 @@ public class Game extends BasicGameState{
 		////////////////////////////////////////LES COMMANDES /////////////////////////////////////////
 		Input input = gc.getInput(); // On récupére les input
 
-		//System.out.println("1: "+vue.getIplayer().getHeight()+"  1: "+vue.getIplayer().getWidth());
+		//System.out.println("1: "+view.getIplayer().getHeight()+"  1: "+view.getIplayer().getWidth());
 		// Les commandes de déplacements
 		if(input.isKeyDown(Input.KEY_Z))
 		{		
@@ -241,8 +241,8 @@ public class Game extends BasicGameState{
 				player[0].getShip().setY(player[0].getShip().getY()-player[0].getShip().getSpeed()*2);
 			else
 				player[0].getShip().setY(player[0].getShip().getY()-player[0].getShip().getSpeed());
-			if(player[0].getShip().getY()<((vue.getIPlayer().getHeight()-player[0].getShip().getH())/2))
-				player[0].getShip().setY(((vue.getIPlayer().getHeight()-player[0].getShip().getH())/2));
+			if(player[0].getShip().getY()<((view.getIPlayer().getHeight()-player[0].getShip().getH())/2))
+				player[0].getShip().setY(((view.getIPlayer().getHeight()-player[0].getShip().getH())/2));
 		}
 		if(input.isKeyDown(Input.KEY_S))
 		{
@@ -250,23 +250,23 @@ public class Game extends BasicGameState{
 				player[0].getShip().setY(player[0].getShip().getY()+player[0].getShip().getSpeed()*2);
 			else
 				player[0].getShip().setY(player[0].getShip().getY()+player[0].getShip().getSpeed());
-			if(player[0].getShip().getY()+player[0].getShip().getH()>(vue.getHeight()-((vue.getIPlayer().getHeight()+player[0].getShip().getH())/2)))
-				player[0].getShip().setY(vue.getHeight()-((vue.getIPlayer().getHeight()+player[0].getShip().getH())/2));
+			if(player[0].getShip().getY()+player[0].getShip().getH()>(view.getHeight()-((view.getIPlayer().getHeight()+player[0].getShip().getH())/2)))
+				player[0].getShip().setY(view.getHeight()-((view.getIPlayer().getHeight()+player[0].getShip().getH())/2));
 		}
 		if(input.isKeyDown(Input.KEY_Q))
 		{
-			//System.out.println("1: "+player[0].getShip().getX()+"  2: "+((vue.getIplayer().getWidth()-player[0].getShip().getW())/2));
+			//System.out.println("1: "+player[0].getShip().getX()+"  2: "+((view.getIplayer().getWidth()-player[0].getShip().getW())/2));
 			player[0].getShip().setX(player[0].getShip().getX()-player[0].getShip().getSpeed());
-			if(player[0].getShip().getX()<((vue.getIPlayer().getWidth()-player[0].getShip().getW())/2))
-				player[0].getShip().setX(((vue.getIPlayer().getWidth()-player[0].getShip().getW())/2));
+			if(player[0].getShip().getX()<((view.getIPlayer().getWidth()-player[0].getShip().getW())/2))
+				player[0].getShip().setX(((view.getIPlayer().getWidth()-player[0].getShip().getW())/2));
 
 		}
 		if(input.isKeyDown(Input.KEY_D))
 		{
-			//System.out.println("1: "+player[0].getShip().getX()+"  2: "+((vue.getIplayer().getWidth()-player[0].getShip().getW())/2));
+			//System.out.println("1: "+player[0].getShip().getX()+"  2: "+((view.getIplayer().getWidth()-player[0].getShip().getW())/2));
 			player[0].getShip().setX(player[0].getShip().getX()+player[0].getShip().getSpeed());
-			if(player[0].getShip().getX()+player[0].getShip().getW()>(vue.getWidth()-((vue.getIPlayer().getWidth()+player[0].getShip().getW())/2)))
-				player[0].getShip().setX((vue.getWidth()-((vue.getIPlayer().getWidth()+player[0].getShip().getW())/2)));
+			if(player[0].getShip().getX()+player[0].getShip().getW()>(view.getWidth()-((view.getIPlayer().getWidth()+player[0].getShip().getW())/2)))
+				player[0].getShip().setX((view.getWidth()-((view.getIPlayer().getWidth()+player[0].getShip().getW())/2)));
 		}
 
 		//Commande laser
@@ -339,10 +339,10 @@ public class Game extends BasicGameState{
 				delaiTire = 100;
 				//				ResourceManager rm = ResourceManager.getInstance();
 				//				rm.listR();
-				vue.setMusic(0);
-				vue.nextMusic();
-				if(vue.isValiderMusic()){
-					vue.setMusic(4);
+				view.setMusic(0);
+				view.nextMusic();
+				if(view.isValiderMusic()){
+					view.setMusic(4);
 				}
 			}
 
@@ -385,9 +385,9 @@ public class Game extends BasicGameState{
 		// La pause
 		if (gc.getInput().isKeyPressed(Input.KEY_P) || input.isKeyPressed(Input.KEY_ESCAPE)){
 			gc.setPaused(!gc.isPaused());
-			vue.setPauseBg(gc.getGraphics());
+			view.setPauseBg(gc.getGraphics());
 			sbg.enterState(Main.PAUSESTATE);
-			//vue.setMusic(2);
+			//view.setMusic(2);
 			/*
 			if(etatTmp == 11){
 				etatTmp = 10;
@@ -405,12 +405,12 @@ public class Game extends BasicGameState{
 		// Défilement du background
 		posXBg1-=bgSpeed;
 		posXBg2-=bgSpeed;
-		if(posXBg1<-vue.getIBackground(0).getWidth()){
-			posXBg1=vue.getIBackground(0).getWidth()-1;
+		if(posXBg1<-view.getIBackground(0).getWidth()){
+			posXBg1=view.getIBackground(0).getWidth()-1;
 			posXBg2=-1;
 		}
-		if(posXBg2<-vue.getIBackground(0).getWidth()){
-			posXBg2=vue.getIBackground(0).getWidth()-1;
+		if(posXBg2<-view.getIBackground(0).getWidth()){
+			posXBg2=view.getIBackground(0).getWidth()-1;
 			posXBg1=-1;
 		}
 
@@ -521,8 +521,8 @@ public class Game extends BasicGameState{
 			boolean fin =lvl.next(); // c'est la fin on applaudi
 			player[0].restKill();
 			if(player[0].getLife() < 1){
-				vue.setPauseBg(gc.getGraphics());
-				vue.setMusic(0);
+				view.setPauseBg(gc.getGraphics());
+				view.setMusic(0);
 				for(int i=0;i<4;i++)
 					cheat[i]=false;
 				//GameOversetParam(int i, int p)
@@ -582,11 +582,11 @@ public class Game extends BasicGameState{
 		/*
 		if(changementDEtat){
 			if (etatTmp == 10){
-				vue.setMusic(3);
+				view.setMusic(3);
 				changementDEtat = false;
 			}
 			else if (etatTmp == 11){
-				vue.setMusic(2);
+				view.setMusic(2);
 				changementDEtat = false;
 			}
 		}

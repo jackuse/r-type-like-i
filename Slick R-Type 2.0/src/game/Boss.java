@@ -16,7 +16,7 @@ public class Boss extends Ship {
 	protected int pdv = 50;
 	protected float speed = 3;
 	boolean comming = true;
-	Vue vue = Vue.getInstance();
+	View view = View.getInstance();
 	boolean flip = true;
 	int cptA = 0;
 	private boolean fireOn = false;
@@ -32,10 +32,10 @@ public class Boss extends Ship {
 	private Boss () { };
 	public Boss (int id) {
 		this.id = id;
-//		this.w = vue.getIBoss(1);
-//		this.h = vue.getIBoss(1);
-		this.x = vue.getWidth()+20;
-		this.y = vue.getHeight()-h/2;
+//		this.w = view.getIBoss(1);
+//		this.h = view.getIBoss(1);
+		this.x = view.getWidth()+20;
+		this.y = view.getHeight()-h/2;
 	};
 
 	//
@@ -65,12 +65,12 @@ public class Boss extends Ship {
 				downMove = true;
 			}
 				
-			if (y<vue.getHeight()*0.80f && downMove)
+			if (y<view.getHeight()*0.80f && downMove)
 				y++;
 			else {
 				downMove = false;
 			}
-			if(!(upMove && downMove) && y>vue.getHeight()-h/2){
+			if(!(upMove && downMove) && y>view.getHeight()-h/2){
 				y--;
 			}
 			
@@ -79,7 +79,7 @@ public class Boss extends Ship {
 			
 			// Pellemele
 			
-			specialAttak(1,vue.getTimer());
+			specialAttak(1,view.getTimer());
 			
 			
 		}
@@ -95,7 +95,7 @@ public class Boss extends Ship {
 				flip = true;
 		}
 		
-		if(x<vue.getWidth()-w){
+		if(x<view.getWidth()-w){
 			comming = false;
 		}
 		

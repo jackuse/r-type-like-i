@@ -3,7 +3,7 @@ package states;
 import game.Chara;
 import game.Main;
 import game.ResourceManager;
-import game.Vue;
+import game.View;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ import org.newdawn.slick.state.transition.SelectTransition;
  */
 public class SelectMusic extends BasicGameState{
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View view = View.getInstance();
 
 
 	private int selectX=0;
@@ -49,7 +49,7 @@ public class SelectMusic extends BasicGameState{
 			throws SlickException {
 		
 		// On charge tout les titres des musiques du fichier XML
-		selectMusic=vue.initSelectionMusic(selectMusic);
+		selectMusic=view.initSelectionMusic(selectMusic);
 		maxItem = selectMusic.length;
 		inside = new boolean[maxItem];
 		for(int i=0;i<maxItem;i++)
@@ -57,7 +57,7 @@ public class SelectMusic extends BasicGameState{
 	}
 	
 	public void enter(GameContainer gc, StateBasedGame sgb) {
-		vue.resetInOption();
+		view.resetInOption();
 	}
 	
 	/* 
@@ -65,15 +65,16 @@ public class SelectMusic extends BasicGameState{
 	 */
 	public void leave(GameContainer container, StateBasedGame game)
 			throws SlickException{
-		vue.setMusic(0);
-		vue.selectMusic(0);
-		vue.setMusic(1);
+		view.setMusic(0);
+		view.selectMusic(0);
+		if(view.isValiderMusic())
+			view.setMusic(1);
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderSelection(gc,gr, selectX, selectY,inside);
+		view.renderSelection(gc,gr, selectX, selectY,inside);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class SelectMusic extends BasicGameState{
 		boolean insideExit = false;
 		boolean enterPress = false;
 		
-		//vue.resetInOption();
+		//view.resetInOption();
 		
 		// Les commandes de déplacements clavier
 		/*if (input.isKeyPressed(Input.KEY_Z)){
@@ -140,8 +141,8 @@ public class SelectMusic extends BasicGameState{
 		
 		// On detecte si la souris et sur le titre d'une musique
 		for(int i=0;i<selectMusic.length;i++){
-			if( ( mouseX >= selectX+10 && mouseX <= selectX+10+vue.getValider().getWidth()*0.45f) &&
-					( mouseY >= selectY+40*(i-1)+50 && mouseY <= selectY +40*(i-1)+50 + vue.getValider().getHeight()*0.45f) ){
+			if( ( mouseX >= selectX+10 && mouseX <= selectX+10+view.getValider().getWidth()*0.45f) &&
+					( mouseY >= selectY+40*(i-1)+50 && mouseY <= selectY +40*(i-1)+50 + view.getValider().getHeight()*0.45f) ){
 				selectMusic[i]= true;
 			}
 		}
@@ -150,10 +151,10 @@ public class SelectMusic extends BasicGameState{
 		for(int i=0;i<selectMusic.length;i++){
 			if( (( mouseX >= selectX+10 && mouseX <= selectX+10+600) &&
 					( mouseY >= selectY+40*(i-1)+50 && mouseY <= selectY +40*(i-1)+50 + 34)) /*|| inside[i]*/ ){
-				if(vue.getIdMusic()!=i){
-				vue.setMusic(0);
-				vue.selectMusic(i);
-				vue.setMusic(1);
+				if(view.getIdMusic()!=i){
+				view.setMusic(0);
+				view.selectMusic(i);
+				view.setMusic(1);
 				//System.out.println("set music "+i);
 				}
 				//System.out.println("on music "+i);
@@ -161,8 +162,8 @@ public class SelectMusic extends BasicGameState{
 		}
 		
 		// On detect si on est sur le bouton exit
-		if( ( mouseX >= selectX+10 && mouseX <= selectX+10 + vue.getOptionOption().getWidth()*0.7) &&
-				( mouseY >= selectY+vue.getHeight()*0.80f && mouseY <= selectY+vue.getHeight()*0.80f + vue.getOptionOption().getHeight()*0.7) ){
+		if( ( mouseX >= selectX+10 && mouseX <= selectX+10 + view.getOptionOption().getWidth()*0.7) &&
+				( mouseY >= selectY+view.getHeight()*0.80f && mouseY <= selectY+view.getHeight()*0.80f + view.getOptionOption().getHeight()*0.7) ){
 			insideExit = true;
 		}
 
@@ -172,12 +173,12 @@ public class SelectMusic extends BasicGameState{
 				delayClick-= 20;
 				if (delayClick<0 || inside[i] ){
 					if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
-						if(vue.isSelectMusic(i)){
-							vue.setValiderSelectMusic(i,false);
+						if(view.isSelectMusic(i)){
+							view.setValiderSelectMusic(i,false);
 							//System.out.println("music "+i+" off");							
 						}
 						else{
-							vue.setValiderSelectMusic(i,true);
+							view.setValiderSelectMusic(i,true);
 							//System.out.println("music "+i+" on");
 						}
 					}
@@ -191,18 +192,18 @@ public class SelectMusic extends BasicGameState{
 		// Si on est sur exit on quit le menu
 		if(insideExit || inside[0])
 		{
-			if(vue.getExitScale() < 0.8f)
-				vue.setExitScale(vue.getExitScale() + 0.00001f * 20);
+			if(view.getExitScale() < 0.8f)
+				view.setExitScale(view.getExitScale() + 0.00001f * 20);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
 
-				vue.setExitScale(0.7f);
+				view.setExitScale(0.7f);
 
 				sbg.enterState(Main.OPTIONSTATE);
 
 			}
 		}else{
-			if(vue.getExitScale() > 0.7f)
-				vue.setExitScale(vue.getExitScale() - 0.00001f * 20);
+			if(view.getExitScale() > 0.7f)
+				view.setExitScale(view.getExitScale() - 0.00001f * 20);
 		}
 
 

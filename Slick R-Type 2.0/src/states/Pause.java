@@ -8,7 +8,7 @@ import game.IOManager;
 import game.Player;
 import game.Main;
 import game.Objet;
-import game.Vue;
+import game.View;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -26,7 +26,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class Pause extends BasicGameState{
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View view = View.getInstance();
 	private IOManager io = IOManager.getInstance();
 
 	int pauseX = 250;
@@ -54,7 +54,7 @@ public class Pause extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		
-		vue.initPause();
+		view.initPause();
 		cheatCodeString = new String[nbPassword];
 		cheatCodeString[0]= "dnkrow";
 		cheatCodeString[1]= "allyourbasearebelongtous";
@@ -75,7 +75,7 @@ public class Pause extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		
-		vue.renderPause(gc,gr,pauseX,pauseY,cheatModOn,pass,posTxt);
+		view.renderPause(gc,gr,pauseX,pauseY,cheatModOn,pass,posTxt);
 	}
 
 	@Override
@@ -95,11 +95,11 @@ public class Pause extends BasicGameState{
 			sbg.enterState(Main.GAMESTATE);
 		}
 
-		if(vue.isValiderMusic()){ // Si il n'y a pas de musique on la lance
-			if(!vue.isMusic()){
-				vue.setMusic(0);
-				vue.nextMusic();
-				vue.setMusic(4);		
+		if(view.isValiderMusic()){ // Si il n'y a pas de musique on la lance
+			if(!view.isMusic()){
+				view.setMusic(0);
+				view.nextMusic();
+				view.setMusic(4);		
 			}
 		}
 
@@ -125,8 +125,8 @@ public class Pause extends BasicGameState{
 							
 							switch (i) {
 							case 0:
-								vue.setMessage("GodMod : OFF",1000);
-								vue.nextMusic();
+								view.setMessage("GodMod : OFF",1000);
+								view.nextMusic();
 								break;
 							case 1:
 								
@@ -144,8 +144,8 @@ public class Pause extends BasicGameState{
 							
 							switch (i) {
 							case 0:
-								vue.setMessage("GodMod : ON",1000);
-								vue.nextMusic();
+								view.setMessage("GodMod : ON",1000);
+								view.nextMusic();
 								break;
 							case 1:
 								
@@ -176,17 +176,17 @@ public class Pause extends BasicGameState{
 		boolean insideControls = false;
 
 
-		if( ( mouseX >= pauseX+posTxt[0][0] && mouseX <= pauseX+posTxt[0][0] + vue.getStartGameOption().getWidth()*0.7) &&
-				( mouseY >= pauseY+posTxt[0][1] && mouseY <= pauseY+posTxt[0][1] + vue.getStartGameOption().getHeight()*0.7) ){
+		if( ( mouseX >= pauseX+posTxt[0][0] && mouseX <= pauseX+posTxt[0][0] + view.getStartGameOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+posTxt[0][1] && mouseY <= pauseY+posTxt[0][1] + view.getStartGameOption().getHeight()*0.7) ){
 			insideStartGame = true;
-		}else if( ( mouseX >= pauseX+posTxt[1][0] && mouseX <= pauseX+posTxt[1][0] + vue.getOptionOption().getWidth()*0.7) &&
-				( mouseY >= pauseY+posTxt[1][1] && mouseY <= pauseY+posTxt[1][1] + vue.getOptionOption().getHeight()*0.7) ){
+		}else if( ( mouseX >= pauseX+posTxt[1][0] && mouseX <= pauseX+posTxt[1][0] + view.getOptionOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+posTxt[1][1] && mouseY <= pauseY+posTxt[1][1] + view.getOptionOption().getHeight()*0.7) ){
 			insideOption = true;
-		}else if( ( mouseX >= pauseX+posTxt[2][0] && mouseX <= pauseX+posTxt[2][0] + vue.getControlsOption().getWidth()*0.7) &&
-				( mouseY >= pauseY+posTxt[2][1] && mouseY <= pauseY+posTxt[2][1] + vue.getControlsOption().getHeight()*0.7) ){
+		}else if( ( mouseX >= pauseX+posTxt[2][0] && mouseX <= pauseX+posTxt[2][0] + view.getControlsOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+posTxt[2][1] && mouseY <= pauseY+posTxt[2][1] + view.getControlsOption().getHeight()*0.7) ){
 			insideControls = true;
-		}else if( ( mouseX >= pauseX+posTxt[3][0] && mouseX <= pauseX+posTxt[3][0] + vue.getExitOption().getWidth()*0.7) &&
-				( mouseY >= pauseY+posTxt[3][1] && mouseY <= pauseY+posTxt[3][1] + vue.getExitOption().getHeight()*0.7) ){
+		}else if( ( mouseX >= pauseX+posTxt[3][0] && mouseX <= pauseX+posTxt[3][0] + view.getExitOption().getWidth()*0.7) &&
+				( mouseY >= pauseY+posTxt[3][1] && mouseY <= pauseY+posTxt[3][1] + view.getExitOption().getHeight()*0.7) ){
 			insideExit = true;
 		}
 
@@ -202,7 +202,7 @@ public class Pause extends BasicGameState{
 			delayClick-= 20;
 			if (delayClick<0){
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-					vue.setOptionScale(0.7f);
+					view.setOptionScale(0.7f);
 					sbg.enterState(Main.OPTIONSTATE);
 				}
 				delayClick = 150;
@@ -210,25 +210,25 @@ public class Pause extends BasicGameState{
 		}
 		
 		if(insideControls){
-			if(vue.getControlsScale() < 0.8f)
-				vue.setControlsScale(vue.getStartGameScale()+scaleStep * 20);
+			if(view.getControlsScale() < 0.8f)
+				view.setControlsScale(view.getStartGameScale()+scaleStep * 20);
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				vue.setControlsScale(0.7f);
+				view.setControlsScale(0.7f);
 				sbg.enterState(Main.CONTROLSSTATE);
 			}
 		}else{
-			if(vue.getControlsScale() > 0.7f)
-				vue.setControlsScale(vue.getControlsScale()-scaleStep * 20);
+			if(view.getControlsScale() > 0.7f)
+				view.setControlsScale(view.getControlsScale()-scaleStep * 20);
 		}
 
 		if(insideExit)
 		{
 
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				vue.setMusic(0);
-				vue.setExitScale(0.7f);
-				vue.selectMusic(0);
+				view.setMusic(0);
+				view.setExitScale(0.7f);
+				view.selectMusic(0);
 				sbg.enterState(Main.MENUSTATE);
 			}
 		}

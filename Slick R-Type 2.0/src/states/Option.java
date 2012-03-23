@@ -1,7 +1,7 @@
 package states;
 
 import game.Main;
-import game.Vue;
+import game.View;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -17,7 +17,7 @@ import org.newdawn.slick.state.transition.Transition;
 
 public class Option extends BasicGameState{
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View view = View.getInstance();
 
 	int optionX = 200;
 	int optionY = 200;
@@ -28,7 +28,8 @@ public class Option extends BasicGameState{
 	int screenSize = 1;
 	private boolean[] inside;
 	private int kB = 0;
-	private int maxItem = 4;
+	private int maxItem = 3;
+	private int posTxt[][];
 	
 
 	public Option(int stateID) {
@@ -46,11 +47,11 @@ public class Option extends BasicGameState{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		vue.resetInOption();
+		view.resetInOption();
 		for(int i=0;i<maxItem;i++)
 			inside[i]=false;
 		
-		System.out.println("je suis entre");
+		//System.out.println("je suis entre");
 	}
 
 	@Override
@@ -70,26 +71,33 @@ public class Option extends BasicGameState{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		vue.initOption();
+		view.initOption();
 		
 		inside = new boolean[maxItem];
 		for(int i=0;i<maxItem;i++)
 			inside[i]=false;
 		
+		posTxt = new int[3][2];
+		posTxt[0][0] = 160;
+		posTxt[0][1] = 60;
+		posTxt[1][0] = 0;
+		posTxt[1][1] = 120;
+		posTxt[2][0] = 0;
+		posTxt[2][1] = 180;
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
 		//System.out.println("avant rendu option");
-		vue.renderOption(gc, gr, optionX, optionX,screenSize,inside);
+		view.renderOption(gc, gr, optionX, optionX,screenSize,inside,posTxt);
 
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.previousState);
+		//System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.previousState);
 
 		Input input = gc.getInput(); // On récupére les input
 
@@ -127,59 +135,61 @@ public class Option extends BasicGameState{
 			enterPress = true;
 		}
 		
+		
+
+
+
+		if( ( mouseX >= optionX+posTxt[0][0] && mouseX <= optionX+posTxt[0][0] + view.getValider().getWidth()*0.7) &&
+				( mouseY >= optionY+posTxt[0][1]&& mouseY <= optionY+posTxt[0][1] + view.getValider().getHeight()) ){
+			insideMusic = true;
+			System.out.println("on music");
+		}else if( ( mouseX >= optionX+posTxt[1][0] && mouseX <= optionX+posTxt[1][0]+256) &&
+				( mouseY >= optionY+posTxt[1][1] && mouseY <= optionY+posTxt[1][1]+42) ){
+			insideMusicSelection = true;
+			System.out.println("on selection");
+//		}else if( ( mouseX >= optionX+view.getWidth()*0.25f && mouseX <= optionX+view.getWidth()*0.25f+view.getButton(0).getWidth()) &&
+//				( mouseY >= optionY+view.getHeight()*0.22f && mouseY <= optionY+view.getHeight()*0.22f + view.getButton(0).getHeight()) ){
+//			insideBL = true;
+//			System.out.println("on screensizeL");
+//		}
+//		else if( ( mouseX >= optionX+view.getWidth()*0.50f && mouseX <= optionX+view.getWidth()*0.50f+view.getButton(1).getWidth()) &&
+//				( mouseY >= optionY+view.getHeight()*0.22f && mouseY <= optionY+view.getHeight()*0.22f + view.getButton(1).getHeight()) ){
+//			insideBR = true;
+//			System.out.println("on screensizeR");
+//		}else if( ( mouseX >= optionX+view.getWidth()*0.20f+10 && mouseX <= optionX+view.getWidth()*0.20f+10 + view.getValider().getWidth()*0.7) &&
+//				( mouseY >= optionY+view.getHeight()*0.30+10f&& mouseY <= optionY+view.getHeight()*0.30f+10 + view.getValider().getHeight()*0.7) ){
+//			insideFullscreen = true;
+//			//System.out.println("on fullscreen");
+		}
+		else if( ( mouseX >= optionX+posTxt[2][0] && mouseX <= optionX+posTxt[2][0] + view.getOptionOption().getWidth()*0.7) &&
+				( mouseY >= optionY+posTxt[2][1] && mouseY <= optionY+posTxt[2][1] + view.getOptionOption().getHeight()*0.7) ){
+			insideExit = true;
+			System.out.println("on exit");
+		}
+		
 		if(insideExit || insideBL || insideBR || insideFullscreen || insideMusic || insideMusicSelection){
 			for(int i=0;i<maxItem;i++)
 				inside[i]=false;
 		}
-
-
-
-		if( ( mouseX >= optionX+vue.getWidth()*0.20f+10 && mouseX <= optionX+vue.getWidth()*0.20f+10 + vue.getValider().getWidth()*0.7) &&
-				( mouseY >= optionY+10+vue.getHeight()*0.10f && mouseY <= optionY+10+vue.getHeight()*0.10f + vue.getValider().getHeight()) ){
-			insideMusic = true;
-			//System.out.println("on music");
-		}else if( ( mouseX >= optionX && mouseX <= optionX+vue.getWidth()*0.32f) &&
-				( mouseY >= optionY+vue.getHeight()*0.20f && mouseY <= optionY+vue.getHeight()*0.10f+vue.getHeight()*0.17f) ){
-			insideMusicSelection = true;
-			//System.out.println("on selection");
-//		}else if( ( mouseX >= optionX+vue.getWidth()*0.25f && mouseX <= optionX+vue.getWidth()*0.25f+vue.getButton(0).getWidth()) &&
-//				( mouseY >= optionY+vue.getHeight()*0.22f && mouseY <= optionY+vue.getHeight()*0.22f + vue.getButton(0).getHeight()) ){
-//			insideBL = true;
-//			System.out.println("on screensizeL");
-//		}
-//		else if( ( mouseX >= optionX+vue.getWidth()*0.50f && mouseX <= optionX+vue.getWidth()*0.50f+vue.getButton(1).getWidth()) &&
-//				( mouseY >= optionY+vue.getHeight()*0.22f && mouseY <= optionY+vue.getHeight()*0.22f + vue.getButton(1).getHeight()) ){
-//			insideBR = true;
-//			System.out.println("on screensizeR");
-		}else if( ( mouseX >= optionX+vue.getWidth()*0.20f+10 && mouseX <= optionX+vue.getWidth()*0.20f+10 + vue.getValider().getWidth()*0.7) &&
-				( mouseY >= optionY+vue.getHeight()*0.30+10f&& mouseY <= optionY+vue.getHeight()*0.30f+10 + vue.getValider().getHeight()*0.7) ){
-			insideFullscreen = true;
-			//System.out.println("on fullscreen");
-		}
-		else if( ( mouseX >= optionX && mouseX <= optionX + vue.getOptionOption().getWidth()*0.7) &&
-				( mouseY >= optionY+vue.getHeight()*0.40f && mouseY <= optionY+vue.getHeight()*0.40f + vue.getOptionOption().getHeight()*0.7) ){
-			insideExit = true;
-			//System.out.println("on exit");
-		}
 		
-		vue.resetInOption();
+		view.resetInOption();
 
 		if(insideMusic || inside[0]){
-			vue.inOption(0);
+			view.inOption(0);
 			//System.out.println("music in "+delayClick+" et delta"+ delta);
 			delayClick-= 20;
 			if (delayClick<0 || inside[0]){
 
 				//System.out.println("music in delay"+delayClick);
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress ){
-					if(!vue.isMusic()){
-						vue.setValiderSetMusic(true);
-						vue.setMusic(3);
+					if(!view.isMusic()){
+						view.setValiderSetMusic(true);
+						view.setMusic(3);
 						System.out.println("music on");
 					}
 					else{
-						vue.setValiderSetMusic(false);
-						vue.setMusic(2);
+						view.setValiderSetMusic(false);
+						view.setMusic(2);
 						//System.out.println("music off");
 					}
 				}
@@ -230,19 +240,19 @@ public class Option extends BasicGameState{
 //				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
 //					switch (screenSize) {
 //					case 1:
-//						vue.setScreen(800, 600, false);
+//						view.setScreen(800, 600, false);
 //						break;
 //					case 2:
-//						vue.setScreen(1024, 768, false);
+//						view.setScreen(1024, 768, false);
 //						break;
 //					case 3:
-//						vue.setScreen(1280, 960, false);
+//						view.setScreen(1280, 960, false);
 //						break;
 //					case 4:
-//						vue.setScreen(1366, 768, false);
+//						view.setScreen(1366, 768, false);
 //						break;
 //					case 5:
-//						vue.setScreen(1920, 1080, false);
+//						view.setScreen(1920, 1080, false);
 //						break;
 //			
 //					default:
@@ -256,49 +266,49 @@ public class Option extends BasicGameState{
 
 
 
-		if(insideFullscreen  || inside[2]){
-			delayClick-= delay;
-			if (delayClick<0  || inside[1]){
-				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
-					if(!vue.getValiderFullScreen()){
-						vue.setValiderFullScreen(true);
-						//vue.setScreen(1280,720,true);
-						System.out.println("Fullscreen ON");
-					}
-					else{
-						vue.setValiderFullScreen(false);
-						vue.setScreen(Main.WIDTH, Main.HEIGHT,false);
-					}
-				}
-				delayClick = 100;
-			}
+//		if(insideFullscreen  || inside[2]){
+//			delayClick-= delay;
+//			if (delayClick<0  || inside[1]){
+//				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
+//					if(!view.getValiderFullScreen()){
+//						view.setValiderFullScreen(true);
+//						//view.setScreen(1280,720,true);
+//						System.out.println("Fullscreen ON");
+//					}
+//					else{
+//						view.setValiderFullScreen(false);
+//						view.setScreen(Main.WIDTH, Main.HEIGHT,false);
+//					}
+//				}
+//				delayClick = 100;
+//			}
+//
+//		}
 
-		}
-
-		if(insideExit  || inside[3])
+		if(insideExit  || inside[2])
 		{
-			if(vue.getExitScale() < 0.8f)
-				vue.setExitScale(vue.getExitScale() + scaleStep * delay);
+			if(view.getExitScale() < 0.8f)
+				view.setExitScale(view.getExitScale() + scaleStep * delay);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
 
-				vue.setExitScale(0.7f);
+				view.setExitScale(0.7f);
 				
 //				//application du mode d'affichage
 //				switch (screenSize) {
 //				case 1:
-//					vue.setScreen(800, 600, false);
+//					view.setScreen(800, 600, false);
 //					break;
 //				case 2:
-//					vue.setScreen(1024, 768, false);
+//					view.setScreen(1024, 768, false);
 //					break;
 //				case 3:
-//					vue.setScreen(1280, 960, false);
+//					view.setScreen(1280, 960, false);
 //					break;
 //				case 4:
-//					vue.setScreen(1366, 768, false);
+//					view.setScreen(1366, 768, false);
 //					break;
 //				case 5:
-//					vue.setScreen(1920, 1080, false);
+//					view.setScreen(1920, 1080, false);
 //					break;
 //		
 //				default:
@@ -316,8 +326,8 @@ public class Option extends BasicGameState{
 				}
 			}
 		}else{
-			if(vue.getExitScale() > 0.7f)
-				vue.setExitScale(vue.getExitScale() - scaleStep * delay);
+			if(view.getExitScale() > 0.7f)
+				view.setExitScale(view.getExitScale() - scaleStep * delay);
 		}
 		
 		if (input.isKeyPressed(Input.KEY_ESCAPE)){

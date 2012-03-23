@@ -1,7 +1,7 @@
 package states;
 
 import game.Main;
-import game.Vue;
+import game.View;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -15,7 +15,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class History extends BasicGameState{
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View view = View.getInstance();
 	private UnicodeFont font;
 	String text = "";
 	int cpt = 0;
@@ -41,8 +41,8 @@ public class History extends BasicGameState{
 	}
 	public void enter(GameContainer gc, StateBasedGame sbg) {
 		gc.getInput().clearKeyPressedRecord();
-		vue.selectMusic(6);
-		vue.setMusic(1);
+		view.selectMusic(6);
+		view.setMusic(1);
 		
 //		if(textDone[truc.getLevel()]){
 //			sbg.enterState(Main.GAMESTATE);
@@ -141,7 +141,7 @@ public class History extends BasicGameState{
 				input.enableKeyRepeat();
 			}
 
-			//vue.setMusic(1);
+			//view.setMusic(1);
 		}
 		if (!input.isKeyDown(Input.KEY_SPACE)){
 			speedUp = false;

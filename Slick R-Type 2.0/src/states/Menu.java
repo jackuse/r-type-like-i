@@ -5,7 +5,7 @@ import javax.jws.Oneway;
 import game.HighscoreManager;
 import game.IOManager;
 import game.Main;
-import game.Vue;
+import game.View;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -26,7 +26,7 @@ import org.newdawn.slick.state.transition.Transition;
  */
 public class Menu extends BasicGameState{
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View view = View.getInstance();
 	//private IOManager io = IOManager.getInstance();
 
 	int menuX = 80;
@@ -48,6 +48,7 @@ public class Menu extends BasicGameState{
 	private int maxItemMenu = 4;
 	private int posTxt[][];
 	int val = 0;
+	boolean security = true;
 	
 
 
@@ -79,14 +80,14 @@ public class Menu extends BasicGameState{
 		resetMenu();
 
 		// On lance la musique si il le faut
-		if(vue.isSelectMusic(0)){
-			vue.selectMusic(0);
-			vue.setMusic(0);
-			if(vue.isValiderMusic()){
-				vue.setMusic(1);
+		if(view.isSelectMusic(0)){
+			view.selectMusic(0);
+			view.setMusic(0);
+			if(view.isValiderMusic()){
+				view.setMusic(1);
 			}
 		}
-		vue.selectMusic(0);
+		view.selectMusic(0);
 		
 		// On réinitialise la selection au clavier
 		for(int i=0;i<maxItemMenu;i++)
@@ -97,8 +98,8 @@ public class Menu extends BasicGameState{
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		vue.initMenu();
-		titreX = (int)(vue.getWidth()*0.20);
+		view.initMenu();
+		titreX = (int)(view.getWidth()*0.20);
 		t = new Transition[2];
 		to = new Transition[2];
 		pos = new int[10];
@@ -125,7 +126,7 @@ public class Menu extends BasicGameState{
 			throws SlickException {
 
 		if(!credit){ // les crédit son mi par dessus le menu
-			vue.renderMenu(gr, menuX, menuY, titreX, titreY,hSX,hm.getHighscoreStringTab(),pos,posTxt);
+			view.renderMenu(gr, menuX, menuY, titreX, titreY,hSX,hm.getHighscoreStringTab(),pos,posTxt);
 		}
 		else
 		{
@@ -138,10 +139,10 @@ public class Menu extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		//System.out.println("etat "+sbg.getCurrentStateID()+" l'autre c'est "+Main.previousState);
-		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
+		//System.out.println("Music on: "+view.isMusic()+" firstLauch: "+Main.etatprecedent);
 		//		if(Main.etatprecedent == -1){
-		//			vue.selectMusic(0);
-		//			vue.setMusic(1);
+		//			view.selectMusic(0);
+		//			view.setMusic(1);
 		//			//Main.etatprecedent = sbg.getCurrentStateID();
 		//		}
 
@@ -153,10 +154,11 @@ public class Menu extends BasicGameState{
 			}
 			else{
 				if(hSX==800 && Main.previousState != Main.OPTIONSTATE && Main.previousState != Main.CONTROLSSTATE){
-					vue.selectMusic(0);
-					//vue.setMusic(0);
-					if(vue.isValiderMusic()){
-						vue.setMusic(1);
+					view.selectMusic(0);
+					security = false;
+					//view.setMusic(0);
+					if(view.isValiderMusic()){
+						view.setMusic(1);
 					}
 				}
 				if(hSX>320){
@@ -181,15 +183,15 @@ public class Menu extends BasicGameState{
 		}
 
 		/*
-		if(!vue.isMusic()&& (Main.etatprecedent == sbg.getCurrentStateID())){
-			vue.selectMusic(0);
-			if(vue.isValiderMusic()){
-				vue.setMusic(1);
+		if(!view.isMusic()&& (Main.etatprecedent == sbg.getCurrentStateID())){
+			view.selectMusic(0);
+			if(view.isValiderMusic()){
+				view.setMusic(1);
 			}
 
 		}*/
-		//if(!vue.isMusic())
-		//vue.setMusic(1);
+		//if(!view.isMusic())
+		//view.setMusic(1);
 
 
 		Input input = gc.getInput();
@@ -204,22 +206,23 @@ public class Menu extends BasicGameState{
 		boolean insideControls = false;
 		boolean enterPress = false;
 
-		if( ( mouseX >= menuX+posTxt[0][0] && mouseX <= menuX+posTxt[0][0] + vue.getStartGameOption().getWidth()*0.7) &&
-				( mouseY >= menuY+posTxt[0][1] && mouseY <= menuY+posTxt[0][1] + vue.getStartGameOption().getHeight()*0.7) ){
+		if(!security){
+		if( ( mouseX >= menuX+posTxt[0][0] && mouseX <= menuX+posTxt[0][0] + view.getStartGameOption().getWidth()*0.7) &&
+				( mouseY >= menuY+posTxt[0][1] && mouseY <= menuY+posTxt[0][1] + view.getStartGameOption().getHeight()*0.7) ){
 			insideStartGame = true;
-		}else if( ( mouseX >= menuX+posTxt[3][0] && mouseX <= menuX+posTxt[3][0] + vue.getExitOption().getWidth()*0.7) &&
-				( mouseY >= menuY+posTxt[3][1] && mouseY <= menuY+posTxt[3][1] + vue.getExitOption().getHeight()*0.7) ){
+		}else if( ( mouseX >= menuX+posTxt[3][0] && mouseX <= menuX+posTxt[3][0] + view.getExitOption().getWidth()*0.7) &&
+				( mouseY >= menuY+posTxt[3][1] && mouseY <= menuY+posTxt[3][1] + view.getExitOption().getHeight()*0.7) ){
 			insideExit = true;
 		}
-		else if( ( mouseX >= menuX+posTxt[1][0] && mouseX <= menuX+posTxt[1][0] + vue.getOptionOption().getWidth()*0.7) &&
-				( mouseY >= menuY+posTxt[1][1] && mouseY <= menuY+posTxt[1][1] + vue.getOptionOption().getHeight()*0.7) ){
+		else if( ( mouseX >= menuX+posTxt[1][0] && mouseX <= menuX+posTxt[1][0] + view.getOptionOption().getWidth()*0.7) &&
+				( mouseY >= menuY+posTxt[1][1] && mouseY <= menuY+posTxt[1][1] + view.getOptionOption().getHeight()*0.7) ){
 			insideOption = true;
 		}
-		else if( ( mouseX >= menuX+posTxt[2][0] && mouseX <= menuX+posTxt[2][0] + vue.getOptionOption().getWidth()*0.7) &&
-				( mouseY >= menuY+posTxt[2][1] && mouseY <= menuY+posTxt[2][1] + vue.getOptionOption().getHeight()*0.7) ){
+		else if( ( mouseX >= menuX+posTxt[2][0] && mouseX <= menuX+posTxt[2][0] + view.getOptionOption().getWidth()*0.7) &&
+				( mouseY >= menuY+posTxt[2][1] && mouseY <= menuY+posTxt[2][1] + view.getOptionOption().getHeight()*0.7) ){
 			insideControls = true;
 		}
-		else if( ( mouseX >= vue.getWidth()*0.84f + vue.getWidth()) &&
+		else if( ( mouseX >= view.getWidth()*0.84f + view.getWidth()) &&
 				( mouseY <=  40) ){
 			insideCredit = true;
 			System.out.println("truc");
@@ -247,6 +250,7 @@ public class Menu extends BasicGameState{
 		if (input.isKeyPressed(Input.KEY_ENTER)){
 			enterPress = true;
 		}
+		}
 		
 		// On réinitilalise le déplacement clavier si on utilise la souris
 		if(insideExit || insideCredit || insideOption || insideStartGame){
@@ -257,59 +261,59 @@ public class Menu extends BasicGameState{
 		if(!credit){
 
 			if(insideStartGame || inside[0]){
-				if(vue.getStartGameScale() < 0.8f)
-					vue.setStartGameScale(vue.getStartGameScale()+scaleStep * delay);
+				if(view.getStartGameScale() < 0.8f)
+					view.setStartGameScale(view.getStartGameScale()+scaleStep * delay);
 
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress ){
-					vue.setStartGameScale(0.7f);
+					view.setStartGameScale(0.7f);
 					Main.previousState = Main.MENUSTATE;
 					//sbg.enterState(Main.SELECTSTATE,t[0],t[1]);
 					sbg.enterState(Main.SELECTSTATE);
 				}
 			}else{
-				if(vue.getStartGameScale() > 0.7f)
-					vue.setStartGameScale(vue.getStartGameScale()-scaleStep * delay);
+				if(view.getStartGameScale() > 0.7f)
+					view.setStartGameScale(view.getStartGameScale()-scaleStep * delay);
 			}
 
 			if(insideOption || inside[1]){
-				if(vue.getOptionScale() < 0.8f)
-					vue.setOptionScale(vue.getOptionScale()+scaleStep * delay);
+				if(view.getOptionScale() < 0.8f)
+					view.setOptionScale(view.getOptionScale()+scaleStep * delay);
 
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
-					vue.setOptionScale(0.7f);
+					view.setOptionScale(0.7f);
 					Main.previousState = Main.MENUSTATE;
 					//sbg.enterState(Main.OPTIONSTATE,to[0],to[1]); // Bug de transition si on quit dans le jeu
 					sbg.enterState(Main.OPTIONSTATE);
 				}
 			}else{
-				if(vue.getOptionScale() > 0.7f)
-					vue.setOptionScale(vue.getOptionScale()-scaleStep * delay);
+				if(view.getOptionScale() > 0.7f)
+					view.setOptionScale(view.getOptionScale()-scaleStep * delay);
 			}
 			
 			if(insideControls || inside[2]){
-				if(vue.getControlsScale() < 0.8f)
-					vue.setControlsScale(vue.getControlsScale()+scaleStep * delay);
+				if(view.getControlsScale() < 0.8f)
+					view.setControlsScale(view.getControlsScale()+scaleStep * delay);
 
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress){
-					vue.setControlsScale(0.7f);
+					view.setControlsScale(0.7f);
 					Main.previousState = Main.MENUSTATE;
 					sbg.enterState(Main.CONTROLSSTATE);
 
 				}
 			}else{
-				if(vue.getControlsScale() > 0.7f)
-					vue.setControlsScale(vue.getControlsScale()-scaleStep * delay);
+				if(view.getControlsScale() > 0.7f)
+					view.setControlsScale(view.getControlsScale()-scaleStep * delay);
 			}
 
 			if(insideExit || inside[3])
 			{
-				if(vue.getExitScale() < 0.8f)
-					vue.setExitScale(vue.getExitScale() + scaleStep * delay);
+				if(view.getExitScale() < 0.8f)
+					view.setExitScale(view.getExitScale() + scaleStep * delay);
 				if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || enterPress)
 					gc.exit();
 			}else{
-				if(vue.getExitScale() > 0.7f)
-					vue.setExitScale(vue.getExitScale() - scaleStep * delay);
+				if(view.getExitScale() > 0.7f)
+					view.setExitScale(view.getExitScale() - scaleStep * delay);
 			}
 		}
 
@@ -335,13 +339,13 @@ public class Menu extends BasicGameState{
 		
 
 		if ( input.isKeyPressed(Input.KEY_M) ){
-			if(!vue.isMusic()){
-				vue.setValiderSetMusic(true);
-				vue.setMusic(3);
+			if(!view.isMusic()){
+				view.setValiderSetMusic(true);
+				view.setMusic(3);
 			}
 			else{
-				vue.setValiderSetMusic(false);
-				vue.setMusic(2);
+				view.setValiderSetMusic(false);
+				view.setMusic(2);
 			}
 		}
 
@@ -353,7 +357,7 @@ public class Menu extends BasicGameState{
 				titreY = -80;
 				hSX = 800;
 				for (int i=0;i<10;i++){
-					pos[i] = vue.getWidth()+i*200;
+					pos[i] = view.getWidth()+i*200;
 				}
 			}
 

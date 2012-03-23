@@ -31,34 +31,30 @@ import states.Game;
 // Contient toutes les valeurs partagées des etats
 
 /* URGENT 
- * mettre en place les niveaux
  * commenter le code et le rendre propre
- * modifier menu selection pour mettre les vaisseaux qui tourne
- * Ajouter des texte a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
- * Faire un tableau de posTxt pour chaque affichage
- * Corriger problem de son
+ * Ajouter des textes a history et ne plus l'afficher si deja vue // fait mais il faut savoir ou son les level
  * 
  * EN PLUS 
  * bug dans la gestion de playlist
  * implementer keyconfig ou pas
  * renommer les XML
- * Changer 2 3 polices
  * mettre en mode francais/anglais
  * Option résolution ecran // mort trop difficile
  * credit
+ * faire une fonction qui decoupe de texte avec de /n pour le mode history
  * 
  * Faire le rapport / l'affiche / le diapo
  */
 
 /**
- * Class Vue
+ * Class View
  * Singleton
  * @author Etienne Grandier-Vazeille
  *
  */
-public class Vue {
+public class View {
 
-	private static Vue _instance = new Vue();
+	private static View _instance = new View();
 
 	//
 	// Fields
@@ -153,7 +149,7 @@ public class Vue {
 
 
 
-	public final static Vue getInstance(){
+	public final static View getInstance(){
 		return _instance;
 	}
 	//
@@ -164,7 +160,7 @@ public class Vue {
 	 * Chargement des images
 	 * @throws FileNotFoundException 
 	 */
-	public Vue () {
+	public View () {
 		/*
 		background[0] = new Image("data/land.jpg");
 		player = new Image("data/plane.png");
@@ -494,67 +490,40 @@ public class Vue {
 	        } */
 	}
 
-	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size, boolean[] inside) {
-		//System.out.println("rendu d'option");
-
-		//startGameOption.draw(optionX, optionY, startGameScale);
+	public void renderOption(GameContainer gc, Graphics gr,int optionX, int optionY,int size, boolean[] inside,int posTxt[][]) {
 		background[2].draw(0, 0);
 		
 
 		gr.setColor(new Color (1.0f, 1.0f, 1.0f));
 		
 
-		fonts[0].drawString(optionX, optionY+height*0.10f, "Music",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(optionX, optionY+posTxt[0][1], "Music",new Color(1.0f,1.0f,1.0f));
 		if(validerMusic)
-			validerOk.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+			validerOk.draw(optionX+posTxt[0][0], optionY+posTxt[0][1],0.7f);
 		else
-			valider.draw(optionX+width*0.20f, optionY+height*0.10f,0.7f);
+			valider.draw(optionX+posTxt[0][0], optionY+posTxt[0][1],0.7f);
 		if(inside[0]){
-			gr.fill(new Rectangle (optionX, optionY+height*0.17f, 100, 5));
+			gr.fill(new Rectangle (optionX, optionY+42+posTxt[0][1], 100, 5));
 		}
 
-		fonts[0].drawString(optionX, optionY+height*0.20f, "Music Playlist",new Color(1.0f,1.0f,1.0f));
+		fonts[0].drawString(optionX+posTxt[1][0], optionY+posTxt[1][1], "Music Playlist",new Color(1.0f,1.0f,1.0f));
 		if(inside[1]){
-			gr.fill(new Rectangle (optionX, optionY+height*0.27f, 220, 5));
+			gr.fill(new Rectangle (optionX+posTxt[1][0], optionY+42+posTxt[1][1], 220, 5));
 		}
 
-		//		font.drawString(optionX, optionY+height*0.20f, "Screen Size",new Color(0.5f,0.5f,0.5f));
-		//		buttons[0].draw(optionX+width*0.25f, optionY+height*0.22f);
-		//		buttons[1].draw(optionX+width*0.50f, optionY+height*0.22f);
-		//		switch (size) {
-		//		case 1:
-		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "800x600",new Color(0.5f,0.5f,0.5f));
-		//			break;
-		//		case 2:
-		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1024x768	",new Color(0.5f,0.5f,0.5f));
-		//			break;
-		//		case 3:
-		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1280x960",new Color(0.5f,0.5f,0.5f));
-		//			break;
-		//		case 4:
-		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1366x768",new Color(0.5f,0.5f,0.5f));
-		//			break;
-		//		case 5:
-		//			font.drawString(optionX+width*0.30f, optionY+height*0.20f, "1920x1080",new Color(0.5f,0.5f,0.5f));
-		//			break;
-		//
-		//		default:
-		//			break;
-		//		}
-
-		fonts[0].drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
-		if(validerFullscreen)
-			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
-		else
-			valider.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
-		if(inside[2]){
-			gr.fill(new Rectangle (optionX, optionY+height*0.37f, 180, 5));
-		}
+//		fonts[0].drawString(optionX, optionY+height*0.30f, "Fullscreen",new Color(0.5f,0.5f,0.5f));
+//		if(validerFullscreen)
+//			validerOk.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
+//		else
+//			valider.draw(optionX+width*0.20f, optionY+height*0.30f,0.7f);
+//		if(inside[2]){
+//			gr.fill(new Rectangle (optionX, optionY+height*0.37f, 180, 5));
+//		}
 		//System.out.println("rendu d'option pro ");
-		gr.setColor(new Color(0.5f,0.5f,0.5f));
-		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.325f);
+//		gr.setColor(new Color(0.5f,0.5f,0.5f));
+//		gr.drawString( "Only Pro version",optionX+width*0.28f, optionY+height*0.325f);
 		//optionOption.draw(optionX, optionY+45, optionScale);
-		exitOption.draw(optionX, optionY+height*0.40f, exitScale);
+		exitOption.draw(optionX+posTxt[2][0], optionY+posTxt[2][1], exitScale);
 
 	}
 
@@ -1126,10 +1095,10 @@ public class Vue {
 		}
 	}
 
-	public void chargemementGame(){
+	public void loadGame(){
 		try {
 			//rm.loadResources(new FileInputStream("data/jeu.xml"),true);
-			rm.loadResources(getClass().getResourceAsStream("/data/jeu.xml"),true); // Methode compatible avec les jars
+			rm.loadResources(getClass().getResourceAsStream("/data/ressources.xml"),true); // Methode compatible avec les jars
 
 
 		} catch (SlickException e) {

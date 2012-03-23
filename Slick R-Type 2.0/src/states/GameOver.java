@@ -15,7 +15,7 @@ import game.HighscoreManager;
 import game.IOManager;
 import game.Player;
 import game.Main;
-import game.Vue;
+import game.View;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -26,11 +26,11 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameOver extends BasicGameState{
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View view = View.getInstance();
 	private IOManager io = IOManager.getInstance();
 
-	int GmOvX = (int) (vue.getWidth()/2.2);
-	int GmOvY = (int) (vue.getHeight()/2.7);
+	int GmOvX = (int) (view.getWidth()/2.2);
+	int GmOvY = (int) (view.getHeight()/2.7);
 	boolean ok = true;
 	int delay = 200;
 	private int[] param;
@@ -105,7 +105,7 @@ public class GameOver extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderGameOver(gc,gr,GmOvX,GmOvY,ok,param,name);
+		view.renderGameOver(gc,gr,GmOvX,GmOvY,ok,param,name);
 
 	}
 
@@ -121,7 +121,7 @@ public class GameOver extends BasicGameState{
 				ok = true;
 			delay = 200;
 		}
-		vue.selectMusic(0);
+		view.selectMusic(0);
 
 
 		Input input = gc.getInput(); // On récupére les input

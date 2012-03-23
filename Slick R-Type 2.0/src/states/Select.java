@@ -2,7 +2,7 @@ package states;
 
 import game.Main;
 import game.ResourceManager;
-import game.Vue;
+import game.View;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -16,7 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Select extends BasicGameState{
 
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View view = View.getInstance();
 	
 	int menuX = 30;
 	int menuY = 200;
@@ -34,7 +34,7 @@ public class Select extends BasicGameState{
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		vue.initCharacterSelectScreen();
+		view.initCharacterSelectScreen();
 		System.out.println("je suis character select screen");
 		
 	}
@@ -42,7 +42,7 @@ public class Select extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics gr)
 			throws SlickException {
-		vue.renderCharacterSelectScreen(gr, menuX, menuY);
+		view.renderCharacterSelectScreen(gr, menuX, menuY);
 		
 	}
 
@@ -54,33 +54,33 @@ public class Select extends BasicGameState{
 			//reset();
 			Main.previousState = sbg.getCurrentStateID();	
 			
-			//vue.setMusic(1);
-			vue.setMusic(0);
-			vue.selectMusic(7);
-			//vue.principale.setPosition(120.0f);
-			if(vue.isValiderMusic()){	
-				vue.setMusic(4);
+			//view.setMusic(1);
+			view.setMusic(0);
+			view.selectMusic(7);
+			//view.principale.setPosition(120.0f);
+			if(view.isValiderMusic()){	
+				view.setMusic(4);
 			}
-			vue.principale.setVolume(1.5f);
+			view.principale.setVolume(1.5f);
 			
 			
 		}
 		
-		if(vue.isValiderMusic()){
-			if(!vue.isMusic()){
-				vue.setMusic(0);
-				vue.nextMusic();
-				vue.setMusic(4);		
+		if(view.isValiderMusic()){
+			if(!view.isMusic()){
+				view.setMusic(0);
+				view.nextMusic();
+				view.setMusic(4);		
 			}
 		}
 		//System.out.println("etat "+sbg.getCurrentStateID());
-		//System.out.println("Music on: "+vue.isMusic()+" firstLauch: "+Main.etatprecedent);
-		if(!vue.isMusic()&& (Main.previousState == Main.PAUSESTATE)){
-			//vue.selectMusic(0);
-			//vue.setMusic(1);
+		//System.out.println("Music on: "+view.isMusic()+" firstLauch: "+Main.etatprecedent);
+		if(!view.isMusic()&& (Main.previousState == Main.PAUSESTATE)){
+			//view.selectMusic(0);
+			//view.setMusic(1);
 		}
-		//if(!vue.isMusic())
-			//vue.setMusic(1);
+		//if(!view.isMusic())
+			//view.setMusic(1);
 
 			
 		Input input = gc.getInput();
@@ -92,29 +92,29 @@ public class Select extends BasicGameState{
 		boolean insideChar3 = false;
 		boolean insideChar2 = false;
 
-		if( ( mouseX >= menuX && mouseX <= menuX + vue.getStartGameOption().getWidth()*0.7) &&
-				( mouseY >= menuY && mouseY <= menuY + vue.getStartGameOption().getHeight()*0.7) ){
+		if( ( mouseX >= menuX && mouseX <= menuX + view.getStartGameOption().getWidth()*0.7) &&
+				( mouseY >= menuY && mouseY <= menuY + view.getStartGameOption().getHeight()*0.7) ){
 			insideChar1 = true;
-		}else if( ( mouseX >= menuX+600 && mouseX <= menuX+600 + vue.getExitOption().getWidth()*0.7) &&
-				( mouseY >= menuY && mouseY <= menuY + vue.getExitOption().getHeight()*0.7) ){
+		}else if( ( mouseX >= menuX+600 && mouseX <= menuX+600 + view.getExitOption().getWidth()*0.7) &&
+				( mouseY >= menuY && mouseY <= menuY + view.getExitOption().getHeight()*0.7) ){
 			insideChar3 = true;
 		}
-		else if( ( mouseX >= menuX+350 && mouseX <= menuX+350 + vue.getOptionOption().getWidth()*0.7) &&
-				( mouseY >= menuY && mouseY <= menuY + vue.getOptionOption().getHeight()*0.7) ){
+		else if( ( mouseX >= menuX+350 && mouseX <= menuX+350 + view.getOptionOption().getWidth()*0.7) &&
+				( mouseY >= menuY && mouseY <= menuY + view.getOptionOption().getHeight()*0.7) ){
 			insideChar2 = true;
 		}
 		
 		if(!insideChar1 && !insideChar2 && !insideChar3)
-			vue.setAltBouton(0,menuX,menuY);
+			view.setAltBouton(0,menuX,menuY);
 
 		if(insideChar1){
-			vue.setAltBouton(1, menuX, menuY);
+			view.setAltBouton(1, menuX, menuY);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				//vue.setMusic(0);
-				//vue.initGame(); 
-				//vue.setMusicJeu(true);
-				vue.setStartGameScale(0.7f);
-				vue.shipname="VAISSEAU_1.gif";
+				//view.setMusic(0);
+				//view.initGame(); 
+				//view.setMusicJeu(true);
+				view.setStartGameScale(0.7f);
+				view.shipname="VAISSEAU_1.gif";
 //				sbg.enterState(Main.GAMESTATE);
 				sbg.enterState(Main.HISTORYSTATE);
 			}
@@ -124,13 +124,13 @@ public class Select extends BasicGameState{
 		}
 
 		if(insideChar2){
-			vue.setAltBouton(2,menuX, menuY);
+			view.setAltBouton(2,menuX, menuY);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				//vue.setMusic(0);
-				//vue.initGame(); 
-				//vue.setMusicJeu(true);
-				vue.setStartGameScale(0.7f);
-				vue.shipname="VAISSEAU_2.gif";
+				//view.setMusic(0);
+				//view.initGame(); 
+				//view.setMusicJeu(true);
+				view.setStartGameScale(0.7f);
+				view.shipname="VAISSEAU_2.gif";
 //				sbg.enterState(Main.GAMESTATE);
 				sbg.enterState(Main.HISTORYSTATE);
 			}
@@ -143,13 +143,13 @@ public class Select extends BasicGameState{
 
 		if(insideChar3)
 		{
-			vue.setAltBouton(3,menuX, menuY);
+			view.setAltBouton(3,menuX, menuY);
 			if ( input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) ){
-				//vue.setMusic(0);
-				//vue.initGame(); 
-				//vue.setMusicJeu(true);
-				vue.setStartGameScale(0.7f);
-				vue.shipname="VAISSEAU_3.gif";
+				//view.setMusic(0);
+				//view.initGame(); 
+				//view.setMusicJeu(true);
+				view.setStartGameScale(0.7f);
+				view.shipname="VAISSEAU_3.gif";
 				
 				sbg.enterState(Main.GAMESTATE);
 			}

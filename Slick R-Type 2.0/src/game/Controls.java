@@ -10,7 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Controls extends BasicGameState {
 	int stateID = -1;
-	private Vue vue = Vue.getInstance();
+	private View vue = View.getInstance();
 	private int ctrY=50;
 	private int ctrX=50;
 	private int posTxt[][];
