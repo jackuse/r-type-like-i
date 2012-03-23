@@ -159,7 +159,7 @@ public class Game extends BasicGameState{
 		for (Iterator<Boss> bo = boss.iterator(); bo.hasNext(); ) {
 			Objet obBo = (Objet) bo.next();
 			System.out.println("je blit du boss");
-			view.render1Vaisseau(gr, obBo, obBo.getId());
+			view.render1Boss(gr, obBo, obBo.getId());
 		}
 
 		
@@ -492,7 +492,10 @@ public class Game extends BasicGameState{
 			}
 
 		}
-
+		
+		for (int i=0;i<boss.size();i++)
+			boss.get(i).move();
+		
 		for (int i=0;i<enemy.size();i++)
 		{
 			enemy.get(i).move();
@@ -703,7 +706,7 @@ public class Game extends BasicGameState{
 					
 					System.out.println("new alien");
 				}else if(event.get(i).getId()>200 && event.get(i).getId()<300){
-					boss.add(new Boss(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getId()));
+					boss.add(new Boss(event.get(i).getSpawnX(), event.get(i).getSpawnY(),event.get(i).getId(),event.get(i).getBehavior()));
 					System.out.println("new boss");
 				}
 				else if(event.get(i).getId()==999)

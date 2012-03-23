@@ -22,6 +22,7 @@ public class Boss extends Ship {
 	private boolean fireOn = false;
 	private boolean upMove = false;
 	private boolean downMove= false;
+	protected int behavior;
 	
 	// Oui le vaisseau mére peut appeler ses sbires !
 	private EventList event = EventList.getInstance();
@@ -42,14 +43,14 @@ public class Boss extends Ship {
 	// Methods
 	//
 	
-	public Boss(int spawnX, int spawnY, int behavior) {
-		// TODO Auto-generated constructor stub
+	public Boss (float x, float y, int id, int behav){
+		super(x,y,200,200);
+		this.id=id;
+		behavior=behav;
+		
 	}
 	
-	public Boss (float x, float y,int id) { 
-		super(x,y,200,200);
-		this.id = id;
-	};
+	
 	public void move(){
 		if (comming){
 			makeCome();

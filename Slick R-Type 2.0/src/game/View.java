@@ -834,9 +834,11 @@ public class View {
 		if(type>100 && type<200){
 			alien[type-101].draw(ob.getX(),ob.getY());
 		}
-		else if(type>200 && type<300)
-			boss[type-201].draw(ob.getX(),ob.getY());
-
+//		else if(type>200 && type<300)
+//		{
+//			System.out.println("type = "+type+"  timer = "+timer);
+//			boss[type-201].draw(ob.getX(),ob.getY());
+//		}
 			
 		
 		return 0;
@@ -1362,6 +1364,11 @@ public class View {
 
 	public int getMaxLevel() {
 		return maxLevel;
+	}
+
+	public void render1Boss(Graphics gr, Objet obBo, int id) {
+		// TODO Auto-generated method stub
+		boss[0].draw(obBo.getX(),obBo.getY());
 	}
 
 
