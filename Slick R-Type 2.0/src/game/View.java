@@ -577,9 +577,9 @@ public class View {
 		gr.fill(fond);
 		background[1].draw(0, 0);
 		fonts[0].drawString(titreX, titreY, "R-Type Mania "+edition+" Edition",new Color(1.0f,1.0f,1.0f));
-		//font.drawString(titreX+430, titreY+30, "Beta",new Color(1.0f,1.0f,1.0f));
+		//font.drawString(titreX+430, titreY+30, "v."+Main.version,new Color(1.0f,1.0f,1.0f));
 		gr.setColor(new Color (0,0,0));
-		//gr.drawString("Beta "+Main.version, titreX+430, titreY+50);
+		gr.drawString("v."+Main.version, titreX+430, titreY+50);
 
 		//HighScore
 		gr.setColor(new Color(1.0f,1.0f,1.0f));

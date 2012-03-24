@@ -30,7 +30,7 @@ public class Main extends StateBasedGame {
     public static final int SELECTSTATE		   =  2;
     public static final int HISTORYSTATE	   =  13;
     public static final int CONTROLSSTATE	   =  14;
-    public static final float  version         = 5.0f;
+    public static final float  version         = 1.0f;
     
     public static int WIDTH    = 800;
     public static int HEIGHT   = 600;
