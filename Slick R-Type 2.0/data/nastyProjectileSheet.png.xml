@@ -1,0 +1,4 @@
+<sheet>
+	<sprite name="nastyProjectile1.gif" x="0" y="0" width="22" height="22" />
+	<sprite name="nastyProjectile2.gif" x="22" y="0" width="22" height="22" />
+</sheet>
