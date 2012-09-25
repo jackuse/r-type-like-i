@@ -1,9 +1,0 @@
-<sheet>
-	<sprite name="v3idle.gif" x="0" y="0" width="90" height="90" />
-	<sprite name="v3moveDown1.gif" x="90" y="0" width="90" height="90" />
-	<sprite name="v3moveDown2.gif" x="180" y="0" width="90" height="90" />
-	<sprite name="v3moveDown3.gif" x="270" y="0" width="90" height="90" />
-	<sprite name="v3moveUp1.gif" x="360" y="0" width="90" height="90" />
-	<sprite name="v3moveUp2.gif" x="0" y="90" width="90" height="90" />
-	<sprite name="v3moveUp3.gif" x="90" y="90" width="90" height="90" />
-</sheet>
